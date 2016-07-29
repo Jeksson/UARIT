@@ -87,9 +87,9 @@ public class ParsingCsvInBase {
                 } else {
                     product.setManufacturesName_product(getManufacturesName(s[7]));
                 }
-//                if (manufacturesNameService.isNameManufacturesName(s[7])){
-//                    product.setManufacturesName_product(manufacturesNameService.addManufacturesName(getManufacturesName(s[7])));
-//                } else product.setManufacturesName_product(manufacturesNameService.getByNameManufacturesName(s[7]));
+                if (manufacturesNameService.isNameManufacturesName(s[7])){
+                    product.setManufacturesName_product(manufacturesNameService.addManufacturesName(getManufacturesName(s[7])));
+                } else product.setManufacturesName_product(manufacturesNameService.getByNameManufacturesName(s[7]));
 //
 //                if(categoriesName1Service.isNameCategoriesName(s[9])){
 //                    product.setCategoriesName1_product(categoriesName1Service.addCategoriesName1(getCategoriesName1(s[9])));
