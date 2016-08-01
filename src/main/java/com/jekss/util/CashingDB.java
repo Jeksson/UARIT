@@ -38,7 +38,7 @@ public class CashingDB {
 
         for (int i = 1; i < (listNew.size()); i++) {
             BaseClass baseClass = (BaseClass) list.get(i);
-            System.out.println(baseClass.getName()+"+++++= " + i);
+            //System.out.println(baseClass.getName()+"+++++= " + i);
             if (baseClass.getName()!=name) {aBoolean = true;}
             else aBoolean = false;
         }

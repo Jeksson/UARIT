@@ -60,32 +60,35 @@ public class ParsingCsvInBase {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "windows-1251");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
+
+
         String mtp = "";
         int count = 0;
         while ((mtp = bufferedReader.readLine()) != null) {
-            String[] s = mtp.split(";|(\")+");
+            String[] s = mtp.split(";");
             count++;
             if (count > 1) {
 
+                System.out.println(s.length);
                 product.setId_product(Integer.parseInt(s[0].trim()));
 
-                product.setName(s[2]);
+                product.setName(s[1]);
 
-                if (s[4].equals(null) || s[4].equals("")) {
+                if (s[2].equals(null) || s[2].equals("")) {
                     product.setPrice_product(0.0);
-                    System.out.println(s[4].trim()+ "<<<<<<<<<< тупо пустое поле" );
-                } else if (!s[4].equals(null) || !s[4].equals("")){
+                    System.out.println(s[2].trim() + "<<<<<<<<<< тупо пустое поле");
+                } else if (!s[2].equals(null) || !s[2].equals("")) {
 
-                    product.setPrice_product(Double.parseDouble(s[4].replace(',', '.')));
+                    product.setPrice_product(Double.parseDouble(s[2].replace(',', '.')));
                 }
-                product.setDateAdded_product(s[6]);
+                product.setDateAdded_product(s[4]);
 
 
-                if (cashingDB.getCashing(s[7], getManufacturesNameList(false))) {
-                    product.setManufacturesName_product(getManufacturesName(s[7]));
+                if (cashingDB.getCashing(s[5], getManufacturesNameList(false))) {
+                    product.setManufacturesName_product(getManufacturesName(s[5]));
                     getManufacturesNameList(true);
                 } else {
-                    product.setManufacturesName_product(getManufacturesName(s[7]));
+                    product.setManufacturesName_product(getManufacturesName(s[5]));
                 }
 //                if (manufacturesNameService.isNameManufacturesName(s[7])){
 //                    product.setManufacturesName_product(manufacturesNameService.addManufacturesName(getManufacturesName(s[7])));
@@ -107,46 +110,74 @@ public class ParsingCsvInBase {
 //                    product.setCategoriesName5_product(categoriesName5Service.addCategoriesName5(getCategoriesName5(s[21])));
 //                }else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[21]));
 
-                if (cashingDB.getCashing(s[9], getCategoriesName1List(false))) {
-                    product.setCategoriesName1_product(getCategoriesName1(s[9]));
-                    getCategoriesName1List(true);
+                if (s[6].equals(null) || s[6].equals("")) {
+                    product.setCategoriesName1_product(getCategoriesName1(""));
                 } else {
-                    product.setCategoriesName1_product(getCategoriesName1(s[9]));
+                    if (cashingDB.getCashing(s[6], getCategoriesName1List(false))) {
+                        product.setCategoriesName1_product(getCategoriesName1(s[6]));
+                        getCategoriesName1List(true);
+                    } else {
+                        product.setCategoriesName1_product(getCategoriesName1(s[6]));
+                    }
                 }
 
-                if (cashingDB.getCashing(s[12], getCategoriesName2List(false))) {
-                    product.setCategoriesName2_product(getCategoriesName2(s[12]));
-                    getCategoriesName2List(true);
+
+                if (s[7].equals(null) || s[7].equals("")) {
+                    product.setCategoriesName2_product(getCategoriesName2(""));
                 } else {
-                    product.setCategoriesName2_product(getCategoriesName2(s[12]));
+                    if (cashingDB.getCashing(s[7], getCategoriesName2List(false))) {
+                        product.setCategoriesName2_product(getCategoriesName2(s[7]));
+                        getCategoriesName2List(true);
+                    } else {
+                        product.setCategoriesName2_product(getCategoriesName2(s[7]));
+                    }
                 }
 
-                if (cashingDB.getCashing(s[15], getCategoriesName3List(false))) {
-                    product.setCategoriesName3_product(getCategoriesName3(s[15]));
-                    getCategoriesName3List(true);
+                if (s[8].equals(null) || s[8].equals("")) {
+                    product.setCategoriesName3_product(getCategoriesName3(""));
                 } else {
-                    product.setCategoriesName3_product(getCategoriesName3(s[15]));
+                    if (cashingDB.getCashing(s[8], getCategoriesName3List(false))) {
+                        product.setCategoriesName3_product(getCategoriesName3(s[8]));
+                        getCategoriesName3List(true);
+                    } else {
+                        product.setCategoriesName3_product(getCategoriesName3(s[8]));
+                    }
                 }
 
-                if (cashingDB.getCashing(s[18], getCategoriesName4List(false))) {
-                    product.setCategoriesName4_product(getCategoriesName4(s[18]));
-                    getCategoriesName4List(true);
+                if (s[9].equals(null) || s[9].equals("")) {
+                    product.setCategoriesName4_product(getCategoriesName4(""));
                 } else {
-                    product.setCategoriesName4_product(getCategoriesName4(s[18]));
+                    if (cashingDB.getCashing(s[9], getCategoriesName4List(false))) {
+                        product.setCategoriesName4_product(getCategoriesName4(s[9]));
+                        getCategoriesName4List(true);
+                    } else {
+                        product.setCategoriesName4_product(getCategoriesName4(s[9]));
+                    }
                 }
 
-                if (cashingDB.getCashing(s[21], getCategoriesName5List(false))) {
-                    product.setCategoriesName5_product(getCategoriesName5(s[21]));
-                    getCategoriesName5List(true);
+                if (s[10].equals(null) || s[10].equals("")) {
+                    product.setCategoriesName5_product(getCategoriesName5(""));
                 } else {
-                    product.setCategoriesName5_product(getCategoriesName5(s[21]));
+                    if (cashingDB.getCashing(s[10], getCategoriesName5List(false))) {
+                        product.setCategoriesName5_product(getCategoriesName5(s[10]));
+                        getCategoriesName5List(true);
+                    } else {
+                        product.setCategoriesName5_product(getCategoriesName5(s[10]));
+                    }
                 }
 
-                picture.setUrl_picture(s[25]);
-                picture.setaBoolean_picture(true);
-                product.setPicture_product(picture);
+
+                if (s[13].equals(null) || s[13].equals("")) {
+                    picture.setaBoolean_picture(false);
+                    picture.setUrl_picture(s[14]);
+                    product.setPicture_product(picture);
+                } else {
+                    picture.setaBoolean_picture(true);
+                    picture.setUrl_picture(s[13]);
+                    product.setPicture_product(picture);
+                }
             }
-            //System.out.println(productService.addProduct(product));
+            System.out.println(productService.addProduct(product));
             System.out.println("--------------------------------------------------   " + count);
         }
     }

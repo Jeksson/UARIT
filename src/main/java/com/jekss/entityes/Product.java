@@ -59,7 +59,7 @@ public class Product extends BaseClass implements Serializable {
         this.id_product = id_product;
     }
 
-    @Column(name = "name_product")
+    @Column(name = "name_product", length = 300)
     public String getName() {
         return name_product;
     }

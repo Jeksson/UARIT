@@ -19,13 +19,13 @@ public class TestDataBaseConfig {
 
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "org.h2.Driver";
     private static final String PROPERTY_NAME_DATABASE_URL = "jdbc:h2:~/test";
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "sa";
+    private static final String PROPERTY_NAME_DATABASE_USERNAME = "";
     private static final String PROPERTY_NAME_DATABASE_PASSWORD = "";
 
     private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "org.hibernate.dialect.H2Dialect";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "true";
     private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "com.jekss.entityes";
-    private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "create";
+    private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "create-drop";
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
