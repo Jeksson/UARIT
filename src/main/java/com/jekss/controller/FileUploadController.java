@@ -8,6 +8,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.jekss.util.ParsingCsvInBase;
 import org.slf4j.Logger;
@@ -41,20 +43,19 @@ public class FileUploadController {
      * Upload single file using Spring Controller
      */
 
-    @RequestMapping(value = "uploadfile", method = RequestMethod.GET)
+    @RequestMapping(value = "upload", method = RequestMethod.GET)
     String uploadPage(Model model) {
 
         return "upload";
     }
 
 
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "uploadFile", method = RequestMethod.POST)
     public
     @ResponseBody
-    String uploadFileHandler(@RequestParam("name") String name,
-                             @RequestParam("file") MultipartFile file,
+    String uploadFileHandler(@RequestParam("file") MultipartFile file,
                              HttpServletRequest request) {
-        fileName = name;
+        fileName = file.getOriginalFilename();
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
@@ -68,19 +69,19 @@ public class FileUploadController {
                     fileSaveDir.mkdir();
                 }
                 BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(fileSaveDir + File.separator + name));
+                        new FileOutputStream(fileSaveDir + File.separator + fileName));
                 stream.write(bytes);
                 stream.close();
 
                 logger.info("Server File Location="
                         + fileSaveDir.getAbsolutePath());
 
-                return "You successfully uploaded file=" + name;
+                return "You successfully uploaded file=" + fileName;
             } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+                return "You failed to upload " + fileName + " => " + e.getMessage();
             }
         } else {
-            return "You failed to upload " + name
+            return "You failed to upload " + fileName
                     + " because the file was empty.";
         }
     }
@@ -128,12 +129,19 @@ public class FileUploadController {
 //        }
 //        return message;
 //    }
-    @RequestMapping(value = "/uploadCsv", method = RequestMethod.GET)
+    @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
     @ResponseBody
-    public String addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
+    public int addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
 
-        System.out.println(fileName);
         parsingCsvInBase.setCsv(fileName, httpServletRequest);
-        return null;
+        System.out.println(parsingCsvInBase.countAll);
+        return parsingCsvInBase.countAll;
+    }
+
+    @RequestMapping(value = "statusupload", method = RequestMethod.GET)
+    @ResponseBody
+    public int statusUpload(){
+
+        return parsingCsvInBase.getCount();
     }
 }

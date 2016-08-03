@@ -2281,7 +2281,7 @@
 		
 		<!-- JavaScript -->
 		<script src="${pageContext.request.contextPath}/pages/js/modernizr.min.js"></script>
-		<script src="${pageContext.request.contextPath}/pages/js/jquery-1.11.0.min.js"></script>
+		<script src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/jquery.raty.min.js"></script>
 

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by jekss on 20.07.16.
@@ -25,6 +26,10 @@ public class ParsingCsvInBase {
     private CategoriesName4 categoriesName4;
     private CategoriesName5 categoriesName5;
     private Picture picture = new Picture();
+
+    public int count = 0;
+    public int countAll = 0;
+
 
 
     @Resource
@@ -61,26 +66,36 @@ public class ParsingCsvInBase {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
 
-
         String mtp = "";
-        int count = 0;
+
+        while ((mtp = bufferedReader.readLine()) != null) {
+
+            countAll++;
+            setCountAll(countAll);
+            if((mtp = bufferedReader.readLine()) == null){
+                break;
+            }
+        }
+        //System.out.println(countAll);
         while ((mtp = bufferedReader.readLine()) != null) {
             String[] s = mtp.split(";");
+
             count++;
+            setCount(count);
             if (count > 1) {
 
                 System.out.println(s.length);
+
                 product.setId_product(Integer.parseInt(s[0].trim()));
 
                 product.setName(s[1]);
 
                 if (s[2].equals(null) || s[2].equals("")) {
                     product.setPrice_product(0.0);
-                    System.out.println(s[2].trim() + "<<<<<<<<<< тупо пустое поле");
                 } else if (!s[2].equals(null) || !s[2].equals("")) {
-
                     product.setPrice_product(Double.parseDouble(s[2].replace(',', '.')));
                 }
+
                 product.setDateAdded_product(s[4]);
 
 
@@ -109,7 +124,6 @@ public class ParsingCsvInBase {
 //                if(categoriesName5Service.isNameCategoriesName(s[21])){
 //                    product.setCategoriesName5_product(categoriesName5Service.addCategoriesName5(getCategoriesName5(s[21])));
 //                }else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[21]));
-
                 if (s[6].equals(null) || s[6].equals("")) {
                     product.setCategoriesName1_product(getCategoriesName1(""));
                 } else {
@@ -181,43 +195,49 @@ public class ParsingCsvInBase {
             System.out.println("--------------------------------------------------   " + count);
         }
     }
-    List<ManufacturesName> getManufacturesNameList(boolean upgrade){
-        if (manufacturesNameList == null || upgrade == true){
+
+    List<ManufacturesName> getManufacturesNameList(boolean upgrade) {
+        if (manufacturesNameList == null || upgrade == true) {
             manufacturesNameList = manufacturesNameService.getAll();
             return manufacturesNameList;
         } else return manufacturesNameList;
 
     }
-    List<CategoriesName1> getCategoriesName1List(boolean upgrade){
-        if (categoriesName1List == null || upgrade == true){
+
+    List<CategoriesName1> getCategoriesName1List(boolean upgrade) {
+        if (categoriesName1List == null || upgrade == true) {
             categoriesName1List = categoriesName1Service.getAll();
             return categoriesName1List;
         } else return categoriesName1List;
 
     }
-    List<CategoriesName2> getCategoriesName2List(boolean upgrade){
-        if (categoriesName2List == null || upgrade == true){
+
+    List<CategoriesName2> getCategoriesName2List(boolean upgrade) {
+        if (categoriesName2List == null || upgrade == true) {
             categoriesName2List = categoriesName2Service.getAll();
             return categoriesName2List;
         } else return categoriesName2List;
 
     }
-    List<CategoriesName3> getCategoriesName3List(boolean upgrade){
-        if (categoriesName3List == null || upgrade == true){
+
+    List<CategoriesName3> getCategoriesName3List(boolean upgrade) {
+        if (categoriesName3List == null || upgrade == true) {
             categoriesName3List = categoriesName3Service.getAll();
             return categoriesName3List;
         } else return categoriesName3List;
 
     }
-    List<CategoriesName4> getCategoriesName4List(boolean upgrade){
-        if (categoriesName4List == null || upgrade == true){
+
+    List<CategoriesName4> getCategoriesName4List(boolean upgrade) {
+        if (categoriesName4List == null || upgrade == true) {
             categoriesName4List = categoriesName4Service.getAll();
             return categoriesName4List;
         } else return categoriesName4List;
 
     }
-    List<CategoriesName5> getCategoriesName5List(boolean upgrade){
-        if (categoriesName5List == null || upgrade == true){
+
+    List<CategoriesName5> getCategoriesName5List(boolean upgrade) {
+        if (categoriesName5List == null || upgrade == true) {
             categoriesName5List = categoriesName5Service.getAll();
             return categoriesName5List;
         } else return categoriesName5List;
@@ -226,52 +246,57 @@ public class ParsingCsvInBase {
 
     ManufacturesName getManufacturesName(String name) {
         manufacturesName = manufacturesNameService.getByNameManufacturesName(name);
-        if(manufacturesName == null){
+        if (manufacturesName == null) {
             manufacturesName = new ManufacturesName();
             manufacturesName.setName(name);
             manufacturesName = manufacturesNameService.addManufacturesName(manufacturesName);
         }
         return manufacturesName;
     }
+
     CategoriesName1 getCategoriesName1(String name) {
         //categoriesName1 = categoriesName1Service.getByNameCategoriesName1(name);
-        if (categoriesName1 == null){
+        if (categoriesName1 == null) {
             categoriesName1 = new CategoriesName1();
             categoriesName1.setName(name);
             categoriesName1 = categoriesName1Service.addCategoriesName1(categoriesName1);
         }
         return categoriesName1;
     }
+
     CategoriesName2 getCategoriesName2(String name) {
         categoriesName2 = categoriesName2Service.getByNameCategoriesName2(name);
-        if (categoriesName2 == null){
+        if (categoriesName2 == null) {
             categoriesName2 = new CategoriesName2();
             categoriesName2.setName(name);
             categoriesName2 = categoriesName2Service.addCategoriesName2(categoriesName2);
         }
         return categoriesName2;
     }
+
     CategoriesName3 getCategoriesName3(String name) {
         categoriesName3 = categoriesName3Service.getByNameCategoriesName3(name);
-        if (categoriesName3 == null){
+        if (categoriesName3 == null) {
             categoriesName3 = new CategoriesName3();
             categoriesName3.setName(name);
             categoriesName3 = categoriesName3Service.addCategoriesName3(categoriesName3);
         }
         return categoriesName3;
     }
+
     CategoriesName4 getCategoriesName4(String name) {
         categoriesName4 = categoriesName4Service.getByNameCategoriesName4(name);
-        if (categoriesName4 == null){
+        if (categoriesName4 == null) {
             categoriesName4 = new CategoriesName4();
             categoriesName4.setName(name);
             categoriesName4 = categoriesName4Service.addCategoriesName4(categoriesName4);
         }
         return categoriesName4;
     }
+
     CategoriesName5 getCategoriesName5(String name) {
         categoriesName5 = categoriesName5Service.getByNameCategoriesName5(name);
-        if (categoriesName5 == null){
+        if (categoriesName5 == null) {
             categoriesName5 = new CategoriesName5();
             categoriesName5.setName(name);
             categoriesName5 = categoriesName5Service.addCategoriesName5(categoriesName5);
@@ -279,6 +304,19 @@ public class ParsingCsvInBase {
         return categoriesName5;
     }
 
+    public int getCount() {
+        return count;
+    }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
 
+    public int getCountAll() {
+        return countAll;
+    }
+
+    public void setCountAll(int countAll) {
+        this.countAll = countAll;
+    }
 }

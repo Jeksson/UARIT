@@ -11,12 +11,43 @@
 <html>
 <head>
     <title>Upload File Request Page</title>
+    <script type="text/JavaScript" src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js">
+    </script>
+    <script>
+        var progressBar = $('#progressbar')
+        var progressBarMaxSize;
+
+        function isSendToFormAjax() {
+
+            $.ajax({
+                url: 'uploadCsv',
+                type: 'get',
+                data: {},
+                success: function (data) {
+                    console.log(data);
+                    progressBarMaxSize.val(data);
+                    for (var i = 0; i < progressBarMaxSize; i++) {
+                        $.ajax({
+                            url: 'statusupload',
+                            type: 'get',
+                            data: {},
+                            success: function (data) {
+                                var percent = Math.ceil(progressBarMaxSize / data * 100);
+                                progressBar.val(percent);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+    </script>
 </head>
 <body>
 <form method="POST" action="uploadFile" enctype="multipart/form-data">
     File to upload: <input type="file" name="file">
 
-    Name: <input type="text" name="name">
+    <%--Name: <input type="text" name="name">--%>
 
 
     <input type="submit" value="Upload"> Press here to upload the file!
@@ -25,5 +56,12 @@
 <form method="get" action="uploadCsv">
     <input type="submit" value="Download">
 </form>
+<progress id="progressbar" value="0" max="100"></progress>
+<form id="button">
+    <button class="btn_reg" type="button" onclick="isSendToFormAjax()"> update </button>
+</form>
+
+
 </body>
+
 </html>
