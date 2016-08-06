@@ -1,5 +1,7 @@
 package com.jekss.config;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.c3p0.DataSources;
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +16,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -39,19 +45,34 @@ public class DataConfig {
     private Environment env;
 
     @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    public DataSource dataSource() throws PropertyVetoException, SQLException {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        ComboPooledDataSource pooledDataSource = new ComboPooledDataSource();
 
-        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
-        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
-        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
+        pooledDataSource.setDriverClass(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+        pooledDataSource.setJdbcUrl(env.getRequiredProperty(PROP_DATABASE_URL));
+        pooledDataSource.setUser(env.getRequiredProperty(PROP_DATABASE_USERNAME));
+        pooledDataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
+        pooledDataSource.setMinPoolSize(5);
+        pooledDataSource.setAcquireIncrement(5);
+        pooledDataSource.setMaxPoolSize(20);
 
-        return dataSource;
+//        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+//        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
+//        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
+//        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
+
+//        DataSource unpuled_DataSource = DataSources.unpooledDataSource(PROP_DATABASE_URL,PROP_DATABASE_USERNAME, PROP_DATABASE_PASSWORD);
+//Map overides = new HashMap();
+//        overides.put("maxStatements", "200");
+//        overides.put("maxPoolSize", new Integer(50));
+
+
+        return pooledDataSource;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws PropertyVetoException, SQLException {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
@@ -63,7 +84,7 @@ public class DataConfig {
     }
 
     @Bean
-    public JpaTransactionManager transactionManager() {
+    public JpaTransactionManager transactionManager() throws PropertyVetoException, SQLException {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
