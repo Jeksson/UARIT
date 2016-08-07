@@ -49,7 +49,6 @@ public class FileUploadController {
         return "upload";
     }
 
-
     @RequestMapping(value = "uploadFile", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -129,19 +128,39 @@ public class FileUploadController {
 //        }
 //        return message;
 //    }
+
+
+
+
+    // ajax               запускает метод загрузки файла в базу
     @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
     @ResponseBody
-    public int addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
+    public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
 
         parsingCsvInBase.setCsv(fileName, httpServletRequest);
-        System.out.println(parsingCsvInBase.countAll);
-        return parsingCsvInBase.countAll;
+
     }
 
-    @RequestMapping(value = "statusupload", method = RequestMethod.GET)
+
+    //  ajax             запускает метод вычитания процента и отдает значение на view пользователя
+    @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
     @ResponseBody
-    public int statusUpload(){
+    public Set<Integer> getProcentUploadInBase() throws IOException, InterruptedException {
 
-        return parsingCsvInBase.getCount();
+        Set<Integer> result = new HashSet<>();
+        result.add(parsingCsvInBase.getProcentUploadFileInBase());
+        return result;
+
     }
+
+    //ajax            запускает метод который подсчитывает общее колличество строк в файле
+    @RequestMapping(value = "uploadcountall", method = RequestMethod.GET)
+    @ResponseBody
+    public void getCountAll(HttpServletRequest httpServletRequest) throws IOException {
+
+        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
+
+    }
+
+
 }

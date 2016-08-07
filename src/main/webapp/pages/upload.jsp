@@ -13,35 +13,7 @@
     <title>Upload File Request Page</title>
     <script type="text/JavaScript" src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js">
     </script>
-    <script>
-        var progressBar = $('#progressbar')
-        var progressBarMaxSize;
 
-        function isSendToFormAjax() {
-
-            $.ajax({
-                url: 'uploadCsv',
-                type: 'get',
-                data: {},
-                success: function (data) {
-                    console.log(data);
-                    progressBarMaxSize.val(data);
-                    for (var i = 0; i < progressBarMaxSize; i++) {
-                        $.ajax({
-                            url: 'statusupload',
-                            type: 'get',
-                            data: {},
-                            success: function (data) {
-                                var percent = Math.ceil(progressBarMaxSize / data * 100);
-                                progressBar.val(percent);
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-    </script>
 </head>
 <body>
 <form method="POST" action="uploadFile" enctype="multipart/form-data">
@@ -53,14 +25,63 @@
     <input type="submit" value="Upload"> Press here to upload the file!
 </form>
 <br>
-<form method="get" action="uploadCsv">
-    <input type="submit" value="Download">
-</form>
+<c:forEach var="file" items="${listFile}">
+
+        <c:out value="${file.getName()}"/>
+
+</c:forEach>
+
 <progress id="progressbar" value="0" max="100"></progress>
 <form id="button">
     <button class="btn_reg" type="button" onclick="isSendToFormAjax()"> update </button>
 </form>
+<script>
 
+
+    // срабатывание кнопки
+    function isSendToFormAjax() {
+
+
+        isCountAll();
+        console.log("log");
+        $.ajax({
+            url: 'uploadCsv',
+            type: 'get'
+        });
+
+        console.log("log============");
+
+        isProcent();
+    }
+
+    // вычитание процента и запись показателя в progressbar
+    function isProcent() {
+        var serverdata = 0;
+        console.log("isprocent")
+        do{
+            $.ajax({
+
+                url: 'uploadprocent',
+                type: 'get',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    console.log(data);
+                    serverdata = data;
+                    $('#progressbar').val(data);
+                }
+            });
+        }while (serverdata < 100)
+    }
+    // запуск на сервере метода вичитания оббш=щего колличества строк в файле
+    function isCountAll() {
+        $.ajax({
+            url: 'uploadcountall',
+            type: 'get'
+        });
+    }
+
+</script>
 
 </body>
 

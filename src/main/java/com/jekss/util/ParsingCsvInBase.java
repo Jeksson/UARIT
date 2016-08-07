@@ -18,6 +18,8 @@ import java.util.Set;
 @Service
 public class ParsingCsvInBase {
 
+    private BufferedReader bufferedReader;
+
     private Product product = new Product();
     private ManufacturesName manufacturesName;
     private CategoriesName1 categoriesName1;
@@ -27,8 +29,12 @@ public class ParsingCsvInBase {
     private CategoriesName5 categoriesName5;
     private Picture picture = new Picture();
 
-    public int count = 0;
-    public int countAll = 0;
+    // cчетчик считаных строк из файла csv находится в setCsv();
+    private int count = 0;
+
+    //счетчик всех строк(сколько есть в файле) в csv находится в  getCountAll();
+    private int countAll = 0;
+
 
 
 
@@ -56,33 +62,17 @@ public class ParsingCsvInBase {
     private static List<CategoriesName4> categoriesName4List;
     private static List<CategoriesName5> categoriesName5List;
 
-
+// парсинг и загрузка файла + счетчик count;
     public void setCsv(String nameFile, HttpServletRequest request) throws IOException {
-        String appPath = request.getServletContext().getRealPath("");
-        String savePath = appPath + File.separator + "uploadFiles";
-        File csv = new File(savePath + File.separator + nameFile);
-        InputStream inputStream = new FileInputStream(csv);
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "windows-1251");
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
 
         String mtp = "";
 
-        while ((mtp = bufferedReader.readLine()) != null) {
-
-            countAll++;
-            setCountAll(countAll);
-            if((mtp = bufferedReader.readLine()) == null){
-                break;
-            }
-        }
-        //System.out.println(countAll);
-        while ((mtp = bufferedReader.readLine()) != null) {
+        while ((mtp = getFile(nameFile, request).readLine()) != null) {
             String[] s = mtp.split(";");
 
+
             count++;
-            setCount(count);
-            if (count > 1) {
+            if (count > 2) {
 
                 System.out.println(s.length);
 
@@ -180,7 +170,6 @@ public class ParsingCsvInBase {
                     }
                 }
 
-
                 if (s[13].equals(null) || s[13].equals("")) {
                     picture.setaBoolean_picture(false);
                     picture.setUrl_picture(s[14]);
@@ -194,6 +183,42 @@ public class ParsingCsvInBase {
             System.out.println(productService.addProduct(product));
             System.out.println("--------------------------------------------------   " + count);
         }
+        getFile(nameFile, request).close();
+    }
+// берет count & countAll и вычисляет процент прохода загрузки файла в базу
+    public int getProcentUploadFileInBase() throws InterruptedException {
+
+        int result;
+        result = countAll / (count * 100);
+
+        System.out.println(result + "||||||||||||||||||||||||||||||||||||");
+        return result;
+    }
+// открывает файл и считает количчество строк которые пишутся в countAll;
+    public int getCountAll(String nameFile, HttpServletRequest request) throws IOException {
+
+        while (getFile(nameFile, request).readLine() != null) {
+            countAll++;
+        }
+
+        //getFile(nameFile,request).close();
+        System.out.println(countAll);
+        return countAll;
+    }
+// открывает соединение к файлу и отдает bufferedReader
+    private BufferedReader getFile(String nameFile, HttpServletRequest request) throws UnsupportedEncodingException, FileNotFoundException {
+        String appPath = request.getServletContext().getRealPath("");
+        String savePath = appPath + File.separator + "uploadFiles";
+
+
+        if (bufferedReader == null) {
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    new File(savePath + File.separator + nameFile)),
+                            "windows-1251"));
+            return bufferedReader;
+        } else return bufferedReader;
     }
 
     List<ManufacturesName> getManufacturesNameList(boolean upgrade) {
@@ -304,19 +329,5 @@ public class ParsingCsvInBase {
         return categoriesName5;
     }
 
-    public int getCount() {
-        return count;
-    }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getCountAll() {
-        return countAll;
-    }
-
-    public void setCountAll(int countAll) {
-        this.countAll = countAll;
-    }
 }
