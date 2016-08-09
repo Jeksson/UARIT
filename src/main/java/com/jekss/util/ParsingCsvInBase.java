@@ -3,6 +3,8 @@ package com.jekss.util;
 import com.jekss.entityes.*;
 import com.jekss.service.*;
 import com.jekss.util.*;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +18,14 @@ import java.util.Set;
  * Created by jekss on 20.07.16.
  */
 @Service
+@PropertySource("classpath:app.properties")
 public class ParsingCsvInBase {
+
+    private static final String PATH_IN_FILE = "path.in.file";
+
+
+    @Resource
+    private Environment env;
 
     private BufferedReader bufferedReader;
 
@@ -32,11 +41,12 @@ public class ParsingCsvInBase {
     // cчетчик считаных строк из файла csv находится в setCsv();
     private int count = 0;
 
-    //счетчик всех строк(сколько есть в файле) в csv находится в  getCountAll();
+    //счетчик всех строк(сколько есть в файле) в csv находится в getCountAll();
     private int countAll = 0;
 
 
 
+    private CountAndSavePaht countAndSavePaht = new CountAndSavePaht();
 
     @Resource
     private ProductService productService;
@@ -183,7 +193,7 @@ public class ParsingCsvInBase {
             System.out.println(productService.addProduct(product));
             System.out.println("--------------------------------------------------   " + count);
         }
-        getFile(nameFile, request).close();
+        //getFile(nameFile, request);
     }
 // берет count & countAll и вычисляет процент прохода загрузки файла в базу
     public int getProcentUploadFileInBase() throws InterruptedException {
@@ -207,18 +217,21 @@ public class ParsingCsvInBase {
     }
 // открывает соединение к файлу и отдает bufferedReader
     private BufferedReader getFile(String nameFile, HttpServletRequest request) throws UnsupportedEncodingException, FileNotFoundException {
-        String appPath = request.getServletContext().getRealPath("");
-        String savePath = appPath + File.separator + "uploadFiles";
-
 
         if (bufferedReader == null) {
             bufferedReader = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(
-                                    new File(savePath + File.separator + nameFile)),
+                                    new File(getSavePath(request) + File.separator + nameFile)),
                             "windows-1251"));
             return bufferedReader;
         } else return bufferedReader;
+    }
+
+
+    public String getSavePath(HttpServletRequest request) {
+        //System.out.println(request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE) + "то что записалось в переменную");
+        return request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE);
     }
 
     List<ManufacturesName> getManufacturesNameList(boolean upgrade) {

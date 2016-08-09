@@ -16,6 +16,22 @@
 
 </head>
 <body>
+
+
+<c:if test="${not empty lists}">
+
+    <ul>
+        <c:forEach var="listValue" items="${lists}">
+            <li>${listValue}</li>
+        </c:forEach>
+    </ul>
+
+</c:if>
+
+
+
+
+
 <form method="POST" action="uploadFile" enctype="multipart/form-data">
     File to upload: <input type="file" name="file">
 

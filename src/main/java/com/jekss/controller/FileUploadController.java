@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.jekss.util.GetFileInPath;
 import com.jekss.util.ParsingCsvInBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +36,9 @@ public class FileUploadController {
     @Resource
     ParsingCsvInBase parsingCsvInBase;
 
+    @Autowired
+    GetFileInPath getFileInPath;
+
     String fileName;
 
     private static final Logger logger = LoggerFactory
@@ -44,7 +49,11 @@ public class FileUploadController {
      */
 
     @RequestMapping(value = "upload", method = RequestMethod.GET)
-    String uploadPage(Model model) {
+    String uploadPage(Model model, HttpServletRequest httpServletRequest) {
+
+
+        //parsingCsvInBase.getSavePath(httpServletRequest);
+        model.addAttribute("lists", getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath(httpServletRequest)));
 
         return "upload";
     }
@@ -59,11 +68,7 @@ public class FileUploadController {
             try {
                 byte[] bytes = file.getBytes();
 
-                String appPath = request.getServletContext().getRealPath("");
-                String savePath = appPath + File.separator + "uploadFiles";
-
-
-                File fileSaveDir = new File(savePath);
+                File fileSaveDir = new File(parsingCsvInBase.getSavePath(request));
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
                 }
@@ -83,6 +88,37 @@ public class FileUploadController {
             return "You failed to upload " + fileName
                     + " because the file was empty.";
         }
+    }
+
+
+    // ajax               запускает метод загрузки файла в базу
+    @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
+    @ResponseBody
+    public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
+
+        parsingCsvInBase.setCsv(fileName, httpServletRequest);
+
+    }
+
+
+    //  ajax             запускает метод вычитания процента и отдает значение на view пользователя
+    @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
+    @ResponseBody
+    public Set<Integer> getProcentUploadInBase() throws IOException, InterruptedException {
+
+        Set<Integer> result = new HashSet<>();
+        result.add(parsingCsvInBase.getProcentUploadFileInBase());
+        return result;
+
+    }
+
+    //ajax            запускает метод который подсчитывает общее колличество строк в файле
+    @RequestMapping(value = "uploadcountall", method = RequestMethod.GET)
+    @ResponseBody
+    public void getCountAll(HttpServletRequest httpServletRequest) throws IOException {
+
+        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
+
     }
 
     /**
@@ -132,35 +168,7 @@ public class FileUploadController {
 
 
 
-    // ajax               запускает метод загрузки файла в базу
-    @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
-    @ResponseBody
-    public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
 
-        parsingCsvInBase.setCsv(fileName, httpServletRequest);
-
-    }
-
-
-    //  ajax             запускает метод вычитания процента и отдает значение на view пользователя
-    @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
-    @ResponseBody
-    public Set<Integer> getProcentUploadInBase() throws IOException, InterruptedException {
-
-        Set<Integer> result = new HashSet<>();
-        result.add(parsingCsvInBase.getProcentUploadFileInBase());
-        return result;
-
-    }
-
-    //ajax            запускает метод который подсчитывает общее колличество строк в файле
-    @RequestMapping(value = "uploadcountall", method = RequestMethod.GET)
-    @ResponseBody
-    public void getCountAll(HttpServletRequest httpServletRequest) throws IOException {
-
-        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
-
-    }
 
 
 }

@@ -9,9 +9,7 @@ import com.jekss.service.ManufacturesNameService;
 import com.jekss.service.ProductService;
 import com.jekss.test.config.TestDataBaseConfig;
 import com.jekss.test.util.ProductUtil;
-import com.jekss.util.CashingDB;
-import com.jekss.util.ParsingCsvInBase;
-import org.hibernate.annotations.SourceType;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
+
 
 @DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,6 +47,8 @@ public class ServiceTest {
     public void setUp() throws Exception {
         em = emf.createEntityManager();
     }
+
+
 
 //    @Test
 //    public void testSaveProduct() throws Exception {
