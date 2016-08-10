@@ -29,9 +29,6 @@
 </c:if>
 
 
-
-
-
 <form method="POST" action="uploadFile" enctype="multipart/form-data">
     File to upload: <input type="file" name="file">
 
@@ -39,18 +36,27 @@
 
 
     <input type="submit" value="Upload"> Press here to upload the file!
+
+    <br>
+
+    ${upload}
 </form>
 <br>
-<c:forEach var="file" items="${listFile}">
+<%--<c:forEach var="file" items="${listFile}">--%>
 
-        <c:out value="${file.getName()}"/>
+<%--<c:out value="${file.getName()}"/>--%>
 
-</c:forEach>
+<%--</c:forEach>--%>
 
 <progress id="progressbar" value="0" max="100"></progress>
+
+
 <form id="button">
-    <button class="btn_reg" type="button" onclick="isSendToFormAjax()"> update </button>
+    <button class="btn_reg" type="button" onclick="isSendToFormAjax()"> update</button>
 </form>
+
+
+
 <script>
 
 
@@ -74,7 +80,7 @@
     function isProcent() {
         var serverdata = 0;
         console.log("isprocent")
-        do{
+        do {
             $.ajax({
 
                 url: 'uploadprocent',
@@ -87,7 +93,7 @@
                     $('#progressbar').val(data);
                 }
             });
-        }while (serverdata < 100)
+        } while (serverdata < 100)
     }
     // запуск на сервере метода вичитания оббш=щего колличества строк в файле
     function isCountAll() {

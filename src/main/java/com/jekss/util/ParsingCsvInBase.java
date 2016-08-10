@@ -3,9 +3,12 @@ package com.jekss.util;
 import com.jekss.entityes.*;
 import com.jekss.service.*;
 import com.jekss.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +25,9 @@ import java.util.Set;
 public class ParsingCsvInBase {
 
     private static final String PATH_IN_FILE = "path.in.file";
+
+
+    String fileName;
 
 
     @Resource
@@ -46,8 +52,6 @@ public class ParsingCsvInBase {
 
 
 
-    private CountAndSavePaht countAndSavePaht = new CountAndSavePaht();
-
     @Resource
     private ProductService productService;
     @Resource
@@ -65,12 +69,73 @@ public class ParsingCsvInBase {
     @Resource
     private CashingDB cashingDB;
 
+
     private static List<ManufacturesName> manufacturesNameList;
     private static List<CategoriesName1> categoriesName1List;
     private static List<CategoriesName2> categoriesName2List;
     private static List<CategoriesName3> categoriesName3List;
     private static List<CategoriesName4> categoriesName4List;
     private static List<CategoriesName5> categoriesName5List;
+
+    //вынес логику из контроллера
+    public boolean uploadFile(MultipartFile multipartFile, HttpServletRequest request)  {
+        BufferedOutputStream stream = null;
+
+        System.out.println("+++++++++++++===");
+
+        fileName = multipartFile.getOriginalFilename();
+        System.out.println(fileName);
+        if (!multipartFile.isEmpty()) {
+
+
+            try {
+                byte[] bytes = multipartFile.getBytes();
+
+                File fileSaveDir = new File(getSavePath(request));
+                if (!fileSaveDir.exists()) {
+                    fileSaveDir.mkdir();
+                }
+                stream = new BufferedOutputStream(
+                        new FileOutputStream(fileSaveDir + File.separator + fileName));
+                stream.write(bytes);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    // фильтр проверки формата приходящего файла
+    public boolean filterFile(MultipartFile multipartFile){
+
+        //System.out.println(getFileExtension(multipartFile));
+
+        return false;
+    }
+
+
+    //метод определения расширения файла
+    public String getFileExtension(MultipartFile multipartFile) {
+        String fileName = multipartFile.getOriginalFilename();
+        // если в имени файла есть точка и она не является первым символом в названии файла
+        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+            // то вырезаем все знаки после последней точки в названии файла, то есть ХХХХХ.txt -> txt
+            return fileName.substring(fileName.lastIndexOf(".")+1);
+            // в противном случае возвращаем заглушку, то есть расширение не найдено
+        else return " расширение не найдено";
+    }
+
 
 // парсинг и загрузка файла + счетчик count;
     public void setCsv(String nameFile, HttpServletRequest request) throws IOException {

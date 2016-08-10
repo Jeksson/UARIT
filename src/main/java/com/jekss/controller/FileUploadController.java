@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.jekss.util.GetFileInPath;
 import com.jekss.util.ParsingCsvInBase;
+import com.sun.javafx.sg.PGShape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,46 +53,27 @@ public class FileUploadController {
     String uploadPage(Model model, HttpServletRequest httpServletRequest) {
 
 
-        //parsingCsvInBase.getSavePath(httpServletRequest);
         model.addAttribute("lists", getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath(httpServletRequest)));
 
         return "upload";
     }
 
     @RequestMapping(value = "uploadFile", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    String uploadFileHandler(@RequestParam("file") MultipartFile file,
-                             HttpServletRequest request) {
-        fileName = file.getOriginalFilename();
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
+    public String uploadFileHandler(@RequestParam("file") MultipartFile file,
+                                    HttpServletRequest request, Model model) {
 
-                File fileSaveDir = new File(parsingCsvInBase.getSavePath(request));
-                if (!fileSaveDir.exists()) {
-                    fileSaveDir.mkdir();
-                }
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(fileSaveDir + File.separator + fileName));
-                stream.write(bytes);
-                stream.close();
+        if(parsingCsvInBase.getFileExtension(file).equals("csv")){
+            if (parsingCsvInBase.uploadFile(file, request)){
+                model.addAttribute("upload", file.getOriginalFilename() + " upload done");
+            } else model.addAttribute("upload", file.getOriginalFilename() + " upload error");
+        } else model.addAttribute("upload", file.getOriginalFilename() + " upload error extension filed");
 
-                logger.info("Server File Location="
-                        + fileSaveDir.getAbsolutePath());
 
-                return "You successfully uploaded file=" + fileName;
-            } catch (Exception e) {
-                return "You failed to upload " + fileName + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + fileName
-                    + " because the file was empty.";
-        }
+        return "upload";
     }
 
 
-    // ajax               запускает метод загрузки файла в базу
+    // ajax           запускает метод загрузки файла в базу
     @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
     @ResponseBody
     public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
@@ -101,7 +83,7 @@ public class FileUploadController {
     }
 
 
-    //  ajax             запускает метод вычитания процента и отдает значение на view пользователя
+    //  ajax          запускает метод вычитания процента и отдает значение на view пользователя
     @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
     @ResponseBody
     public Set<Integer> getProcentUploadInBase() throws IOException, InterruptedException {
@@ -109,7 +91,6 @@ public class FileUploadController {
         Set<Integer> result = new HashSet<>();
         result.add(parsingCsvInBase.getProcentUploadFileInBase());
         return result;
-
     }
 
     //ajax            запускает метод который подсчитывает общее колличество строк в файле
@@ -164,11 +145,5 @@ public class FileUploadController {
 //        }
 //        return message;
 //    }
-
-
-
-
-
-
 
 }
