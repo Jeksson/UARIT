@@ -4,10 +4,7 @@ package com.jekss.controller;
  * Created by jekss on 18.07.16.
  */
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,9 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
 
 /**
  * Handles requests for the application file upload requests
@@ -62,8 +64,9 @@ public class FileUploadController {
     public String uploadFileHandler(@RequestParam("file") MultipartFile file,
                                     HttpServletRequest request, Model model) {
 
-        if(parsingCsvInBase.getFileExtension(file).equals("csv")){
-            if (parsingCsvInBase.uploadFile(file, request)){
+        fileName = file.getOriginalFilename();
+        if (parsingCsvInBase.getFileExtension(file).equals("csv")) {
+            if (parsingCsvInBase.uploadFile(file, request)) {
                 model.addAttribute("upload", file.getOriginalFilename() + " upload done");
             } else model.addAttribute("upload", file.getOriginalFilename() + " upload error");
         } else model.addAttribute("upload", file.getOriginalFilename() + " upload error extension filed");
@@ -72,12 +75,16 @@ public class FileUploadController {
         return "upload";
     }
 
-
     // ajax           запускает метод загрузки файла в базу
     @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
     @ResponseBody
     public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
-
+        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         parsingCsvInBase.setCsv(fileName, httpServletRequest);
 
     }
@@ -86,10 +93,10 @@ public class FileUploadController {
     //  ajax          запускает метод вычитания процента и отдает значение на view пользователя
     @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
     @ResponseBody
-    public Set<Integer> getProcentUploadInBase() throws IOException, InterruptedException {
+    public Set<Integer> getProcentUploadInBase(HttpServletRequest httpServletRequest) throws IOException, InterruptedException {
 
         Set<Integer> result = new HashSet<>();
-        result.add(parsingCsvInBase.getProcentUploadFileInBase());
+        result.add(parsingCsvInBase.getProcentUploadFileInBase(parsingCsvInBase.getCountAll(fileName, httpServletRequest)));
         return result;
     }
 
@@ -102,6 +109,44 @@ public class FileUploadController {
 
     }
 
+
+    //SSE
+    @RequestMapping(value = "testSSE", method = RequestMethod.GET)
+    public void testSSE(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int countAll = parsingCsvInBase.getCountAll(fileName, request);
+        System.out.println( fileName + "testSee");
+        parsingCsvInBase.setCsv(fileName, request);
+
+        int procent  = 0;
+        try {
+            procent = parsingCsvInBase.getProcentUploadFileInBase(countAll);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("text/event-stream");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter writer = response.getWriter();
+        if(procent != 0) {
+            for (int i = procent; i <= 100; i++) {
+
+
+                writer.write("data: " + procent + "\n\n");
+
+                writer.flush();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else System.out.println("procent == 0");
+
+        writer.close();
+    }
     /**
      * Upload multiple file using Spring Controller
      */

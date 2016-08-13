@@ -26,59 +26,17 @@ public class ParsingCsvInBase {
 
     private static final String PATH_IN_FILE = "path.in.file";
 
-
-    String fileName;
-
-
-    @Resource
-    private Environment env;
-
-    private BufferedReader bufferedReader;
-
-    private Product product = new Product();
-    private ManufacturesName manufacturesName;
-    private CategoriesName1 categoriesName1;
-    private CategoriesName2 categoriesName2;
-    private CategoriesName3 categoriesName3;
-    private CategoriesName4 categoriesName4;
-    private CategoriesName5 categoriesName5;
-    private Picture picture = new Picture();
+    private String fileName;
 
     // cчетчик считаных строк из файла csv находится в setCsv();
-    private int count = 0;
+    private volatile int count = 0;
 
     //счетчик всех строк(сколько есть в файле) в csv находится в getCountAll();
     private int countAll = 0;
 
 
-
-    @Resource
-    private ProductService productService;
-    @Resource
-    private ManufacturesNameService manufacturesNameService;
-    @Resource
-    private CategoriesName1Service categoriesName1Service;
-    @Resource
-    private CategoriesName2Service categoriesName2Service;
-    @Resource
-    private CategoriesName3Service categoriesName3Service;
-    @Resource
-    private CategoriesName4Service categoriesName4Service;
-    @Resource
-    private CategoriesName5Service categoriesName5Service;
-    @Resource
-    private CashingDB cashingDB;
-
-
-    private static List<ManufacturesName> manufacturesNameList;
-    private static List<CategoriesName1> categoriesName1List;
-    private static List<CategoriesName2> categoriesName2List;
-    private static List<CategoriesName3> categoriesName3List;
-    private static List<CategoriesName4> categoriesName4List;
-    private static List<CategoriesName5> categoriesName5List;
-
     //вынес логику из контроллера
-    public boolean uploadFile(MultipartFile multipartFile, HttpServletRequest request)  {
+    public boolean uploadFile(MultipartFile multipartFile, HttpServletRequest request) {
         BufferedOutputStream stream = null;
 
         System.out.println("+++++++++++++===");
@@ -116,38 +74,34 @@ public class ParsingCsvInBase {
         }
     }
 
-    // фильтр проверки формата приходящего файла
-    public boolean filterFile(MultipartFile multipartFile){
-
-        //System.out.println(getFileExtension(multipartFile));
-
-        return false;
-    }
-
 
     //метод определения расширения файла
     public String getFileExtension(MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
         // если в имени файла есть точка и она не является первым символом в названии файла
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
             // то вырезаем все знаки после последней точки в названии файла, то есть ХХХХХ.txt -> txt
-            return fileName.substring(fileName.lastIndexOf(".")+1);
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
             // в противном случае возвращаем заглушку, то есть расширение не найдено
         else return " расширение не найдено";
     }
 
 
-// парсинг и загрузка файла + счетчик count;
+    // парсинг и загрузка файла + счетчик count;
     public void setCsv(String nameFile, HttpServletRequest request) throws IOException {
-
+        int countin = 0;
         String mtp = "";
 
-        while ((mtp = getFile(nameFile, request).readLine()) != null) {
+        System.out.println(nameFile);/////////////////////////////////// сдесь теряется buffered reader
+        bufferedReader = getFile(nameFile, request);////////////////////
+        System.out.println(bufferedReader.readLine());//////////////////
+        while ((mtp = bufferedReader.readLine()) != null){//////////////
             String[] s = mtp.split(";");
 
 
-            count++;
-            if (count > 2) {
+            countin++;
+            System.out.println(countin);
+            if (countin > 1) {
 
                 System.out.println(s.length);
 
@@ -255,13 +209,15 @@ public class ParsingCsvInBase {
                     product.setPicture_product(picture);
                 }
             }
+            count = countin;
             System.out.println(productService.addProduct(product));
             System.out.println("--------------------------------------------------   " + count);
         }
         //getFile(nameFile, request);
     }
-// берет count & countAll и вычисляет процент прохода загрузки файла в базу
-    public int getProcentUploadFileInBase() throws InterruptedException {
+
+    // берет count & countAll и вычисляет процент прохода загрузки файла в базу
+    public int getProcentUploadFileInBase(int countAll) throws InterruptedException {
 
         int result;
         result = countAll / (count * 100);
@@ -269,20 +225,24 @@ public class ParsingCsvInBase {
         System.out.println(result + "||||||||||||||||||||||||||||||||||||");
         return result;
     }
-// открывает файл и считает количчество строк которые пишутся в countAll;
-    public int getCountAll(String nameFile, HttpServletRequest request) throws IOException {
 
-        while (getFile(nameFile, request).readLine() != null) {
+    // открывает файл и считает количчество строк которые пишутся в countAll;
+    public synchronized int getCountAll(String nameFile, HttpServletRequest request) throws IOException {
+
+        BufferedReader bufferedReader1 = getFile(nameFile, request);
+        while (bufferedReader1.readLine() != null) {
             countAll++;
         }
 
         //getFile(nameFile,request).close();
-        System.out.println(countAll);
+        System.out.println(countAll + " count all");
         return countAll;
     }
-// открывает соединение к файлу и отдает bufferedReader
+
+    // открывает соединение к файлу и отдает bufferedReader
     private BufferedReader getFile(String nameFile, HttpServletRequest request) throws UnsupportedEncodingException, FileNotFoundException {
 
+        System.out.println(getSavePath(request) + File.separator + nameFile);
         if (bufferedReader == null) {
             bufferedReader = new BufferedReader(
                     new InputStreamReader(
@@ -293,13 +253,17 @@ public class ParsingCsvInBase {
         } else return bufferedReader;
     }
 
-
     public String getSavePath(HttpServletRequest request) {
         //System.out.println(request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE) + "то что записалось в переменную");
         return request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE);
     }
 
-    List<ManufacturesName> getManufacturesNameList(boolean upgrade) {
+
+
+
+
+
+    private List<ManufacturesName> getManufacturesNameList(boolean upgrade) {
         if (manufacturesNameList == null || upgrade == true) {
             manufacturesNameList = manufacturesNameService.getAll();
             return manufacturesNameList;
@@ -307,7 +271,7 @@ public class ParsingCsvInBase {
 
     }
 
-    List<CategoriesName1> getCategoriesName1List(boolean upgrade) {
+    private List<CategoriesName1> getCategoriesName1List(boolean upgrade) {
         if (categoriesName1List == null || upgrade == true) {
             categoriesName1List = categoriesName1Service.getAll();
             return categoriesName1List;
@@ -315,7 +279,7 @@ public class ParsingCsvInBase {
 
     }
 
-    List<CategoriesName2> getCategoriesName2List(boolean upgrade) {
+    private List<CategoriesName2> getCategoriesName2List(boolean upgrade) {
         if (categoriesName2List == null || upgrade == true) {
             categoriesName2List = categoriesName2Service.getAll();
             return categoriesName2List;
@@ -323,7 +287,7 @@ public class ParsingCsvInBase {
 
     }
 
-    List<CategoriesName3> getCategoriesName3List(boolean upgrade) {
+    private List<CategoriesName3> getCategoriesName3List(boolean upgrade) {
         if (categoriesName3List == null || upgrade == true) {
             categoriesName3List = categoriesName3Service.getAll();
             return categoriesName3List;
@@ -331,7 +295,7 @@ public class ParsingCsvInBase {
 
     }
 
-    List<CategoriesName4> getCategoriesName4List(boolean upgrade) {
+    private List<CategoriesName4> getCategoriesName4List(boolean upgrade) {
         if (categoriesName4List == null || upgrade == true) {
             categoriesName4List = categoriesName4Service.getAll();
             return categoriesName4List;
@@ -339,7 +303,7 @@ public class ParsingCsvInBase {
 
     }
 
-    List<CategoriesName5> getCategoriesName5List(boolean upgrade) {
+    private List<CategoriesName5> getCategoriesName5List(boolean upgrade) {
         if (categoriesName5List == null || upgrade == true) {
             categoriesName5List = categoriesName5Service.getAll();
             return categoriesName5List;
@@ -347,8 +311,8 @@ public class ParsingCsvInBase {
 
     }
 
-    ManufacturesName getManufacturesName(String name) {
-        manufacturesName = manufacturesNameService.getByNameManufacturesName(name);
+    private ManufacturesName getManufacturesName(String name) {
+        ManufacturesName manufacturesName = manufacturesNameService.getByNameManufacturesName(name);
         if (manufacturesName == null) {
             manufacturesName = new ManufacturesName();
             manufacturesName.setName(name);
@@ -357,8 +321,8 @@ public class ParsingCsvInBase {
         return manufacturesName;
     }
 
-    CategoriesName1 getCategoriesName1(String name) {
-        //categoriesName1 = categoriesName1Service.getByNameCategoriesName1(name);
+    private CategoriesName1 getCategoriesName1(String name) {
+        CategoriesName1 categoriesName1 = categoriesName1Service.getByNameCategoriesName1(name);
         if (categoriesName1 == null) {
             categoriesName1 = new CategoriesName1();
             categoriesName1.setName(name);
@@ -367,8 +331,8 @@ public class ParsingCsvInBase {
         return categoriesName1;
     }
 
-    CategoriesName2 getCategoriesName2(String name) {
-        categoriesName2 = categoriesName2Service.getByNameCategoriesName2(name);
+    private CategoriesName2 getCategoriesName2(String name) {
+        CategoriesName2 categoriesName2 = categoriesName2Service.getByNameCategoriesName2(name);
         if (categoriesName2 == null) {
             categoriesName2 = new CategoriesName2();
             categoriesName2.setName(name);
@@ -377,8 +341,8 @@ public class ParsingCsvInBase {
         return categoriesName2;
     }
 
-    CategoriesName3 getCategoriesName3(String name) {
-        categoriesName3 = categoriesName3Service.getByNameCategoriesName3(name);
+    private CategoriesName3 getCategoriesName3(String name) {
+        CategoriesName3 categoriesName3 = categoriesName3Service.getByNameCategoriesName3(name);
         if (categoriesName3 == null) {
             categoriesName3 = new CategoriesName3();
             categoriesName3.setName(name);
@@ -387,8 +351,8 @@ public class ParsingCsvInBase {
         return categoriesName3;
     }
 
-    CategoriesName4 getCategoriesName4(String name) {
-        categoriesName4 = categoriesName4Service.getByNameCategoriesName4(name);
+    private CategoriesName4 getCategoriesName4(String name) {
+        CategoriesName4 categoriesName4 = categoriesName4Service.getByNameCategoriesName4(name);
         if (categoriesName4 == null) {
             categoriesName4 = new CategoriesName4();
             categoriesName4.setName(name);
@@ -397,8 +361,8 @@ public class ParsingCsvInBase {
         return categoriesName4;
     }
 
-    CategoriesName5 getCategoriesName5(String name) {
-        categoriesName5 = categoriesName5Service.getByNameCategoriesName5(name);
+    private CategoriesName5 getCategoriesName5(String name) {
+        CategoriesName5 categoriesName5 = categoriesName5Service.getByNameCategoriesName5(name);
         if (categoriesName5 == null) {
             categoriesName5 = new CategoriesName5();
             categoriesName5.setName(name);
@@ -407,5 +371,36 @@ public class ParsingCsvInBase {
         return categoriesName5;
     }
 
+    @Resource
+    private ProductService productService;
+    @Resource
+    private ManufacturesNameService manufacturesNameService;
+    @Resource
+    private CategoriesName1Service categoriesName1Service;
+    @Resource
+    private CategoriesName2Service categoriesName2Service;
+    @Resource
+    private CategoriesName3Service categoriesName3Service;
+    @Resource
+    private CategoriesName4Service categoriesName4Service;
+    @Resource
+    private CategoriesName5Service categoriesName5Service;
+    @Resource
+    private CashingDB cashingDB;
 
+    @Resource
+    private Environment env;
+
+
+    private static List<ManufacturesName> manufacturesNameList;
+    private static List<CategoriesName1> categoriesName1List;
+    private static List<CategoriesName2> categoriesName2List;
+    private static List<CategoriesName3> categoriesName3List;
+    private static List<CategoriesName4> categoriesName4List;
+    private static List<CategoriesName5> categoriesName5List;
+
+    private Product product = new Product();
+    private Picture picture = new Picture();
+
+    private volatile BufferedReader bufferedReader;
 }
