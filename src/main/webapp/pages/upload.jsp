@@ -54,6 +54,12 @@
 <form id="button">
     <button class="btn_reg" type="button" onclick="isSendToFormAjax()"> update</button>
 </form>
+<form>
+    <button class="btn_reg" type="button" onclick="start()"> test</button>
+</form>
+
+<span id="sp"></span>
+
 
 
 
@@ -63,9 +69,8 @@
     // срабатывание кнопки
     function isSendToFormAjax() {
 
-
-        isCountAll();
         console.log("log");
+        //попытка загрузить файл в базу
         $.ajax({
             url: 'uploadCsv',
             type: 'get'
@@ -73,34 +78,20 @@
 
         console.log("log============");
 
-        isProcent();
+
     }
 
-    // вычитание процента и запись показателя в progressbar
-    function isProcent() {
-        var serverdata = 0;
-        console.log("isprocent")
-        do {
-            $.ajax({
 
-                url: 'uploadprocent',
-                type: 'get',
-                dataType: 'json',
-                data: {},
-                success: function (data) {
-                    console.log(data);
-                    serverdata = data;
-                    $('#progressbar').val(data);
-                }
-            });
-        } while (serverdata < 100)
-    }
-    // запуск на сервере метода вичитания оббш=щего колличества строк в файле
-    function isCountAll() {
-        $.ajax({
-            url: 'uploadcountall',
-            type: 'get'
-        });
+    function start() {
+
+        var eventSource = new EventSource("testSSE");
+
+        eventSource.onmessage = function(event) {
+            console.log(event.data);
+            document.getElementById('sp').innerHTML = event.data;
+
+        };
+
     }
 
 </script>
