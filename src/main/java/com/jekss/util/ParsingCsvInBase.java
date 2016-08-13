@@ -92,10 +92,10 @@ public class ParsingCsvInBase {
         int countin = 0;
         String mtp = "";
 
-        System.out.println(nameFile);//////////////////////////////////// сдесь теряется buffered reader
-        bufferedReader = getFile(nameFile, request);/////////////////////
-        System.out.println(bufferedReader.readLine());///////////////////
-        while ((mtp = bufferedReader.readLine()) != null){///////////////
+        System.out.println(nameFile);/////////////////////////////////// сдесь теряется buffered reader
+        bufferedReader = getFile(nameFile, request);////////////////////
+        System.out.println(bufferedReader.readLine());//////////////////
+        while ((mtp = bufferedReader.readLine()) != null){//////////////
             String[] s = mtp.split(";");
 
 
