@@ -10,6 +10,8 @@ import com.jekss.service.ProductService;
 import com.jekss.test.config.TestDataBaseConfig;
 import com.jekss.test.util.ProductUtil;
 
+import com.jekss.util.ParsingCsvInBase;
+import com.jekss.util.UploadCsvInBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 
 @DirtiesContext
@@ -73,19 +77,23 @@ public class ServiceTest {
 //        System.out.println(categoriesName1Service.addCategoriesName1(categoriesName1).toString());
 //    }
 //
-//    @Test
-//    public void testCsv() throws IOException {
-//        ParsingCsvInBase csvInBase = new ParsingCsvInBase();
-//
-//
-//            //csvInBase.setCsv();
-//        String lineword = "113253;\"Ëàìïà Videx LED, E14, 5W (àíàëîã 60W), 3000K (ìÿãêèé ñâåò), êëàññ ýíåðãîïîòðåáëåíèÿ - À+ (VL-R50-05143)\";2,4;60;0;14.06.2016 16:10:40;Videx;\"Òîâàðû äëÿ äîìà\";\"Òîâàðû äëÿ äîìà\";\"Ýëåêòðîîáîðóäîâàíèå\";\"Ëàìïî÷êè\";\"Videx\";;Active;http://www.microtron.ua/pictures/products_pictures/113/picorig_113253.jpg";
-//String s = new String(lineword.getBytes("utf-8"), Charset.defaultCharset());
-
-        //System.out.println(s);
+    @Test
+    public void testCsv() throws IOException {
 
 
-   // }
+
+        UploadCsvInBase csvInBase = new UploadCsvInBase();
+
+
+
+
+            //csvInBase.setCsv();
+
+
+
+
+
+    }
 //    @Test
 //    public void testCash(){
 //

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by jekss on 16.07.16.
@@ -58,7 +59,7 @@ public class ManufacturedNameServiceImpl implements ManufacturesNameService {
     }
 
     @Override
-    public List<ManufacturesName> getAll() {
-        return manufacturesNameRepositiry.findAll();
+    public synchronized CopyOnWriteArrayList<ManufacturesName> getAll() {
+        return (CopyOnWriteArrayList<ManufacturesName>) manufacturesNameRepositiry.findAll();
     }
 }

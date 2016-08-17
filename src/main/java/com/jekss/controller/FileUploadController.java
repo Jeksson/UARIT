@@ -10,10 +10,13 @@ import java.util.Set;
 
 import com.jekss.util.GetFileInPath;
 import com.jekss.util.ParsingCsvInBase;
+import com.jekss.util.UploadCsvInBase;
 import com.sun.javafx.sg.PGShape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +37,12 @@ import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.e
  * Handles requests for the application file upload requests
  */
 @Controller
+@PropertySource("classpath:app.properties")
 public class FileUploadController {
+
+    private static final String PATH_IN_FILE = "path.in.file";
+    @Resource
+    private Environment env;
 
     @Resource
     ParsingCsvInBase parsingCsvInBase;
@@ -42,7 +50,8 @@ public class FileUploadController {
     @Autowired
     GetFileInPath getFileInPath;
 
-    String fileName;
+
+    private String fileName;
 
     private static final Logger logger = LoggerFactory
             .getLogger(FileUploadController.class);
@@ -76,38 +85,38 @@ public class FileUploadController {
     }
 
     // ajax           запускает метод загрузки файла в базу
-    @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
-    @ResponseBody
-    public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
-        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        parsingCsvInBase.setCsv(fileName, httpServletRequest);
-
-    }
+//    @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
+//    @ResponseBody
+//    public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
+//        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        parsingCsvInBase.setCsv(fileName, httpServletRequest);
+//
+//    }
 
 
     //  ajax          запускает метод вычитания процента и отдает значение на view пользователя
-    @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
-    @ResponseBody
-    public Set<Integer> getProcentUploadInBase(HttpServletRequest httpServletRequest) throws IOException, InterruptedException {
-
-        Set<Integer> result = new HashSet<>();
-        result.add(parsingCsvInBase.getProcentUploadFileInBase(parsingCsvInBase.getCountAll(fileName, httpServletRequest)));
-        return result;
-    }
+//    @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Set<Integer> getProcentUploadInBase(HttpServletRequest httpServletRequest) throws IOException, InterruptedException {
+//
+//        Set<Integer> result = new HashSet<>();
+//        result.add(parsingCsvInBase.getProcentUploadFileInBase(parsingCsvInBase.getCountAll(fileName, httpServletRequest)));
+//        return result;
+//    }
 
     //ajax            запускает метод который подсчитывает общее колличество строк в файле
-    @RequestMapping(value = "uploadcountall", method = RequestMethod.GET)
-    @ResponseBody
-    public void getCountAll(HttpServletRequest httpServletRequest) throws IOException {
-
-        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
-
-    }
+//    @RequestMapping(value = "uploadcountall", method = RequestMethod.GET)
+//    @ResponseBody
+//    public void getCountAll(HttpServletRequest httpServletRequest) throws IOException {
+//
+//        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
+//
+//    }
 
 
     //SSE
@@ -116,12 +125,15 @@ public class FileUploadController {
             throws ServletException, IOException {
 
         int countAll = parsingCsvInBase.getCountAll(fileName, request);
-        System.out.println( fileName + "testSee");
-        parsingCsvInBase.setCsv(fileName, request);
+        System.out.println( fileName + " testSee");
+
+        UploadCsvInBase csvInBase = new UploadCsvInBase(fileName, request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
+        csvInBase.start();
+
 
         int procent  = 0;
         try {
-            procent = parsingCsvInBase.getProcentUploadFileInBase(countAll);
+            procent = parsingCsvInBase.getProcentUploadFileInBase(countAll, csvInBase.getCount() );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -131,7 +143,6 @@ public class FileUploadController {
         PrintWriter writer = response.getWriter();
         if(procent != 0) {
             for (int i = procent; i <= 100; i++) {
-
 
                 writer.write("data: " + procent + "\n\n");
 
