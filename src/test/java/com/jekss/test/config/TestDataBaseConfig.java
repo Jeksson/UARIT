@@ -1,5 +1,6 @@
 package com.jekss.test.config;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 @Configuration
@@ -26,12 +28,12 @@ public class TestDataBaseConfig {
     private static final String PROPERTY_NAME_DATABASE_PASSWORD = "";
 
     private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "org.hibernate.dialect.H2Dialect";
-    private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "true";
+    private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "false";
     private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "com.jekss.entityes";
     private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "create";
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws PropertyVetoException {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
@@ -43,7 +45,7 @@ public class TestDataBaseConfig {
     }
 
     @Bean
-    public JpaTransactionManager transactionManager() {
+    public JpaTransactionManager transactionManager() throws PropertyVetoException {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
@@ -51,15 +53,18 @@ public class TestDataBaseConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    public DataSource dataSource() throws PropertyVetoException {
+        ComboPooledDataSource pooledDataSource = new ComboPooledDataSource();
 
-        dataSource.setDriverClassName(PROPERTY_NAME_DATABASE_DRIVER);
-        dataSource.setUrl(PROPERTY_NAME_DATABASE_URL);
-        dataSource.setUsername(PROPERTY_NAME_DATABASE_USERNAME);
-        dataSource.setPassword(PROPERTY_NAME_DATABASE_PASSWORD);
+        pooledDataSource.setDriverClass(PROPERTY_NAME_DATABASE_DRIVER);
+        pooledDataSource.setJdbcUrl(PROPERTY_NAME_DATABASE_URL);
+        pooledDataSource.setUser(PROPERTY_NAME_DATABASE_USERNAME);
+        pooledDataSource.setPassword(PROPERTY_NAME_DATABASE_PASSWORD);
+        pooledDataSource.setMinPoolSize(5);
+        pooledDataSource.setAcquireIncrement(5);
+        pooledDataSource.setMaxPoolSize(20);
 
-        return dataSource;
+        return pooledDataSource;
     }
 
     private Properties hibernateProp() {

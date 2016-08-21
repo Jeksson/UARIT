@@ -81,18 +81,30 @@ public class ServiceTest {
     @Test
     public void testSETCSV(){
 
+                                                                                // устанавливаем звачение BufferedReader
+            base.setCountAll(env.getRequiredProperty(PATH_IN_FILE));            // когда запускаем счетчик общего колличества трок в файле
+            System.out.println(base.getCountAll() +" get count all in test");   // счетчик срабатывает нормально но дальше мы пытаемся запустить
+                                                                                // загрузку файла в базу где пропадает bufferedReader
+                                                                                // если выключить счетчик то загрузка проходит нормально
 
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                do {
+                    System.out.println(base.getProcentUploadFileInBase()+ "     %%%%%%%%%%%%%%%");
 
-            base.setBufferedReader(env.getRequiredProperty(PATH_IN_FILE)); // устанавливаем звачение BufferedReader
-            //base.setCountAll();                                                   // когда запускаем счетчик общего колличества трок в файле
-            //System.out.println(base.getCountAll() +" get count all in test");   // счетчик срабатывает нормально но дальше мы пытаемся запустить
-        // загрузку файла в базу где пропадает bufferedReader
-        // если выключить счетчик то загрузка проходит нормально
-        //
-            base.setCsv(env.getRequiredProperty(PATH_IN_FILE));
+                    if (base.getProcentUploadFileInBase() == 100) System.out.println("DONE!!!!!!!!!!!");
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }while (base.getProcentUploadFileInBase() < 100);
+            }
+        });
 
-
-
+        thread.start();
+        base.setCsv(env.getRequiredProperty(PATH_IN_FILE));
 
     }
 

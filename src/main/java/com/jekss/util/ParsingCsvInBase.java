@@ -129,37 +129,48 @@ public class ParsingCsvInBase {
 
 
     // парсинг и загрузка файла + счетчик count;
-
     public void setCsv(String path) {
         System.out.println(" set CSV in work");
         String mtp = "";
+        BufferedReader bf = null;
         //setBufferedReader(path);
+        try {
+             bf = bufferedReader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    new File(path)),
+                            "windows-1251"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         try {
-            while ((mtp = getBufferedReader().readLine()) != null) {
-                System.out.println(" while in work");
+            while ((mtp = bf.readLine()) != null) {
+                //System.out.println(" while in work");
                 String[] s = mtp.split(";");
                 setCount(getCount() + 1);
 
                 if (getCount() > 1) {
 
-                    System.out.println(s.length);
+                    //System.out.println(s.length);
 
                     product.setId_product(Integer.parseInt(s[0].trim()));
-                    System.out.println(s[1] + " 1");
+                    //System.out.println(s[1] + " 1");
                     product.setName(s[1] + " 1");
 
-                    System.out.println(s[2] + " 2");
+                    //System.out.println(s[2] + " 2");
                     if (s[2].equals(null) || s[2].equals("")) {
                         product.setPrice_product(0.0);
                     } else if (!s[2].equals(null) || !s[2].equals("")) {
                         product.setPrice_product(Double.parseDouble(s[2].replace(',', '.')));
                     }
 
-                    System.out.println(s[4] + " 4");
+                    //System.out.println(s[4] + " 4");
                     product.setDateAdded_product(s[4]);
 
-                    System.out.println(s[5] + " 5");
+                    //System.out.println(s[5] + " 5");
                     if (cashingDB.getCashing(s[5], getManufacturesNameList(false))) {
                         product.setManufacturesName_product(getManufacturesName(s[5]));
                         getManufacturesNameList(true);
@@ -197,7 +208,7 @@ public class ParsingCsvInBase {
                         }
                     }
 
-                    System.out.println(s[7] + " 7");
+                    //System.out.println(s[7] + " 7");
                     if (s[7].equals(null) || s[7].equals("")) {
                         product.setCategoriesName2_product(getCategoriesName2(""));
                     } else {
@@ -209,7 +220,7 @@ public class ParsingCsvInBase {
                         }
                     }
 
-                    System.out.println(s[8] + " 8");
+                    //System.out.println(s[8] + " 8");
                     if (s[8].equals(null) || s[8].equals("")) {
                         product.setCategoriesName3_product(getCategoriesName3(""));
                     } else {
@@ -221,7 +232,7 @@ public class ParsingCsvInBase {
                         }
                     }
 
-                    System.out.println(s[9] + " 9");
+                    //System.out.println(s[9] + " 9");
                     if (s[9].equals(null) || s[9].equals("")) {
                         product.setCategoriesName4_product(getCategoriesName4(""));
                     } else {
@@ -233,7 +244,7 @@ public class ParsingCsvInBase {
                         }
                     }
 
-                    System.out.println(s[10] + " 10");
+                    //System.out.println(s[10] + " 10");
                     if (s[10].equals(null) || s[10].equals("")) {
                         product.setCategoriesName5_product(getCategoriesName5(""));
                     } else {
@@ -245,7 +256,7 @@ public class ParsingCsvInBase {
                         }
                     }
 
-                    System.out.println(s[13] + " 13");
+                    //System.out.println(s[13] + " 13");
                     if (s[13].equals(null) || s[13].equals("")) {
                         picture.setaBoolean_picture(false);
                         picture.setUrl_picture(s[14]);
@@ -259,7 +270,7 @@ public class ParsingCsvInBase {
 
                 productService.addProduct(product);
 
-                System.out.println(productService.addProduct(product));
+                //System.out.println(productService.addProduct(product));
                 System.out.println("--------------------------------------------------   " + getCount());
             }
         } catch (IOException e) {
@@ -274,20 +285,20 @@ public class ParsingCsvInBase {
 
     }
 
-
     // берет count & countAll и вычисляет процент прохода загрузки файла в базу
-    @Async
+
     public int getProcentUploadFileInBase() {
-        System.out.println(getCountAll() + " get procent upload method");
-        System.out.println(" in procent upload file in base");
-        System.out.println(" count = " + getCount() + " get count //////");
+        //System.out.println(getCountAll() + " get procent upload method");
+        //System.out.println(" in procent upload file in base");
+        //System.out.println(" count = " + getCount() + " get count //////");
         int result = 0;
+        if (getCount() == getCountAll()) return 100;
         if (getCount() != 0) {
             result = (getCount() * 100) / getCountAll();
-        } else System.out.println(" count = " + getCount() + "//////");
+        } else System.out.println(" count = " + getCount() + "=-=-=-=-=-=-=-=-=-=");
 
 
-        System.out.println(result + "||||||||||||||||||||||||||||||||||||");
+
         return result;
     }
 
@@ -319,10 +330,20 @@ public class ParsingCsvInBase {
         this.countAll = couAll;
     }
 
-    public void setCountAll(){
+    public synchronized void setCountAll(String path){
         int couAll = 0;
 
-        //bufferedReader = getBufferedReader(path);
+        try {
+            BufferedReader bf = bufferedReader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    new File(path)),
+                            "windows-1251"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         try {
             while (getBufferedReader().readLine() != null) {
                 couAll++;
@@ -338,7 +359,7 @@ public class ParsingCsvInBase {
         this.countAll = couAll;
     }
 
-    public int getCountAll() {
+    public synchronized int getCountAll() {
         return countAll;
     }
 
