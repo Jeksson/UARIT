@@ -59,7 +59,7 @@ public class ManufacturedNameServiceImpl implements ManufacturesNameService {
     }
 
     @Override
-    public synchronized CopyOnWriteArrayList<ManufacturesName> getAll() {
-        return (CopyOnWriteArrayList<ManufacturesName>) manufacturesNameRepositiry.findAll();
+    public List <ManufacturesName> getAll() {
+        return manufacturesNameRepositiry.findAll();
     }
 }

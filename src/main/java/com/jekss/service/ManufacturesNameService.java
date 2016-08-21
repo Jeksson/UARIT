@@ -20,5 +20,5 @@ public interface ManufacturesNameService {
 
     ManufacturesName getByIdManufacturesName(int id_manufacturedName);
 
-    CopyOnWriteArrayList<ManufacturesName> getAll();
+    List<ManufacturesName> getAll();
 }

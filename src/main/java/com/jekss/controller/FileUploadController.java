@@ -109,23 +109,23 @@ public class FileUploadController {
     @RequestMapping(value = "uploadCsv")
     public void testUpgradeBase(HttpServletRequest request){
 
-        try {
-            parsingCsvInBase.setCountAll(fileName, request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        System.out.println(parsingCsvInBase.getCountAll() + " count all ");
+//        try {
+//            parsingCsvInBase.setCountAll(fileName, request);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        System.out.println(parsingCsvInBase.getCountAll() + " count all ");
 
 
         System.out.println("-----------");
-        parsingCsvInBase.setCsv(fileName, request);
+        //parsingCsvInBase.setCsv(parsingCsvInBase.getBufferedReader(fileName, request));
 
     }
 
