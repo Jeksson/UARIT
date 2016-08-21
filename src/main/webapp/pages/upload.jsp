@@ -59,6 +59,8 @@
     <button class="btn_reg" type="button" onclick="start()"> test</button>
 </form>
 
+<span id="sp"></span>
+
 
 <script>
 
@@ -86,17 +88,17 @@
             type: 'get'
         });
 
-//        setTimeout(function() {
-//            //Do some stuff here
-//        }, 3000);
-//
-//        var eventSource = new EventSource("testSSE");
-//
-//        eventSource.onmessage = function(event) {
-//            console.log(event.data);
-//            document.getElementById('sp').innerHTML = event.data;
-//
-//        };
+
+
+        var eventSource = new EventSource("testSSE");
+
+        eventSource.onmessage = function(event) {
+            console.log(event.data);
+
+            $('#progressbar').val(event.data);
+            document.getElementById('sp').innerHTML = event.data;
+
+        };
 
     }
 

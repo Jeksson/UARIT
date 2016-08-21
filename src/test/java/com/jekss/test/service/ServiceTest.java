@@ -34,6 +34,7 @@ import java.io.IOException;
 public class ServiceTest {
 
     private static final String PATH_IN_FILE = "path.in.file2";
+    private static final String FILE_NAME = "name.file";
 
     @Resource
     private EntityManagerFactory emf;
@@ -81,12 +82,12 @@ public class ServiceTest {
     @Test
     public void testSETCSV(){
 
-                                                                                // устанавливаем звачение BufferedReader
-            base.setCountAll(env.getRequiredProperty(PATH_IN_FILE));            // когда запускаем счетчик общего колличества трок в файле
-            System.out.println(base.getCountAll() +" get count all in test");   // счетчик срабатывает нормально но дальше мы пытаемся запустить
-                                                                                // загрузку файла в базу где пропадает bufferedReader
-                                                                                // если выключить счетчик то загрузка проходит нормально
+        //запуск счетчика общего колличества фалов
+            base.setCountAll(env.getRequiredProperty(FILE_NAME), env.getRequiredProperty(PATH_IN_FILE));
+            System.out.println(base.getCountAll() +" get count all in test");
 
+
+// перед запуском загрузки в бвзу в другом потоке запускаем вычисление процентов
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -104,7 +105,9 @@ public class ServiceTest {
         });
 
         thread.start();
-        base.setCsv(env.getRequiredProperty(PATH_IN_FILE));
+
+        // запуск загрузки в базу
+        base.setCsv(env.getRequiredProperty(FILE_NAME), env.getRequiredProperty(PATH_IN_FILE));
 
     }
 

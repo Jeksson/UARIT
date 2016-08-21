@@ -16,6 +16,8 @@ import com.jekss.util.ParsingCsvInBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +37,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
+@PropertySource("classpath:app.properties")
 public class FileUploadController {
+
+    @Resource
+    Environment env;
 
     @Resource
     ParsingCsvInBase parsingCsvInBase;
@@ -44,6 +50,9 @@ public class FileUploadController {
     GetFileInPath getFileInPath;
 
     String fileName;
+
+    private static final String PATH_IN_FILE = "path.in.file";
+
 
     private static final Logger logger = LoggerFactory
             .getLogger(FileUploadController.class);
@@ -55,8 +64,8 @@ public class FileUploadController {
     @RequestMapping(value = "upload", method = RequestMethod.GET)
     String uploadPage(Model model, HttpServletRequest httpServletRequest) {
 
-
-        model.addAttribute("lists", getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath(httpServletRequest)));
+        parsingCsvInBase.setSavePath(httpServletRequest);
+        model.addAttribute("lists", getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath()));
 
         return "upload";
     }
@@ -107,65 +116,37 @@ public class FileUploadController {
 //    }
 
     @RequestMapping(value = "uploadCsv")
-    public void testUpgradeBase(HttpServletRequest request){
+    public void testUpgradeBase(HttpServletRequest request) {
 
-//        try {
-//            parsingCsvInBase.setCountAll(fileName, request);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        System.out.println(parsingCsvInBase.getCountAll() + " count all ");
+        parsingCsvInBase.setCountAll(fileName, request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
+        System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
 
+        parsingCsvInBase.setCsv(fileName, request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
 
-        System.out.println("-----------");
-        //parsingCsvInBase.setCsv(parsingCsvInBase.getBufferedReader(fileName, request));
 
     }
 
     //SSE
     @RequestMapping(value = "testSSE", method = RequestMethod.GET)
-    public void testSSE(HttpServletResponse response, final HttpServletRequest request)
+    public void testSSE(HttpServletResponse response)
             throws ServletException, IOException {
 
-
+        System.out.println(parsingCsvInBase.getProcentUploadFileInBase() + "     %%%%%%%%%%%%%%%");
 
         response.setContentType("text/event-stream");
         response.setCharacterEncoding("UTF-8");
 
         PrintWriter writer = response.getWriter();
 
-        for (int proc = 0 ; proc <= 100; proc = parsingCsvInBase.getProcentUploadFileInBase() ){
+        if (parsingCsvInBase.getProcentUploadFileInBase() < 100) {
 
-
-            System.out.println(parsingCsvInBase.getProcentUploadFileInBase() + " ======== procent ");
-
-            writer.write("data: " + proc + "\n\n");
+            writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + " % \n\n");
 
             writer.flush();
 
-
-        }
-
-//            do{
-//                procent = parsingCsvInBase.getProcentUploadFileInBase(parsingCsvInBase.getCountAll());
-//                System.out.println(parsingCsvInBase.getProcentUploadFileInBase(parsingCsvInBase.getCountAll()) + " ======== procent ");
-//
-//                writer.write("data: " + procent + "\n\n");
-//
-//                writer.flush();
-//
-//
-//            } while (procent < 100);
+        } else writer.close();
 
 
-        //writer.close();
     }
     /**
      * Upload multiple file using Spring Controller

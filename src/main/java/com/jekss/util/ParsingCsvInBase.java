@@ -50,6 +50,8 @@ public class ParsingCsvInBase {
 
     private volatile int countAll;
 
+    private volatile String savePath;
+
 
     @Resource
     private ProductService productService;
@@ -82,6 +84,7 @@ public class ParsingCsvInBase {
 
         System.out.println("+++++++++++++===");
 
+        setSavePath(request);
         fileName = multipartFile.getOriginalFilename();
         System.out.println(fileName);
         if (!multipartFile.isEmpty()) {
@@ -90,7 +93,7 @@ public class ParsingCsvInBase {
             try {
                 byte[] bytes = multipartFile.getBytes();
 
-                File fileSaveDir = new File(getSavePath(request));
+                File fileSaveDir = new File(getSavePath());
                 if (!fileSaveDir.exists()) {
                     fileSaveDir.mkdir();
                 }
@@ -129,7 +132,8 @@ public class ParsingCsvInBase {
 
 
     // парсинг и загрузка файла + счетчик count;
-    public void setCsv(String path) {
+    public void setCsv(String name, String path) {
+        System.out.println(path +File.separator +  name);
         System.out.println(" set CSV in work");
         String mtp = "";
         BufferedReader bf = null;
@@ -138,7 +142,7 @@ public class ParsingCsvInBase {
              bf = bufferedReader = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(
-                                    new File(path)),
+                                    new File(path +File.separator +  name)),
                             "windows-1251"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -292,52 +296,24 @@ public class ParsingCsvInBase {
         //System.out.println(" in procent upload file in base");
         //System.out.println(" count = " + getCount() + " get count //////");
         int result = 0;
-        if (getCount() == getCountAll()) return 100;
         if (getCount() != 0) {
             result = (getCount() * 100) / getCountAll();
         } else System.out.println(" count = " + getCount() + "=-=-=-=-=-=-=-=-=-=");
-
-
 
         return result;
     }
 
     // открывает файл и считает количчество строк которые пишутся в countAll;
 
-    public void setCountAll(String nameFile, HttpServletRequest request){
+
+    public synchronized void setCountAll(String name, String path){
         int couAll = 0;
-        System.out.println(nameFile + " set count all");
-//bufferedReader = getBufferedReader(nameFile, request);
+        BufferedReader bf = null;
         try {
-            while (getBufferedReader().readLine() != null) {
-                couAll++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            try {
-                bufferedReader.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } finally {
-                try {
-                    bufferedReader.reset();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-
-        this.countAll = couAll;
-    }
-
-    public synchronized void setCountAll(String path){
-        int couAll = 0;
-
-        try {
-            BufferedReader bf = bufferedReader = new BufferedReader(
+             bf = bufferedReader = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(
-                                    new File(path)),
+                                    new File(path +File.separator +  name)),
                             "windows-1251"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -345,7 +321,7 @@ public class ParsingCsvInBase {
             e.printStackTrace();
         }
         try {
-            while (getBufferedReader().readLine() != null) {
+            while (bf.readLine() != null) {
                 couAll++;
             }
         } catch (IOException e) {
@@ -363,53 +339,16 @@ public class ParsingCsvInBase {
         return countAll;
     }
 
-    // открывает соединение к файлу и отдает bufferedReader
-    public void setBufferedReader(String nameFile, HttpServletRequest request) {
-        System.out.println(nameFile + " name file" + " get buffered reader");
-//        System.out.println(getSavePath(request) + File.separator + nameFile + " path");
-        if (bufferedReader == null) {
-            try {
-                bufferedReader = new BufferedReader(
-                        new InputStreamReader(
-                                new FileInputStream(
-                                        new File(getSavePath(request) + File.separator + nameFile)),
-                                "windows-1251"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    public void setBufferedReader(String path) {
-        System.out.println(path + " path" + " get buffered reader");
-
-        if (bufferedReader == null || bufferedReader.equals(null)) {
-            try {
-                    this.bufferedReader = new BufferedReader(
-                            new InputStreamReader(
-                                    new FileInputStream(
-                                            new File(path)),
-                                    "windows-1251"));
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public BufferedReader getBufferedReader() {
-        return bufferedReader;
-    }
-
-    public String getSavePath(HttpServletRequest request) {
+    public void setSavePath(HttpServletRequest request) {
         //System.out.println(request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE) + "то что записалось в переменную");
-        return request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE);
+        this.savePath = request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE);
     }
+
+    public String getSavePath(){
+        return savePath;
+    }
+
 
 
     public int getCount() {
