@@ -3,6 +3,8 @@ package com.jekss.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 /**
  * Created by data on 04.07.16.
  */
+@EnableAsync
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.jekss")
@@ -43,5 +46,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
         return resolver;
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(25);
+        executor.initialize();
+
+        return  executor;
     }
 }
