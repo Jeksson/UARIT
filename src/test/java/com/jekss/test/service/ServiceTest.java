@@ -1,17 +1,13 @@
 package com.jekss.test.service;
 
 
-import com.jekss.entityes.CategoriesName1;
 import com.jekss.entityes.ManufacturesName;
-import com.jekss.entityes.Product;
 import com.jekss.service.CategoriesName1Service;
 import com.jekss.service.ManufacturesNameService;
 import com.jekss.service.ProductService;
 import com.jekss.test.config.TestDataBaseConfig;
 import com.jekss.test.util.ProductUtil;
 
-import com.jekss.util.ParsingCsvInBase;
-import com.jekss.util.UploadCsvInBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +21,6 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 
 @DirtiesContext
@@ -77,23 +72,7 @@ public class ServiceTest {
 //        System.out.println(categoriesName1Service.addCategoriesName1(categoriesName1).toString());
 //    }
 //
-    @Test
-    public void testCsv() throws IOException {
 
-
-
-        UploadCsvInBase csvInBase = new UploadCsvInBase();
-
-
-
-
-            //csvInBase.setCsv();
-
-
-
-
-
-    }
 //    @Test
 //    public void testCash(){
 //
