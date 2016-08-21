@@ -275,7 +275,7 @@ public class ParsingCsvInBase {
     public int getProcentUploadFileInBase(){
         System.out.println(getCountAll() + " get procent upload method");
         System.out.println(" in procent upload file in base");
-        System.out.println(" count = " + getCount() + " get count TL//////");
+        System.out.println(" count = " + getCount() + " get count //////");
         int result = 0;
         if (getCount() != 0){
             result = (getCount() * 100) / getCountAll();
