@@ -305,7 +305,6 @@ public class ParsingCsvInBase {
 
     // открывает файл и считает количчество строк которые пишутся в countAll;
 
-
     public synchronized void setCountAll(String name, String path){
         int couAll = 0;
         BufferedReader bf = null;

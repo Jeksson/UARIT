@@ -17,22 +17,15 @@
 </head>
 <body>
 
+<form name="Form">
+    <ul id="ul" class="ul">
 
-<c:if test="${not empty lists}">
-
-    <ul>
-        <c:forEach var="listValue" items="${lists}">
-            <li>${listValue}</li>
-        </c:forEach>
     </ul>
 
-</c:if>
-
+</form>
 
 <form method="POST" action="uploadFile" enctype="multipart/form-data">
     File to upload: <input type="file" name="file">
-
-    <%--Name: <input type="text" name="name">--%>
 
 
     <input type="submit" value="Upload"> Press here to upload the file!
@@ -42,21 +35,15 @@
     ${upload}
 </form>
 <br>
-<%--<c:forEach var="file" items="${listFile}">--%>
 
-<%--<c:out value="${file.getName()}"/>--%>
-
-<%--</c:forEach>--%>
 
 <progress id="progressbar" value="0" max="100"></progress>
 
 
 <form id="button">
-    <button class="btn_reg" type="button" onclick="isSendToFormAjax()"> update</button>
-</form>
-
-<form id="button">
-    <button class="btn_reg" type="button" onclick="start()"> test</button>
+    <button class="btn_reg" type="button" onclick="start()"> update</button>
+    <br>
+    <span id="span"></span>
 </form>
 
 <span id="sp"></span>
@@ -64,42 +51,92 @@
 
 <script>
 
-
-    // срабатывание кнопки
-    // срабатывание кнопки
-    function isSendToFormAjax() {
-
-        console.log("log");
-        //попытка загрузить файл в базу
+    $(window).load(function () {
         $.ajax({
-            url: 'uploadCsv',
-            type: 'get'
-        });
+            url: 'listfileindirectory',
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+                console.log(data);
+                var res = JSON.parse(JSON.stringify(data));
+                console.log(res);
 
-        console.log("log============");
+                $('#ul').each(function () {
+                    $.each(res, function (index, value) {
+                        if (value === "folse") {
+                            $('#ul').append("<span> <h2>Файлов нет</h2></span>");
+                        } else {
+                            $('#ul').append("<li>" + "<label><input type=\"checkbox\"  id=\"" + value + " \"></label>" + value + "</li>");
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+
+    var var_form = function f() {
+        var forma = document.forms.Form;
+        var n = forma.querySelectorAll('[type="checkbox"]'),
+                l = forma.querySelectorAll('[type="checkbox"]:checked');
+
+        console.log($(l).attr('id') + "///////");
+        return $(l).attr('id');
+    };
+
+
+    function start() {
+
+        document.getElementById('span').innerHTML = "";
+        console.log(var_form() + " start");
+
+        if (var_form() === undefined) {
+            document.getElementById('span').innerHTML = "Выберите файл";
+
+        } else {
+
+            $.ajax({
+                url: 'uploadCsv',
+                type: 'get',
+                data: ({
+                    name: var_form()
+                })
+            });
+
+
+            var eventSource = new EventSource("testSSE");
+
+            eventSource.onmessage = function (event) {
+                if(event.data < 100) {
+                    $('#progressbar').val(event.data);
+                    document.getElementById('span').innerHTML = event.data;
+                }else if (event.data == 100) {
+                    $('#progressbar').val(event.data);
+                    document.getElementById('span').innerHTML = "файл загружен";
+                    eventSource.close();
+                } else { eventSource.close();}
+            };
+
+
+        }
 
 
     }
 
 
-    function start() {
-        $.ajax({
-            url: 'uploadCsv',
-            type: 'get'
-        });
-
-
-
-        var eventSource = new EventSource("testSSE");
-
-        eventSource.onmessage = function(event) {
-            console.log(event.data);
-
-            $('#progressbar').val(event.data);
-            document.getElementById('sp').innerHTML = event.data;
-
-        };
-
+    var f = document.forms.Form;
+    f.onchange = function () {
+        var n = f.querySelectorAll('[type="checkbox"]'),
+                l = f.querySelectorAll('[type="checkbox"]:checked');
+        for (var j = 0; j < n.length; j++)
+            if (l.length >= 1) { // если отметить три и более галочки
+                n[j].disabled = true; // все чекбоксы становятся disabled
+                for (var i = 0; i < l.length; i++)
+                    l[i].disabled = false; // но disabled убирается с помеченных галочками чекбоксов
+            } else {
+                n[j].disabled = false; // если выделить менее трёх галочек, то disabled снимается со всех чекбоксов
+            }
     }
 
 

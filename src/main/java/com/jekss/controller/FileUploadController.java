@@ -7,7 +7,9 @@ package com.jekss.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.jekss.util.GetFileInPath;
@@ -54,9 +56,6 @@ public class FileUploadController {
     private static final String PATH_IN_FILE = "path.in.file";
 
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(FileUploadController.class);
-
     /**
      * Upload single file using Spring Controller
      */
@@ -69,6 +68,20 @@ public class FileUploadController {
 
         return "upload";
     }
+
+    @RequestMapping(value = "listfileindirectory", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getEmailValid() {
+
+        List<String> nall = new ArrayList<>();
+        if (getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath()).equals(nall)) {
+            nall.add("folse");
+            return nall;
+        } else {
+            return getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath());
+        }
+    }
+
 
     @RequestMapping(value = "uploadFile", method = RequestMethod.POST)
     public String uploadFileHandler(@RequestParam("file") MultipartFile file,
@@ -86,42 +99,13 @@ public class FileUploadController {
     }
 
 
-    // ajax           запускает метод загрузки файла в базу
-//    @RequestMapping(value = "uploadCsv", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void addInBaseFile(HttpServletRequest httpServletRequest) throws IOException {
-//
-//        parsingCsvInBase.setCsv(fileName, httpServletRequest);
-//
-//    }
-
-
-    //  ajax          запускает метод вычитания процента и отдает значение на view пользователя
-//    @RequestMapping(value = "uploadprocent", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Set<Integer> getProcentUploadInBase() throws IOException, InterruptedException {
-//
-//        Set<Integer> result = new HashSet<>();
-//        result.add(parsingCsvInBase.getProcentUploadFileInBase());
-//        return result;
-//    }
-
-    //ajax            запускает метод который подсчитывает общее колличество строк в файле
-//    @RequestMapping(value = "uploadcountall", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void getCountAll(HttpServletRequest httpServletRequest) throws IOException {
-//
-//        parsingCsvInBase.getCountAll(fileName, httpServletRequest);
-//
-//    }
-
     @RequestMapping(value = "uploadCsv")
-    public void testUpgradeBase(HttpServletRequest request) {
-
-        parsingCsvInBase.setCountAll(fileName, request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
+    public void testUpgradeBase(@RequestParam(value = "name") String fileName,HttpServletRequest request) {
+        System.out.println(fileName.trim() + " filename in upgrade base") ;
+        parsingCsvInBase.setCountAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
         System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
 
-        parsingCsvInBase.setCsv(fileName, request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
+        parsingCsvInBase.setCsv(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
 
 
     }
@@ -138,13 +122,17 @@ public class FileUploadController {
 
         PrintWriter writer = response.getWriter();
 
-        if (parsingCsvInBase.getProcentUploadFileInBase() < 100) {
-
-            writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + " % \n\n");
-
+        if (parsingCsvInBase.getProcentUploadFileInBase() <100) {
+            writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
             writer.flush();
 
-        } else writer.close();
+        } else if (parsingCsvInBase.getProcentUploadFileInBase() == 100){
+            writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
+            writer.flush();
+            writer.close();
+        } else {
+            writer.close();
+        }
 
 
     }

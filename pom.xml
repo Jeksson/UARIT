@@ -19,7 +19,7 @@
             <hb.manager>4.2.5.Final</hb.manager>
             <spring.test>3.2.4.RELEASE</spring.test>
             <junit.version>4.11</junit.version>
-            <jackson.version>2.2.2</jackson.version>
+
         </properties>
 
         <dependencies>
@@ -122,13 +122,13 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
+                <version>2.8.0.rc2</version>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
+                <version>2.8.0.rc2</version>
             </dependency>
 
 
