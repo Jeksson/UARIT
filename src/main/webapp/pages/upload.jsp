@@ -32,12 +32,12 @@
 
     <br>
 
-    ${upload}
+    <%--${upload}--%>
 </form>
 <br>
 
 
-<progress id="progressbar" value="0" max="100"></progress>
+<progress id="progressbar" value="0" max="100" style="border-radius: 2px;"></progress>
 
 
 <form id="button">
@@ -47,6 +47,9 @@
 </form>
 
 <span id="sp"></span>
+<ul id="tabl">
+
+</ul>
 
 
 <script>
@@ -58,9 +61,9 @@
             dataType: 'json',
             data: {},
             success: function (data) {
-                console.log(data);
+
                 var res = JSON.parse(JSON.stringify(data));
-                console.log(res);
+
 
                 $('#ul').each(function () {
                     $.each(res, function (index, value) {
@@ -76,16 +79,15 @@
     });
 
 
+    //отдает id на чекбоксе
     var var_form = function f() {
         var forma = document.forms.Form;
         var n = forma.querySelectorAll('[type="checkbox"]'),
                 l = forma.querySelectorAll('[type="checkbox"]:checked');
-
-        console.log($(l).attr('id') + "///////");
         return $(l).attr('id');
     };
 
-
+// запускает апгрейд
     function start() {
 
         document.getElementById('span').innerHTML = "";
@@ -101,7 +103,12 @@
                 type: 'get',
                 data: ({
                     name: var_form()
-                })
+                }),
+                success: function (data) {
+                    if(data == "ok") {
+                        $('#progressbar').val(100);
+                    }
+                }
             });
 
 
@@ -113,18 +120,14 @@
                     document.getElementById('span').innerHTML = event.data;
                 }else if (event.data == 100) {
                     $('#progressbar').val(event.data);
-                    document.getElementById('span').innerHTML = "файл загружен";
+
                     eventSource.close();
                 } else { eventSource.close();}
             };
-
-
         }
-
-
     }
 
-
+//блокирует чекбоксы если выбрано больше одого
     var f = document.forms.Form;
     f.onchange = function () {
         var n = f.querySelectorAll('[type="checkbox"]'),

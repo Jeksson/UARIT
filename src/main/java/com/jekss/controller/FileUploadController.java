@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.jekss.entityes.CategoriesName1;
+import com.jekss.entityes.CategoriesName2;
+import com.jekss.service.CategoriesName1Service;
+import com.jekss.service.CategoriesName2Service;
 import com.jekss.util.GetFileInPath;
 import com.jekss.util.ParsingCsvInBase;
 
@@ -20,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,7 +76,7 @@ public class FileUploadController {
 
     @RequestMapping(value = "listfileindirectory", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> getEmailValid() {
+    public List<String> getAllNameFileInDirectory() {
 
         List<String> nall = new ArrayList<>();
         if (getFileInPath.getFileNameFromFolder(parsingCsvInBase.getSavePath()).equals(nall)) {
@@ -87,7 +92,7 @@ public class FileUploadController {
     public String uploadFileHandler(@RequestParam("file") MultipartFile file,
                                     HttpServletRequest request, Model model) {
 
-        fileName = file.getOriginalFilename();
+        //fileName = file.getOriginalFilename();
         if (parsingCsvInBase.getFileExtension(file).equals("csv")) {
             if (parsingCsvInBase.uploadFile(file, request)) {
                 model.addAttribute("upload", file.getOriginalFilename() + " upload done");
@@ -100,19 +105,22 @@ public class FileUploadController {
 
 
     @RequestMapping(value = "uploadCsv")
-    public void testUpgradeBase(@RequestParam(value = "name") String fileName,HttpServletRequest request) {
+    @ResponseBody
+    public List<String> upgradeBase(@RequestParam(value = "name") String fileName, HttpServletRequest request) {
         System.out.println(fileName.trim() + " filename in upgrade base") ;
         parsingCsvInBase.setCountAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
         System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
 
         parsingCsvInBase.setCsv(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
 
-
+        List<String> res = new ArrayList<>();
+        res.add("ok");
+        return res;
     }
 
     //SSE
     @RequestMapping(value = "testSSE", method = RequestMethod.GET)
-    public void testSSE(HttpServletResponse response)
+    public void SSE(HttpServletResponse response)
             throws ServletException, IOException {
 
         System.out.println(parsingCsvInBase.getProcentUploadFileInBase() + "     %%%%%%%%%%%%%%%");
@@ -122,7 +130,7 @@ public class FileUploadController {
 
         PrintWriter writer = response.getWriter();
 
-        if (parsingCsvInBase.getProcentUploadFileInBase() <100) {
+        if (parsingCsvInBase.getProcentUploadFileInBase() < 100) {
             writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
             writer.flush();
 
@@ -136,6 +144,8 @@ public class FileUploadController {
 
 
     }
+
+
     /**
      * Upload multiple file using Spring Controller
      */

@@ -29,6 +29,8 @@ public class ParsingCsvInBase {
 
 
     String fileName;
+    String oneStringInFile = "v_products_id;v_products_name_1;v_products_price;v_products_price_UAH;v_date_added;v_manufacturers_name;v_categories_name_1;v_categories_name_2;v_categories_name_3;v_categories_name_4;v_categories_name_5;v_categories_name_6;v_status;v_picture";
+
 
 
     @Resource
@@ -51,6 +53,7 @@ public class ParsingCsvInBase {
     private volatile int countAll;
 
     private volatile String savePath;
+
 
 
     @Resource
@@ -77,6 +80,7 @@ public class ParsingCsvInBase {
     private static List<CategoriesName3> categoriesName3List;
     private static List<CategoriesName4> categoriesName4List;
     private static List<CategoriesName5> categoriesName5List;
+
 
     //вынес логику из контроллера
     public boolean uploadFile(MultipartFile multipartFile, HttpServletRequest request) {
@@ -133,8 +137,8 @@ public class ParsingCsvInBase {
 
     // парсинг и загрузка файла + счетчик count;
     public void setCsv(String name, String path) {
-        System.out.println(path +File.separator +  name);
-        System.out.println(" set CSV in work");
+//        System.out.println(path +File.separator +  name);
+//        System.out.println(" set CSV in work");
         String mtp = "";
         BufferedReader bf = null;
         //setBufferedReader(path);
@@ -150,16 +154,21 @@ public class ParsingCsvInBase {
             e.printStackTrace();
         }
 
+
+
+
         try {
             while ((mtp = bf.readLine()) != null) {
                 //System.out.println(" while in work");
-                String[] s = mtp.split(";");
+
                 setCount(getCount() + 1);
 
-                if (getCount() > 1) {
 
+
+                if (getCount() > 1 && !mtp.equals(oneStringInFile)) {
+                    String[] s = mtp.split(";");
                     //System.out.println(s.length);
-
+                    //System.out.println(s[0].trim());
                     product.setId_product(Integer.parseInt(s[0].trim()));
                     //System.out.println(s[1] + " 1");
                     product.setName(s[1] + " 1");
@@ -175,35 +184,24 @@ public class ParsingCsvInBase {
                     product.setDateAdded_product(s[4]);
 
                     //System.out.println(s[5] + " 5");
-                    if (cashingDB.getCashing(s[5], getManufacturesNameList(false))) {
-                        product.setManufacturesName_product(getManufacturesName(s[5]));
+                    if (s[5].equals(null) || s[5].trim().equals("")){
+                        product.setManufacturesName_product(getManufacturesName("NoNaMe"));
                         getManufacturesNameList(true);
-                    } else {
-                        product.setManufacturesName_product(getManufacturesName(s[5]));
+                    } else if (!s[5].equals(null) || !s[5].trim().equals("")){
+                        if (cashingDB.getCashing(s[5], getManufacturesNameList(false))) {
+                            product.setManufacturesName_product(getManufacturesName(s[5]));
+                            getManufacturesNameList(true);
+                        } else {
+                            product.setManufacturesName_product(getManufacturesName(s[5]));
+                        }
                     }
-//                                    if (manufacturesNameService.isNameManufacturesName(s[7])){
-                    //                    product.setManufacturesName_product(manufacturesNameService.addManufacturesName(getManufacturesName(s[7])));
-                    //                } else product.setManufacturesName_product(manufacturesNameService.getByNameManufacturesName(s[7]));
-                    //
-                    //                if(categoriesName1Service.isNameCategoriesName(s[9])){
-                    //                    product.setCategoriesName1_product(categoriesName1Service.addCategoriesName1(getCategoriesName1(s[9])));
-                    //                } else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[9]));
-                    //                if(categoriesName2Service.isNameCategoriesName(s[12])){
-                    //                    product.setCategoriesName2_product(categoriesName2Service.addCategoriesName2(getCategoriesName2(s[12])));
-                    //                }else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[12]));
-                    //                if(categoriesName3Service.isNameCategoriesName(s[15])){
-                    //                    product.setCategoriesName3_product(categoriesName3Service.addCategoriesName3(getCategoriesName3(s[15])));
-                    //                }else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[15]));
-                    //                if(categoriesName4Service.isNameCategoriesName(s[18])){
-                    //                    product.setCategoriesName4_product(categoriesName4Service.addCategoriesName4(getCategoriesName4(s[18])));
-                    //                }else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[18]));
-                    //                if(categoriesName5Service.isNameCategoriesName(s[21])){
-                    //                    product.setCategoriesName5_product(categoriesName5Service.addCategoriesName5(getCategoriesName5(s[21])));
-                    //                }else product.setCategoriesName1_product(categoriesName1Service.getByNameCategoriesName1(s[21]));
-                    //System.out.println(s[6] + "6");
-                    if (s[6].equals(null) || s[6].equals("")) {
-                        product.setCategoriesName1_product(getCategoriesName1(""));
+
+                    //System.out.println(s[6] + " 6");
+                    if (s[6].equals(null) || s[6].trim().equals("")) {
+                        product.setCategoriesName1_product(getCategoriesName1("\"NoCat1\""));
+                        getCategoriesName1List(true);
                     } else {
+
                         if (cashingDB.getCashing(s[6], getCategoriesName1List(false))) {
                             product.setCategoriesName1_product(getCategoriesName1(s[6]));
                             getCategoriesName1List(true);
@@ -212,10 +210,12 @@ public class ParsingCsvInBase {
                         }
                     }
 
+
                     //System.out.println(s[7] + " 7");
-                    if (s[7].equals(null) || s[7].equals("")) {
-                        product.setCategoriesName2_product(getCategoriesName2(""));
-                    } else {
+                    if (s[7].equals(null) || s[7].trim().equals("")) {
+                        product.setCategoriesName2_product(getCategoriesName2("\"NoCat2\""));
+                        getCategoriesName2List(true);
+                    } else if(!s[7].equals(null) || !s[7].equals("")){
                         if (cashingDB.getCashing(s[7], getCategoriesName2List(false))) {
                             product.setCategoriesName2_product(getCategoriesName2(s[7]));
                             getCategoriesName2List(true);
@@ -226,8 +226,9 @@ public class ParsingCsvInBase {
 
                     //System.out.println(s[8] + " 8");
                     if (s[8].equals(null) || s[8].equals("")) {
-                        product.setCategoriesName3_product(getCategoriesName3(""));
-                    } else {
+                        product.setCategoriesName3_product(getCategoriesName3("\"NoCat3\""));
+                        getCategoriesName3List(true);
+                    } else if (!s[8].equals(null) || !s[8].equals("")){
                         if (cashingDB.getCashing(s[8], getCategoriesName3List(false))) {
                             product.setCategoriesName3_product(getCategoriesName3(s[8]));
                             getCategoriesName3List(true);
@@ -238,8 +239,9 @@ public class ParsingCsvInBase {
 
                     //System.out.println(s[9] + " 9");
                     if (s[9].equals(null) || s[9].equals("")) {
-                        product.setCategoriesName4_product(getCategoriesName4(""));
-                    } else {
+                        product.setCategoriesName4_product(getCategoriesName4("\"NoCat4\""));
+                        getCategoriesName4List(true);
+                    } else if (!s[9].equals(null) || !s[9].equals("")){
                         if (cashingDB.getCashing(s[9], getCategoriesName4List(false))) {
                             product.setCategoriesName4_product(getCategoriesName4(s[9]));
                             getCategoriesName4List(true);
@@ -250,8 +252,9 @@ public class ParsingCsvInBase {
 
                     //System.out.println(s[10] + " 10");
                     if (s[10].equals(null) || s[10].equals("")) {
-                        product.setCategoriesName5_product(getCategoriesName5(""));
-                    } else {
+                        product.setCategoriesName5_product(getCategoriesName5("\"NoCat5\""));
+                        getCategoriesName5List(true);
+                    } else if (!s[10].equals(null) || !s[10].equals("")){
                         if (cashingDB.getCashing(s[10], getCategoriesName5List(false))) {
                             product.setCategoriesName5_product(getCategoriesName5(s[10]));
                             getCategoriesName5List(true);
@@ -288,6 +291,9 @@ public class ParsingCsvInBase {
         }
 
     }
+
+
+
 
     // берет count & countAll и вычисляет процент прохода загрузки файла в базу
 
@@ -348,8 +354,6 @@ public class ParsingCsvInBase {
         return savePath;
     }
 
-
-
     public int getCount() {
         return count;
     }
@@ -406,6 +410,7 @@ public class ParsingCsvInBase {
 
     }
 
+
     ManufacturesName getManufacturesName(String name) {
         manufacturesName = manufacturesNameService.getByNameManufacturesName(name);
         if (manufacturesName == null) {
@@ -417,7 +422,7 @@ public class ParsingCsvInBase {
     }
 
     CategoriesName1 getCategoriesName1(String name) {
-        //categoriesName1 = categoriesName1Service.getByNameCategoriesName1(name);
+        categoriesName1 = categoriesName1Service.getByNameCategoriesName1(name);
         if (categoriesName1 == null) {
             categoriesName1 = new CategoriesName1();
             categoriesName1.setName(name);

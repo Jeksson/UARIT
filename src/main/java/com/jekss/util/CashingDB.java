@@ -17,14 +17,14 @@ public class CashingDB {
     private boolean aBoolean = false;
 
     <T> boolean getCashing(String name, List<T> list) {
-        List listNew = list;
 
-//        System.out.println(name + " name getCashing");
-        for (int i = 1; i < (listNew.size()); i++) {
+        for (int i = 1; i < (list.size()); i++) {
             BaseClass baseClass = (BaseClass) list.get(i);
 //            System.out.println(baseClass.getName()+" +++++= " + i);
-            if (baseClass.getName()!=name) {aBoolean = true;}
-            else aBoolean = false;
+            if (baseClass.getName()!=name) {aBoolean = true;
+            } else {
+                aBoolean = false;
+            }
         }
         return aBoolean;
     }

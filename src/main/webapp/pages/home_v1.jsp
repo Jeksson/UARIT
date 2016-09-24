@@ -58,51 +58,51 @@
 							
 							<nav id="top-navigation" class="col-lg-7 col-md-7 col-sm-7">
 								<ul class="pull-left">
-									<li><a href="${pageContext.request.contextPath}/pages/create_an_account.html">My Account</a></li>
-									<li><a href="${pageContext.request.contextPath}/pages/orders_list.html">List Order</a></li>
+									<li><a href="${pageContext.request.contextPath}/pages/create_an_account.html">Мой акаунт</a></li>
+									<li><a href="${pageContext.request.contextPath}/pages/orders_list.html">Список заказов</a></li>
 									<li><a href="${pageContext.request.contextPath}/pages/order_info.html">Checkout</a></li>
-									<li><a href="${pageContext.request.contextPath}/pages/text_page.html">About Us</a></li>
-									<li><a href="${pageContext.request.contextPath}/pages/contact.html">Contact</a></li>
+									<li><a href="${pageContext.request.contextPath}/pages/text_page.html">О нас</a></li>
+									<li><a href="${pageContext.request.contextPath}/pages/contact.html">Контакты</a></li>
 								</ul>
 							</nav>
 							
 							<nav class="col-lg-5 col-md-5 col-sm-5">
 								<ul class="pull-right">
-									<li class="purple"><a href="#"><i class="icons icon-user-3"></i> Login</a>
+									<li class="purple"><a href="#"><i class="icons icon-user-3"></i> Войти</a>
 										<ul id="login-dropdown" class="box-dropdown">
 											<li>
                                             	<div class="box-wrapper">
                                                     <h4>LOGIN</h4>
                                                     <div class="iconic-input">
-                                                        <input type="text" placeholder="Username">
+                                                        <input type="text" placeholder="Ваш email">
                                                         <i class="icons icon-user-3"></i>
                                                     </div>
                                                     <div class="iconic-input">
-                                                        <input type="text" placeholder="Password">
+                                                        <input type="text" placeholder="Ваш пароль">
                                                         <i class="icons icon-lock"></i>
                                                     </div>
-                                                    <input type="checkbox" id="loginremember"> <label for="loginremember">Remember me</label>
+                                                    <input type="checkbox" id="loginremember"> <label for="loginremember">Запомнить меня</label>
                                                     <br>
                                                     <br>
                                                     <div class="pull-left">
-                                                        <input type="submit" class="orange" value="Login">
+                                                        <input type="submit" class="orange" value="Войти">
                                                     </div>
                                                     <div class="pull-right">
-                                                        <a href="#">Forgot your password?</a>
+                                                        <a href="#">Забыли Ваш пароль?</a>
                                                         <br>
-                                                        <a href="#">Forgot your username?</a>
+                                                        <a href="#">Забыли Ваш email?</a>
 														<br>
                                                     </div>
                                                     <br class="clearfix">
                                                 </div>
 												<div class="footer">
-													<h4 class="pull-left">NEW CUSTOMER?</h4>
-													<a class="button pull-right" href="${pageContext.request.contextPath}/pages/create_an_account.html">Create an account</a>
+													<h4 class="pull-left">Новый клиент?</h4>
+													<a class="button pull-right" href="${pageContext.request.contextPath}/pages/create_an_account.html">Создать аккаунт</a>
 												</div>
 											</li>
 										</ul>
 									</li>
-									<li><a href="${pageContext.request.contextPath}/pages/create_an_account.html"><i class="icons icon-lock"></i> Create an Account</a></li>
+									<li><a href="${pageContext.request.contextPath}/pages/create_an_account.html"><i class="icons icon-lock"></i> Создать аккаунт</a></li>
 								</ul>
 							</nav>
 							
@@ -539,14 +539,14 @@
 					
 					
 					
-					<!-- Featured Products -->
+					<!-- рекомендуемые товары -->
 					<div class="products-row row">
 						
 						<!-- Carousel Heading -->
 						<div class="col-lg-12 col-md-12 col-sm-12">
 							
 							<div class="carousel-heading">
-								<h4>Featured Products</h4>
+								<h4>Рекомендуемые товары</h4>
 								<div class="carousel-arrows">
 									<i class="icons icon-left-dir"></i>
 									<i class="icons icon-right-dir"></i>
@@ -1595,22 +1595,21 @@
 				<!-- Sidebar -->
 				<aside class="sidebar col-lg-3 col-md-3 col-sm-3  col-lg-pull-9 col-md-pull-9 col-sm-pull-9">
 					
-					<!-- Categories -->
+					<!--  категории -->
 					<div class="row sidebar-box purple">
 						
 						<div class="col-lg-12 col-md-12 col-sm-12">
 							
 							<div class="sidebar-box-heading">
 								<i class="icons icon-folder-open-empty"></i>
-								<h4>Categories</h4>
+								<h4>Категории</h4>
 							</div>
 							
 							<div class="sidebar-box-content">
-								<ul>
-									<li><a href="#">Cameras &amp; Photography <i class="icons icon-right-dir"></i></a></li>
+								<ul id="category1">
 									<li><a href="#">Computers &amp; Tablets <i class="icons icon-right-dir"></i></a>
 
-										<ul class="sidebar-dropdown">
+										<ul class="sidebar-dropdown" id="category2">
 											<li>
 												<ul>
 													<li><a href="#">Планшеты</a></li>
@@ -1651,11 +1650,7 @@
                                             </li>
                                         </ul>
                                     </li>
-									<li><a href="#">TV, Audio &amp; Surveillance <i class="icons icon-right-dir"></i></a></li>
-									<li><a href="#">Video Games &amp; Consoles <i class="icons icon-right-dir"></i></a></li>
-									<li><a href="#">Car Audio, Video &amp; GPS <i class="icons icon-right-dir"></i></a></li>
-									<li><a href="#">Best Sellers <i class="icons icon-right-dir"></i></a></li>
-									<li><a href="#">Shop by Brands <i class="icons icon-right-dir"></i></a></li>
+
 									<li><a class="purple" href="#">All Categories</a></li>
 								</ul>
 							</div>
@@ -2183,12 +2178,11 @@
 							<div class="col-lg-3 col-md-3 col-sm-6">
 								<h4>The Service</h4>
 								<ul>
-									<li><a href="#"><i class="icons icon-right-dir"></i> My account</a></li>
-									<li><a href="#"><i class="icons icon-right-dir"></i> Order history</a></li>
-									<li><a href="#"><i class="icons icon-right-dir"></i> Vendor contact</a></li>
-									<li><a href="#"><i class="icons icon-right-dir"></i> Shop page</a></li>
-									<li><a href="#"><i class="icons icon-right-dir"></i> Categories</a></li>
-									<li><a href="#"><i class="icons icon-right-dir"></i> Search results</a></li>
+									<li><a href="#"><i class="icons icon-right-dir"></i> Мой акаунт</a></li>
+									<li><a href="#"><i class="icons icon-right-dir"></i> История заказов</a></li>
+									<li><a href="#"><i class="icons icon-right-dir"></i> Связь с продавцом</a></li>
+									<li><a href="#"><i class="icons icon-right-dir"></i> Категории</a></li>
+									<li><a href="#"><i class="icons icon-right-dir"></i> результаты поиска</a></li>
 								</ul>
 							</div>
 							<!-- /The Service -->
@@ -2280,6 +2274,7 @@
 		
 		
 		<!-- JavaScript -->
+
 		<script src="${pageContext.request.contextPath}/pages/js/modernizr.min.js"></script>
 		<script src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/jquery-ui.min.js"></script>
@@ -2321,7 +2316,7 @@
         
         <!-- Main JS -->
 
-
+		<script src="${pageContext.request.contextPath}/pages/js/main-script-home.js"></script>
         <script defer src="${pageContext.request.contextPath}/pages/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/pages/js/main-script.js"></script>
         
