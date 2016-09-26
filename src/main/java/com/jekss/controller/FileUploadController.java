@@ -8,24 +8,14 @@ package com.jekss.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import com.jekss.entityes.CategoriesName1;
-import com.jekss.entityes.CategoriesName2;
-import com.jekss.service.CategoriesName1Service;
-import com.jekss.service.CategoriesName2Service;
 import com.jekss.util.GetFileInPath;
 import com.jekss.util.ParsingCsvInBase;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,7 +101,7 @@ public class FileUploadController {
         parsingCsvInBase.setCountAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
         System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
 
-        parsingCsvInBase.setCsv(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
+        parsingCsvInBase.setCsvProdAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
 
         List<String> res = new ArrayList<>();
         res.add("ok");

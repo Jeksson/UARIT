@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by jekss on 09.07.16.
+ * Created by jekss on 26.09.16.
  */
 @Service
 public class ProductServiceImpl implements ProductService {
 
-
     @Autowired
     private ProductRepository productRepository;
-
 
     @Override
     public Product addProduct(Product product) {
@@ -25,13 +23,12 @@ public class ProductServiceImpl implements ProductService {
         return product1;
     }
 
-    @Override
-    public void deleteProduct(int id_product) {
 
-        productRepository.delete(id_product);
-    }
-    public void deleteProduct(){
-        productRepository.deleteAll();
+
+    @Override
+    public void deleteProduct(int id_product)
+    {
+productRepository.delete(id_product);
     }
 
     @Override
