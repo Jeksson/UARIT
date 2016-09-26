@@ -24,11 +24,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
     @Override
-    public void deleteProduct(int id_product)
-    {
-productRepository.delete(id_product);
+    public void deleteProduct(int id_product) {
+        productRepository.delete(id_product);
     }
 
     @Override
@@ -44,5 +42,10 @@ productRepository.delete(id_product);
     @Override
     public List<Product> getAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getCategoriesName2InCategoriesName1(String categoriesName1) {
+        return productRepository.findDistinctByCategoriesName1(categoriesName1);
     }
 }

@@ -97,7 +97,7 @@ public class FileUploadController {
     @RequestMapping(value = "uploadCsv")
     @ResponseBody
     public List<String> upgradeBase(@RequestParam(value = "name") String fileName, HttpServletRequest request) {
-        System.out.println(fileName.trim() + " filename in upgrade base") ;
+        System.out.println(fileName.trim() + " filename in upgrade base");
         parsingCsvInBase.setCountAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
         System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
 
@@ -124,7 +124,7 @@ public class FileUploadController {
             writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
             writer.flush();
 
-        } else if (parsingCsvInBase.getProcentUploadFileInBase() == 100){
+        } else if (parsingCsvInBase.getProcentUploadFileInBase() == 100) {
             writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
             writer.flush();
             writer.close();

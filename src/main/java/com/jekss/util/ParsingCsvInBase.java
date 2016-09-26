@@ -53,10 +53,6 @@ public class ParsingCsvInBase {
     private ProductService productService;
 
 
-
-
-
-
     //вынес логику из контроллера
     public boolean uploadFile(MultipartFile multipartFile, HttpServletRequest request) {
         BufferedOutputStream stream = null;
@@ -110,8 +106,7 @@ public class ParsingCsvInBase {
     }
 
 
-    // парсинг и загрузка файла + счетчик count;
-
+  // парсинг и загрузка файла + счетчик count;
 
     public void setCsvProdAll(String name, String path) {
 
