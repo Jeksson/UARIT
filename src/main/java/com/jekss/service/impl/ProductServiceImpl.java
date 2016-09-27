@@ -1,9 +1,10 @@
 package com.jekss.service.impl;
 
+
+
 import com.jekss.entityes.Product;
 import com.jekss.repository.ProductRepository;
 import com.jekss.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
+    @Resource
     ProductRepository productRepository;
 
     @Override

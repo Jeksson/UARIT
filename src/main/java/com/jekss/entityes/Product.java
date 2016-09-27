@@ -162,5 +162,23 @@ public class Product{
         this.picture = picture;
     }
 
-
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id_product=" + id_product +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", dateAdded='" + dateAdded + '\'' +
+                ", manufactures='" + manufactures + '\'' +
+                ", categoriesName1='" + categoriesName1 + '\'' +
+                ", categoriesName2='" + categoriesName2 + '\'' +
+                ", categoriesName3='" + categoriesName3 + '\'' +
+                ", categoriesName5='" + categoriesName5 + '\'' +
+                ", categoriesName4='" + categoriesName4 + '\'' +
+                ", categoriesName6='" + categoriesName6 + '\'' +
+                ", description='" + description + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
+    }
 }
