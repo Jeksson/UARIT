@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,12 +22,14 @@ public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public String helloMethod(Model model) {
-        List<Product> lp = productService.getCategoriesName2InCategoriesName1("Расходники, Носители информации");
-        System.out.println(lp.size());
-        for (Product p :
-                lp) {
-            System.out.println(p.getCategoriesName2_product());
-        }
+        Product lp = productService.getCategoriesName1("Расходники, Носители информации");
+        System.out.println(productService.getByNameProduct("\"Наушники Defender Pulse 430 black-purple\"").getCategoriesName1());
+//        for (Product p :
+//                productService.getAll()) {
+//            System.out.println(p.getName());
+//        }
+        //System.out.println(lp.getCategoriesName2());
+
 
         return "home_v1";
     }

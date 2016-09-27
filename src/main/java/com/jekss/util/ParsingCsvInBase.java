@@ -142,60 +142,60 @@ public class ParsingCsvInBase {
 
                     //System.out.println(s[1] + " 1");
 
-                    product.setName_product(s[1] + " 1");
+                    product.setName(s[1] + " 1");
 
                     //System.out.println(s[2] + " 2");
                     if (s[2].equals(null) || s[2].equals("")) {
-                        product.setPrice_product(0.0);
+                        product.setPrice(0.0);
                     } else if (!s[2].equals(null) || !s[2].equals("")) {
-                        product.setPrice_product(Double.parseDouble(s[2].replace(',', '.')));
+                        product.setPrice(Double.parseDouble(s[2].replace(',', '.')));
                     }
 
                     //System.out.println(s[4] + " 4");
-                    product.setDateAdded_product(s[4]);
+                    product.setDateAdded(s[4]);
 
                     //System.out.println(s[5] + " 5");
                     if (s[5].equals(null) || s[5].trim().equals("")) {
-                        product.setManufacturesName_product("NoNaMe");
+                        product.setManufactures("NoNaMe");
                     } else if (!s[5].equals(null) || !s[5].trim().equals("")) {
-                        product.setManufacturesName_product(s[5]);
+                        product.setManufactures(s[5]);
                     }
 
                     //System.out.println(s[6] + " 6");
                     if (s[6].equals(null) || s[6].trim().equals("")) {
-                        product.setCategoriesName1_product("\"NoCat1\"");
+                        product.setCategoriesName1("\"NoCat1\"");
                     } else {
-                        product.setCategoriesName1_product(s[6]);
+                        product.setCategoriesName1(s[6]);
                     }
 
 
                     //System.out.println(s[7] + " 7");
                     if (s[7].equals(null) || s[7].trim().equals("")) {
-                        product.setCategoriesName2_product("\"NoCat2\"");
+                        product.setCategoriesName2("\"NoCat2\"");
                     } else if (!s[7].equals(null) || !s[7].equals("")) {
-                        product.setCategoriesName2_product(s[7]);
+                        product.setCategoriesName2(s[7]);
                     }
 
                     //System.out.println(s[8] + " 8");
                     if (s[8].equals(null) || s[8].equals("")) {
-                        product.setCategoriesName3_product("\"NoCat3\"");
+                        product.setCategoriesName3("\"NoCat3\"");
                     } else if (!s[8].equals(null) || !s[8].equals("")) {
-                        product.setCategoriesName3_product(s[8]);
+                        product.setCategoriesName3(s[8]);
                     }
 
                     //System.out.println(s[9] + " 9");
                     if (s[9].equals(null) || s[9].equals("")) {
-                        product.setCategoriesName4_product("\"NoCat4\"");
+                        product.setCategoriesName4("\"NoCat4\"");
                     } else if (!s[9].equals(null) || !s[9].equals("")) {
-                        product.setCategoriesName4_product(s[9]);
+                        product.setCategoriesName4(s[9]);
                     }
 
                     //System.out.println(s[10] + " 10");
                     if (s[10].equals(null) || s[10].equals("")) {
-                        product.setCategoriesName5_product("\"NoCat5\"");
+                        product.setCategoriesName5("\"NoCat5\"");
 
                     } else if (!s[10].equals(null) || !s[10].equals("")) {
-                        product.setCategoriesName5_product(s[10]);
+                        product.setCategoriesName5(s[10]);
                     }
 
                     //System.out.println(s[13] + " 13");

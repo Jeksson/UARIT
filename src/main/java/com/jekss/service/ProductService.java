@@ -15,6 +15,6 @@ public interface ProductService {
     Product getByNameProduct(String name_product);
     Product editProduct(Product product);
     List<Product> getAll();
-    List<Product> getCategoriesName2InCategoriesName1(String categoriesName1);
+    Product getCategoriesName1(String categoriesName1);
 
 }

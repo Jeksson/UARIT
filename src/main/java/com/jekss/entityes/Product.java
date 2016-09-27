@@ -11,18 +11,18 @@ public class Product{
 
     private int id_product;
     private int id;
-    private String name_product;
-    private double price_product;
-    private String dateAdded_product;
-    private String manufacturesName_product;
-    private String categoriesName1_product;
-    private String categoriesName2_product;
-    private String categoriesName3_product;
-    private String categoriesName5_product;
-    private String categoriesName4_product;
-    private String categoriesName6_product;
-    private String description_product;
-    private String picture_product;
+    private String name;
+    private double price;
+    private String dateAdded;
+    private String manufactures;
+    private String categoriesName1;
+    private String categoriesName2;
+    private String categoriesName3;
+    private String categoriesName5;
+    private String categoriesName4;
+    private String categoriesName6;
+    private String description;
+    private String picture;
 
 
 
@@ -49,117 +49,117 @@ public class Product{
     }
 
 
-    @Column(name = "name_product", length = 300)
-    public String getName_product() {
-        return name_product;
+    @Column(name = "name", length = 300)
+    public String getName() {
+        return name;
     }
 
-    public void setName_product(String name_product) {
-        this.name_product = name_product;
-    }
-
-
-    @Column(name = "price_product")
-    public double getPrice_product() {
-        return price_product;
-    }
-
-    public void setPrice_product(double price_product) {
-        this.price_product = price_product;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
-    @Column(name = "dateadded_product")
-    public String getDateAdded_product() {
-        return dateAdded_product;
+    @Column(name = "price")
+    public double getPrice() {
+        return price;
     }
 
-    public void setDateAdded_product(String dateAdded_product) {
-        this.dateAdded_product = dateAdded_product;
-    }
-
-    @Column(name = "manufacturesname_id")
-    public String getManufacturesName_product() {
-        return manufacturesName_product;
-    }
-
-    public void setManufacturesName_product(String manufacturesName_product) {
-        this.manufacturesName_product = manufacturesName_product;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
 
-    @Column(name = "categoriesname1_id")
-    public String getCategoriesName1_product() {
-        return categoriesName1_product;
+    @Column(name = "dateadded")
+    public String getDateAdded() {
+        return dateAdded;
     }
 
-    public void setCategoriesName1_product(String categoriesName1_product) {
-        this.categoriesName1_product = categoriesName1_product;
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
-
-    @Column(name = "categoriesname2_id")
-    public String getCategoriesName2_product() {
-        return categoriesName2_product;
+    @Column(name = "manufactures")
+    public String getManufactures() {
+        return manufactures;
     }
 
-    public void setCategoriesName2_product(String categoriesName2_product) {
-        this.categoriesName2_product = categoriesName2_product;
-    }
-
-    @Column(name = "categoriesname3_id")
-    public String getCategoriesName3_product() {
-        return categoriesName3_product;
-    }
-
-    public void setCategoriesName3_product(String categoriesName3_product) {
-        this.categoriesName3_product = categoriesName3_product;
-    }
-
-    @Column(name = "categoriesname5_id")
-    public String getCategoriesName5_product() {
-        return categoriesName5_product;
-    }
-
-    public void setCategoriesName5_product(String categoriesName5_product) {
-        this.categoriesName5_product = categoriesName5_product;
-    }
-
-    @Column(name = "categoriesname4_id")
-    public String getCategoriesName4_product() {
-        return categoriesName4_product;
-    }
-
-    public void setCategoriesName4_product(String categoriesName4_product) {
-        this.categoriesName4_product = categoriesName4_product;
-    }
-
-    @Column(name = "categoriesname6_id")
-    public String getCategoriesName6_product() {
-        return categoriesName6_product;
+    public void setManufactures(String manufactures) {
+        this.manufactures = manufactures;
     }
 
 
-    public void setCategoriesName6_product(String categoriesName6_product) {
-        this.categoriesName6_product = categoriesName6_product;
+    @Column(name = "categoriesName1")
+    public String getCategoriesName1() {
+        return categoriesName1;
     }
 
-    @Column(name = "description_product")
-    public String getDescription_product() {
-        return description_product;
+    public void setCategoriesName1(String categoriesName1) {
+        this.categoriesName1 = categoriesName1;
     }
 
-    public void setDescription_product(String description_product) {
-        this.description_product = description_product;
+
+    @Column(name = "categoriesname2")
+    public String getCategoriesName2() {
+        return categoriesName2;
+    }
+
+    public void setCategoriesName2(String categoriesName2) {
+        this.categoriesName2 = categoriesName2;
+    }
+
+    @Column(name = "categoriesname3")
+    public String getCategoriesName3() {
+        return categoriesName3;
+    }
+
+    public void setCategoriesName3(String categoriesName3) {
+        this.categoriesName3 = categoriesName3;
+    }
+
+    @Column(name = "categoriesname5")
+    public String getCategoriesName5() {
+        return categoriesName5;
+    }
+
+    public void setCategoriesName5(String categoriesName5) {
+        this.categoriesName5 = categoriesName5;
+    }
+
+    @Column(name = "categoriesname4")
+    public String getCategoriesName4() {
+        return categoriesName4;
+    }
+
+    public void setCategoriesName4(String categoriesName4) {
+        this.categoriesName4 = categoriesName4;
+    }
+
+    @Column(name = "categoriesname6")
+    public String getCategoriesName6() {
+        return categoriesName6;
+    }
+
+
+    public void setCategoriesName6(String categoriesName6) {
+        this.categoriesName6 = categoriesName6;
+    }
+
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Column(name = "url_picture")
-    public String getPicture_product() {
-        return picture_product;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPicture_product(String picture_product) {
-        this.picture_product = picture_product;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
 

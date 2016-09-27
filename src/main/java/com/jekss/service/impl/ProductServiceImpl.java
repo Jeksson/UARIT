@@ -6,6 +6,7 @@ import com.jekss.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Override
     public Product addProduct(Product product) {
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getByNameProduct(String name_product) {
-        return productRepository.findByName(name_product);
+        return productRepository.findByNameQury(name_product);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getCategoriesName2InCategoriesName1(String categoriesName1) {
-        return productRepository.findDistinctByCategoriesName1(categoriesName1);
+    public Product getCategoriesName1(String categoriesName1) {
+        return productRepository.findByCategoriesName1Query(categoriesName1);
     }
 }

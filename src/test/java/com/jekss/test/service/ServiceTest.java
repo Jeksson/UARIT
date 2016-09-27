@@ -58,7 +58,7 @@ public class ServiceTest {
 @Test
 public void createDB(){
     Product productAll = new Product();
-    productAll.setName_product("prod");
+    productAll.setName("prod");
     productService.addProduct(productAll);
 }
 
