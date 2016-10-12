@@ -11,10 +11,15 @@ public interface ProductService {
 
     Product addProduct(Product product);
 
+    void saveNewProduct(Product product);
+
+    void flashNewProduct();
+
     void deleteProduct(int id_product);
     Product getByNameProduct(String name_product);
     Product editProduct(Product product);
     List<Product> getAll();
-    Product getCategoriesName1(String categoriesName1);
+    List<Product> getCategoriesName1(String categoriesName1);
 
+    List <String> getCategName1All();
 }

@@ -1,6 +1,7 @@
 package com.jekss.util;
 
 import com.jekss.entityes.*;
+import com.jekss.repository.ProductRepository;
 import com.jekss.service.*;
 import com.jekss.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,9 +50,14 @@ public class ParsingCsvInBase {
 
     private volatile String savePath;
 
+    private List <Product> lp;
+
 
     @Resource
     private ProductService productService;
+
+    @Resource
+    private ProductRepository productRepository;
 
 
     //вынес логику из контроллера
@@ -108,8 +115,10 @@ public class ParsingCsvInBase {
 
   // парсинг и загрузка файла + счетчик count;
 
+    @Transactional
     public void setCsvProdAll(String name, String path) {
 
+        lp = new ArrayList<>();
 
         String mtp = "";
         BufferedReader bf = null;
@@ -202,11 +211,16 @@ public class ParsingCsvInBase {
 
                 }
 
-                productService.addProduct(product);
-
-                //System.out.println(productService.addProduct(product));
+                //productService.addProduct(product);
+                //lp.add(product);
+                //System.out.println(product.toString());
+                //productService.saveNewProduct(product);
+                productService.saveNewProduct(product);
                 System.out.println("--------------------------------------------------   " + getCount());
             }
+            //productRepository.save(lp);
+            //lp.clear();
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

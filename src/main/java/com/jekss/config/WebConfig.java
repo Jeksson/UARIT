@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 /**
  * Created by data on 04.07.16.
  */
-@EnableAsync
+
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.jekss")
@@ -48,14 +48,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    @Bean
-    public ThreadPoolTaskExecutor threadPoolTaskExecutor(){
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(25);
-        executor.initialize();
-
-        return  executor;
-    }
+//    @Bean
+//    public ThreadPoolTaskExecutor threadPoolTaskExecutor(){
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setCorePoolSize(10);
+//        executor.setMaxPoolSize(10);
+//        executor.setQueueCapacity(25);
+//        executor.initialize();
+//
+//        return  executor;
+//    }
 }

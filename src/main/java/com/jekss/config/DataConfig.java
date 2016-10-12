@@ -1,8 +1,7 @@
 package com.jekss.config;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mchange.v2.c3p0.DataSources;
-import org.hibernate.ejb.HibernatePersistence;
+
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,18 +17,17 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Properties;
 
 /**
  * Created by data on 04.07.16.
  */
 @Configuration
+@EnableJpaRepositories("com.jekss.repository")
 @EnableTransactionManagement
 @ComponentScan("com.jekss")
 @PropertySource("classpath:app.properties")
-@EnableJpaRepositories("com.jekss.repository")
 public class DataConfig {
 
     private static final String PROP_DATABASE_DRIVER = "db.driver";
@@ -45,37 +43,33 @@ public class DataConfig {
     private Environment env;
 
     @Bean
-    public DataSource dataSource() throws PropertyVetoException, SQLException {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        ComboPooledDataSource pooledDataSource = new ComboPooledDataSource();
-
-        pooledDataSource.setDriverClass(env.getRequiredProperty(PROP_DATABASE_DRIVER));
-        pooledDataSource.setJdbcUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-        pooledDataSource.setUser(env.getRequiredProperty(PROP_DATABASE_USERNAME));
-        pooledDataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
-        pooledDataSource.setMinPoolSize(5);
-        pooledDataSource.setAcquireIncrement(5);
-        pooledDataSource.setMaxPoolSize(20);
-
-//        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
-//        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-//        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
+    public DataSource dataSource() throws PropertyVetoException, SQLException{
+//        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+//
+//        dataSource.setDriverClass(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+//        dataSource.setJdbcUrl(env.getRequiredProperty(PROP_DATABASE_URL));
+//        dataSource.setUser(env.getRequiredProperty(PROP_DATABASE_USERNAME));
 //        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
+//        dataSource.setMinPoolSize(5);
+//        dataSource.setAcquireIncrement(5);
+//        dataSource.setMaxPoolSize(20);
 
-//        DataSource unpuled_DataSource = DataSources.unpooledDataSource(PROP_DATABASE_URL,PROP_DATABASE_USERNAME, PROP_DATABASE_PASSWORD);
-//Map overides = new HashMap();
-//        overides.put("maxStatements", "200");
-//        overides.put("maxPoolSize", new Integer(50));
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
+        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
+        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
 
 
-        return pooledDataSource;
+        return dataSource;
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws PropertyVetoException, SQLException {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
+        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         entityManagerFactoryBean.setPackagesToScan(env.getRequiredProperty(PROP_ENTITYMANAGER_PACKAGES_TO_SCAN));
 
         entityManagerFactoryBean.setJpaProperties(getHibernateProperties());

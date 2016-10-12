@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "product")
 public class Product{
 
-    private int id_product;
     private int id;
+    private int id_product;
     private String name;
     private double price;
     private String dateAdded;
@@ -25,20 +25,37 @@ public class Product{
     private String picture;
 
 
-
-
-    @Column(name = "id_product")
-    public int getId_product() {
-        return id_product;
+    public Product() {
     }
 
-    public void setId_product(int id_product) {
+    public Product(int id_product, String name,
+                   double price, String dateAdded,
+                   String manufactures,
+                   String categoriesName1,
+                   String categoriesName2,
+                   String categoriesName5,
+                   String categoriesName3,
+                   String categoriesName4,
+                   String categoriesName6,
+                   String description,
+                   String picture) {
         this.id_product = id_product;
+        this.name = name;
+        this.price = price;
+        this.dateAdded = dateAdded;
+        this.manufactures = manufactures;
+        this.categoriesName1 = categoriesName1;
+        this.categoriesName2 = categoriesName2;
+        this.categoriesName5 = categoriesName5;
+        this.categoriesName3 = categoriesName3;
+        this.categoriesName4 = categoriesName4;
+        this.categoriesName6 = categoriesName6;
+        this.description = description;
+        this.picture = picture;
     }
-
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 6, nullable = false)
     public int getId() {
         return id;
@@ -48,6 +65,14 @@ public class Product{
         this.id = id;
     }
 
+    @Column(name = "id_product")
+    public int getId_product() {
+        return id_product;
+    }
+
+    public void setId_product(int id_product) {
+        this.id_product = id_product;
+    }
 
     @Column(name = "name", length = 300)
     public String getName() {
@@ -153,7 +178,7 @@ public class Product{
         this.description = description;
     }
 
-    @Column(name = "url_picture")
+    @Column(name = "picture")
     public String getPicture() {
         return picture;
     }
@@ -180,5 +205,58 @@ public class Product{
                 ", description='" + description + '\'' +
                 ", picture='" + picture + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (id != product.id) return false;
+        if (id_product != product.id_product) return false;
+        if (Double.compare(product.price, price) != 0) return false;
+        if (name != null ? !name.equals(product.name) : product.name != null) return false;
+        if (dateAdded != null ? !dateAdded.equals(product.dateAdded) : product.dateAdded != null) return false;
+        if (manufactures != null ? !manufactures.equals(product.manufactures) : product.manufactures != null)
+            return false;
+        if (categoriesName1 != null ? !categoriesName1.equals(product.categoriesName1) : product.categoriesName1 != null)
+            return false;
+        if (categoriesName2 != null ? !categoriesName2.equals(product.categoriesName2) : product.categoriesName2 != null)
+            return false;
+        if (categoriesName3 != null ? !categoriesName3.equals(product.categoriesName3) : product.categoriesName3 != null)
+            return false;
+        if (categoriesName5 != null ? !categoriesName5.equals(product.categoriesName5) : product.categoriesName5 != null)
+            return false;
+        if (categoriesName4 != null ? !categoriesName4.equals(product.categoriesName4) : product.categoriesName4 != null)
+            return false;
+        if (categoriesName6 != null ? !categoriesName6.equals(product.categoriesName6) : product.categoriesName6 != null)
+            return false;
+        if (description != null ? !description.equals(product.description) : product.description != null) return false;
+        return picture != null ? picture.equals(product.picture) : product.picture == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + id_product;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (dateAdded != null ? dateAdded.hashCode() : 0);
+        result = 31 * result + (manufactures != null ? manufactures.hashCode() : 0);
+        result = 31 * result + (categoriesName1 != null ? categoriesName1.hashCode() : 0);
+        result = 31 * result + (categoriesName2 != null ? categoriesName2.hashCode() : 0);
+        result = 31 * result + (categoriesName3 != null ? categoriesName3.hashCode() : 0);
+        result = 31 * result + (categoriesName5 != null ? categoriesName5.hashCode() : 0);
+        result = 31 * result + (categoriesName4 != null ? categoriesName4.hashCode() : 0);
+        result = 31 * result + (categoriesName6 != null ? categoriesName6.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (picture != null ? picture.hashCode() : 0);
+        return result;
     }
 }

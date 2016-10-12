@@ -1,7 +1,6 @@
 package com.jekss.test.service;
 
 
-
 import com.jekss.entityes.Product;
 import com.jekss.service.ProductService;
 import com.jekss.test.config.TestDataBaseConfig;
@@ -10,6 +9,8 @@ import com.jekss.util.ParsingCsvInBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
@@ -38,29 +39,48 @@ public class ServiceTest {
     protected EntityManager em;
 
     @Resource
-    Environment env;
-
-
+    private Environment env;
 
     @Resource
     private ProductService productService;
 
-
-
-    @Resource
-    ParsingCsvInBase base;
+    @Autowired
+    private ParsingCsvInBase base;
 
     @Before
     public void setUp() throws Exception {
         em = emf.createEntityManager();
     }
 
-@Test
-public void createDB(){
-    Product productAll = new Product();
-    productAll.setName("prod");
-    productService.addProduct(productAll);
-}
+//    @Test
+//    public void createDB() {
+//        Product productAll = new Product();
+//        productAll.setName("prod");
+//        productService.addProduct(productAll);
+//    }
+
+    @Test
+    public void craDB(){
+        base.setCsvProdAll( "8128_21_07_2016.csv","/home/jekss");
+    }
+
+//    @Test
+//    public void workInRepo(){
+//        for (String p :
+//                productService.getCategName1All()) {
+//            System.out.println(p);
+//        }
+//        //System.out.println(p.getName());
+//
+//    }
+
+//    @Test
+//    public void worTest(){
+//        for (Product p :
+//                productService.getAll()) {
+//            System.out.println(p.toString());
+//        }
+//    }
 
 
 }

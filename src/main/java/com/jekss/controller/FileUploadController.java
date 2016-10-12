@@ -38,13 +38,13 @@ import javax.servlet.http.HttpServletResponse;
 public class FileUploadController {
 
     @Resource
-    Environment env;
+    private Environment env;
 
     @Resource
-    ParsingCsvInBase parsingCsvInBase;
+    private ParsingCsvInBase parsingCsvInBase;
 
-    @Autowired
-    GetFileInPath getFileInPath;
+    @Resource
+    private GetFileInPath getFileInPath;
 
     String fileName;
 
