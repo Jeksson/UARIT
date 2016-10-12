@@ -1,6 +1,7 @@
 package com.jekss.test.config;
 
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -53,23 +54,23 @@ public class TestDataBaseConfig {
 
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        //ComboPooledDataSourceataSource = new ComboPooledDataSource();
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
 
-       // pooledDataSource.setDriverClass(PROPERTY_NAME_DATABASE_DRIVER);
-        //pooledDataSource.setJdbcUrl(PROPERTY_NAME_DATABASE_URL);
-       // pooledDataSource.setUser(PROPERTY_NAME_DATABASE_USERNAME);
-       // pooledDataSource.setPassword(PROPERTY_NAME_DATABASE_PASSWORD);
-       // pooledDataSource.setMinPoolSize(5);
-       // pooledDataSource.setAcquireIncrement(5);
-//        pooledDataSource.setMaxPoolSize(20);
-
-
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(PROPERTY_NAME_DATABASE_DRIVER);
-        dataSource.setUrl(PROPERTY_NAME_DATABASE_URL);
-        dataSource.setUsername(PROPERTY_NAME_DATABASE_USERNAME);
+        dataSource.setDriverClass(PROPERTY_NAME_DATABASE_DRIVER);
+        dataSource.setJdbcUrl(PROPERTY_NAME_DATABASE_URL);
+        dataSource.setUser(PROPERTY_NAME_DATABASE_USERNAME);
         dataSource.setPassword(PROPERTY_NAME_DATABASE_PASSWORD);
+        dataSource.setMinPoolSize(5);
+        dataSource.setAcquireIncrement(5);
+        dataSource.setMaxPoolSize(20);
+
+
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName(PROPERTY_NAME_DATABASE_DRIVER);
+//        dataSource.setUrl(PROPERTY_NAME_DATABASE_URL);
+//        dataSource.setUsername(PROPERTY_NAME_DATABASE_USERNAME);
+//        dataSource.setPassword(PROPERTY_NAME_DATABASE_PASSWORD);
 
         return dataSource;
     }

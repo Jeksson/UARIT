@@ -3,14 +3,11 @@ package com.jekss.util;
 import com.jekss.entityes.*;
 import com.jekss.repository.ProductRepository;
 import com.jekss.service.*;
-import com.jekss.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -18,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by jekss on 20.07.16.
@@ -39,7 +35,7 @@ public class ParsingCsvInBase {
 
     private volatile BufferedReader bufferedReader;
 
-    private Product product = new Product();
+    private Product product;
 
 
 
@@ -144,14 +140,15 @@ public class ParsingCsvInBase {
 
 
                 if (getCount() > 1 && !mtp.equals(oneStringInFile)) {
+                    product = new Product();
                     String[] s = mtp.split(";");
                     //System.out.println(s.length);
-                    //System.out.println(s[0].trim());
+                    System.out.println(s[0].trim());
                     product.setId_product(Integer.parseInt(s[0].trim()));
 
                     //System.out.println(s[1] + " 1");
 
-                    product.setName(s[1] + " 1");
+                    product.setName(s[1]);
 
                     //System.out.println(s[2] + " 2");
                     if (s[2].equals(null) || s[2].equals("")) {
@@ -208,18 +205,18 @@ public class ParsingCsvInBase {
                     }
 
                     //System.out.println(s[13] + " 13");
+                    if (s[13].equals(null) || s[13].equals("")) {
+                        product.setPicture("\"NoCat5\"");
 
+                    } else if (!s[13].equals(null) || !s[13].equals("")) {
+                        product.setPicture(s[13]);
+                    }
+                    productService.editProduct(product);
                 }
 
-                //productService.addProduct(product);
-                //lp.add(product);
-                //System.out.println(product.toString());
-                //productService.saveNewProduct(product);
-                productService.saveNewProduct(product);
                 System.out.println("--------------------------------------------------   " + getCount());
             }
-            //productRepository.save(lp);
-            //lp.clear();
+
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -11,9 +11,7 @@ public interface ProductService {
 
     Product addProduct(Product product);
 
-    void saveNewProduct(Product product);
 
-    void flashNewProduct();
 
     void deleteProduct(int id_product);
     Product getByNameProduct(String name_product);

@@ -28,15 +28,6 @@ public class ProductServiceImpl implements ProductService {
         return product1;
     }
 
-    @Override
-   public void saveNewProduct(Product product){
-        productRepository.save(product);
-    }
-
-    @Override
-    public void flashNewProduct(){
-        productRepository.flush();
-    }
 
 
     @Override
