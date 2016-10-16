@@ -5,6 +5,7 @@ import com.jekss.entityes.Product;
 import com.jekss.service.ProductService;
 import com.jekss.test.config.TestDataBaseConfig;
 
+import com.jekss.util.ParsingCsvInBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,9 @@ public class ServiceTest {
     @Resource
     private ProductService productService;
 
+    @Resource
+    private ParsingCsvInBase base;
+
 
 
     @Before
@@ -57,26 +61,26 @@ public class ServiceTest {
 
 //    @Test
 //    public void craDB(){
-//        base.setCsvProdAll( "8128_21_07_2016.csv","/home/jekss");
+//        base.setCsvProdAll( "8128_21_07_201.csv","/home/jekss");
 //    }
+//
+    @Test
+    public void workInRepo(){
+        for (String p :
+                productService.getCategName1All()) {
+            System.out.println(p);
+        }
+        //System.out.println(p.getName());
+
+    }
 
 //    @Test
-//    public void workInRepo(){
-//        for (String p :
-//                productService.getCategName1All()) {
-//            System.out.println(p);
+//    public void worTest(){
+//        for (Product p :
+//                productService.getAll()) {
+//            System.out.println(p.toString());
 //        }
-//        //System.out.println(p.getName());
-//
 //    }
-
-    @Test
-    public void worTest(){
-        for (Product p :
-                productService.getAll()) {
-            System.out.println(p.toString());
-        }
-    }
 
 
 }

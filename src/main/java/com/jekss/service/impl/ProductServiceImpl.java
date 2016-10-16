@@ -28,8 +28,6 @@ public class ProductServiceImpl implements ProductService {
         return product1;
     }
 
-
-
     @Override
     public void deleteProduct(int id_product) {
         productRepository.delete(id_product);
@@ -52,8 +50,23 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List <Product> getCategoriesName1(String categoriesName1) {
-        return productRepository.findByCategoriesName1Query(categoriesName1);
+    public List <String> getCategoriesName2(String categoriesName1) {
+        return productRepository.findByCategoriesName2QueryCategorName1(categoriesName1);
+    }
+
+    @Override
+    public List<String> getCategoriesName3(String categoriesName2) {
+        return productRepository.findByCategoriesName3QueryCategorName2(categoriesName2);
+    }
+
+    @Override
+    public List<String> getCategoriesName4(String categoriesName3) {
+        return productRepository.findByCategoriesName4QueryCategorName3(categoriesName3);
+    }
+
+    @Override
+    public List<String> getCategoriesName5(String categoriesName4) {
+        return productRepository.findByCategoriesName5QueryCategorName4(categoriesName4);
     }
 
     @Override

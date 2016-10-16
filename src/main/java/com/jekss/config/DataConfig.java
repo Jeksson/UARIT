@@ -1,6 +1,7 @@
 package com.jekss.config;
 
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -44,22 +45,22 @@ public class DataConfig {
 
     @Bean
     public DataSource dataSource() throws PropertyVetoException, SQLException{
-//        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-//
-//        dataSource.setDriverClass(env.getRequiredProperty(PROP_DATABASE_DRIVER));
-//        dataSource.setJdbcUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-//        dataSource.setUser(env.getRequiredProperty(PROP_DATABASE_USERNAME));
-//        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
-//        dataSource.setMinPoolSize(5);
-//        dataSource.setAcquireIncrement(5);
-//        dataSource.setMaxPoolSize(20);
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
 
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
-        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
+        dataSource.setDriverClass(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+        dataSource.setJdbcUrl(env.getRequiredProperty(PROP_DATABASE_URL));
+        dataSource.setUser(env.getRequiredProperty(PROP_DATABASE_USERNAME));
         dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
+        dataSource.setMinPoolSize(5);
+        dataSource.setAcquireIncrement(5);
+        dataSource.setMaxPoolSize(20);
+
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
+//        dataSource.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
+//        dataSource.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
+//        dataSource.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
 
 
         return dataSource;

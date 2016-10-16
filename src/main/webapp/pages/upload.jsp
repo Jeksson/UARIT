@@ -21,10 +21,9 @@
     <ul id="ul" class="ul">
 
     </ul>
-
 </form>
 
-<form method="POST" action="uploadFile" enctype="multipart/form-data">
+<form method="POST" action="upload" enctype="multipart/form-data">
     File to upload: <input type="file" name="file">
 
 

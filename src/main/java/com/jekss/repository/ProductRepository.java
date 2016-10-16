@@ -21,8 +21,18 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select distinct p.categoriesName1 from Product p")
     List <String> findByCategoriesName1All();
 
-    @Query("select p from Product p where p.categoriesName1 = :categoriesName1")
-    List<Product> findByCategoriesName1Query(@Param("categoriesName1") String categoriesName1);
+    @Query("select distinct p.categoriesName2 from Product p where p.categoriesName1 = :categoriesName1")
+    List<String> findByCategoriesName2QueryCategorName1(@Param("categoriesName1") String categoriesName1);
 
+    @Query("select distinct p.categoriesName3 from Product p where p.categoriesName2 = :categoriesName2")
+    List<String> findByCategoriesName3QueryCategorName2(@Param("categoriesName2") String categoriesName2);
 
+    @Query("select distinct p.categoriesName4 from Product p where p.categoriesName3 = :categoriesName3")
+    List<String> findByCategoriesName4QueryCategorName3(@Param("categoriesName3") String categoriesName3);
+
+    @Query("select distinct p.categoriesName5 from Product p where p.categoriesName4 = :categoriesName4")
+    List<String> findByCategoriesName5QueryCategorName4(@Param("categoriesName4") String categoriesName4);
+
+    @Query("select distinct p.categoriesName6 from Product p where p.categoriesName5 = :categoriesName5")
+    List<String> findByCategoriesName6QueryCategorName5(@Param("categoriesName5") String categoriesName5);
 }

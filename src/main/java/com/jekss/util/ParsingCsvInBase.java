@@ -144,11 +144,11 @@ public class ParsingCsvInBase {
                     String[] s = mtp.split(";");
                     //System.out.println(s.length);
                     System.out.println(s[0].trim());
-                    product.setId_product(Integer.parseInt(s[0].trim()));
+                    product.setId(Integer.parseInt(s[0].trim()));
 
-                    //System.out.println(s[1] + " 1");
+                    //System.out.println("\"" + s[1].replace('\"', ' ').trim() + "1");
 
-                    product.setName(s[1]);
+                    product.setName(s[1].replace('\"', ' ').trim());
 
                     //System.out.println(s[2] + " 2");
                     if (s[2].equals(null) || s[2].equals("")) {
@@ -164,14 +164,14 @@ public class ParsingCsvInBase {
                     if (s[5].equals(null) || s[5].trim().equals("")) {
                         product.setManufactures("NoNaMe");
                     } else if (!s[5].equals(null) || !s[5].trim().equals("")) {
-                        product.setManufactures(s[5]);
+                        product.setManufactures(s[5].replace('\"', ' ').trim());
                     }
 
                     //System.out.println(s[6] + " 6");
                     if (s[6].equals(null) || s[6].trim().equals("")) {
                         product.setCategoriesName1("\"NoCat1\"");
                     } else {
-                        product.setCategoriesName1(s[6]);
+                        product.setCategoriesName1(s[6].replace('\"', ' ').trim());
                     }
 
 
@@ -179,21 +179,21 @@ public class ParsingCsvInBase {
                     if (s[7].equals(null) || s[7].trim().equals("")) {
                         product.setCategoriesName2("\"NoCat2\"");
                     } else if (!s[7].equals(null) || !s[7].equals("")) {
-                        product.setCategoriesName2(s[7]);
+                        product.setCategoriesName2(s[7].replace('\"', ' ').trim());
                     }
 
                     //System.out.println(s[8] + " 8");
                     if (s[8].equals(null) || s[8].equals("")) {
                         product.setCategoriesName3("\"NoCat3\"");
                     } else if (!s[8].equals(null) || !s[8].equals("")) {
-                        product.setCategoriesName3(s[8]);
+                        product.setCategoriesName3(s[8].replace('\"', ' ').trim());
                     }
 
                     //System.out.println(s[9] + " 9");
                     if (s[9].equals(null) || s[9].equals("")) {
                         product.setCategoriesName4("\"NoCat4\"");
                     } else if (!s[9].equals(null) || !s[9].equals("")) {
-                        product.setCategoriesName4(s[9]);
+                        product.setCategoriesName4(s[9].replace('\"', ' ').trim());
                     }
 
                     //System.out.println(s[10] + " 10");
@@ -201,12 +201,12 @@ public class ParsingCsvInBase {
                         product.setCategoriesName5("\"NoCat5\"");
 
                     } else if (!s[10].equals(null) || !s[10].equals("")) {
-                        product.setCategoriesName5(s[10]);
+                        product.setCategoriesName5(s[10].replace('\"', ' ').trim());
                     }
 
                     //System.out.println(s[13] + " 13");
                     if (s[13].equals(null) || s[13].equals("")) {
-                        product.setPicture("\"NoCat5\"");
+                        product.setPicture("\"NoPicture\"");
 
                     } else if (!s[13].equals(null) || !s[13].equals("")) {
                         product.setPicture(s[13]);
@@ -245,6 +245,9 @@ public class ParsingCsvInBase {
     }
 
     // открывает файл и считает количчество строк которые пишутся в countAll;
+    public synchronized void setCountAll(int c){
+        this.countAll = c;
+    }
 
     public synchronized void setCountAll(String name, String path) {
         int couAll = 0;

@@ -55,7 +55,6 @@ public class Product{
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 6, nullable = false)
     public int getId() {
         return id;
@@ -65,14 +64,6 @@ public class Product{
         this.id = id;
     }
 
-    @Column(name = "id_product")
-    public int getId_product() {
-        return id_product;
-    }
-
-    public void setId_product(int id_product) {
-        this.id_product = id_product;
-    }
 
     @Column(name = "name", length = 300)
     public String getName() {
@@ -191,7 +182,6 @@ public class Product{
     public String toString() {
         return "Product{" +
                 "id_product=" + id_product +
-                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", dateAdded='" + dateAdded + '\'' +
@@ -214,7 +204,7 @@ public class Product{
 
         Product product = (Product) o;
 
-        if (id != product.id) return false;
+
         if (id_product != product.id_product) return false;
         if (Double.compare(product.price, price) != 0) return false;
         if (name != null ? !name.equals(product.name) : product.name != null) return false;
@@ -242,8 +232,7 @@ public class Product{
     public int hashCode() {
         int result;
         long temp;
-        result = id;
-        result = 31 * result + id_product;
+        result = id_product;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));

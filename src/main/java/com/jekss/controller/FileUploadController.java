@@ -78,7 +78,7 @@ public class FileUploadController {
     }
 
 
-    @RequestMapping(value = "uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "upload", method = RequestMethod.POST)
     public String uploadFileHandler(@RequestParam("file") MultipartFile file,
                                     HttpServletRequest request, Model model) {
 
@@ -89,7 +89,6 @@ public class FileUploadController {
             } else model.addAttribute("upload", file.getOriginalFilename() + " upload error");
         } else model.addAttribute("upload", file.getOriginalFilename() + " upload error extension filed");
 
-
         return "upload";
     }
 
@@ -97,9 +96,16 @@ public class FileUploadController {
     @RequestMapping(value = "uploadCsv")
     @ResponseBody
     public List<String> upgradeBase(@RequestParam(value = "name") String fileName, HttpServletRequest request) {
-        System.out.println(fileName.trim() + " filename in upgrade base");
+        //System.out.println(fileName.trim() + " filename in upgrade base");
+
+        if(parsingCsvInBase.getCount() != 0){
+            parsingCsvInBase.setCountAll(0);
+            parsingCsvInBase.setCount(0);
+        }
+
         parsingCsvInBase.setCountAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
-        System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
+
+        //System.out.println(parsingCsvInBase.getCountAll() + " get count all in test");
 
         parsingCsvInBase.setCsvProdAll(fileName.trim(), request.getServletContext().getRealPath("") + env.getRequiredProperty(PATH_IN_FILE));
 
