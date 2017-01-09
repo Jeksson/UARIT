@@ -8,14 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-    <title>Upload File Request Page</title>
-    <script type="text/JavaScript" src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js">
-    </script>
 
-</head>
-<body>
+<jsp:include page="_header.jsp"/>
+
 
 <form name="Form">
     <ul id="ul" class="ul">
@@ -24,14 +19,13 @@
 </form>
 
 <form method="POST" action="upload" enctype="multipart/form-data">
-    File to upload: <input type="file" name="file">
+    File to upload: <input type="file" name="file" accept="text/csv">
 
 
     <input type="submit" value="Upload"> Press here to upload the file!
 
     <br>
 
-    <%--${upload}--%>
 </form>
 <br>
 

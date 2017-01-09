@@ -2,7 +2,9 @@ package com.jekss.test.service;
 
 
 import com.jekss.entityes.Product;
+import com.jekss.entityes.User;
 import com.jekss.service.ProductService;
+import com.jekss.service.UserService;
 import com.jekss.test.config.TestDataBaseConfig;
 
 import com.jekss.util.ParsingCsvInBase;
@@ -20,6 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 
 @DirtiesContext
@@ -45,11 +48,24 @@ public class ServiceTest {
     @Resource
     private ParsingCsvInBase base;
 
+    @Resource
+    private UserService userService;
+
 
 
     @Before
     public void setUp() throws Exception {
         em = emf.createEntityManager();
+    }
+
+
+    @Test
+    public void userAll(){
+        List <User>list = userService.getAll();
+        for (User user :
+                list) {
+            System.out.println(user.toString());
+        }
     }
 
 //    @Test
@@ -64,15 +80,15 @@ public class ServiceTest {
 //        base.setCsvProdAll( "8128_21_07_201.csv","/home/jekss");
 //    }
 //
-    @Test
-    public void workInRepo(){
-        for (String p :
-                productService.getCategName1All()) {
-            System.out.println(p);
-        }
-        //System.out.println(p.getName());
-
-    }
+//    @Test
+//    public void workInRepo(){
+//        for (String p :
+//                productService.getCategName1All()) {
+//            System.out.println(p);
+//        }
+//        //System.out.println(p.getName());
+//
+//    }
 
 //    @Test
 //    public void worTest(){

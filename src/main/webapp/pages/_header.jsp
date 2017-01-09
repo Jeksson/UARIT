@@ -7,7 +7,9 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 
 <html>
 
@@ -18,19 +20,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Title -->
-    <title>Регистрация</title>
+    <title>UAR IT</title>
 
     <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,900,700italic,500italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,900,700italic,500italic'
+          rel='stylesheet' type='text/css'>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/perfect-scrollbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/flexslider.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/flexslider.css" type="text/css"
+          media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/fontello.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/animation.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/chosen.css">
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/pages/css/settings.css" media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/owl.carousel.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/owl.theme.css">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -39,6 +47,8 @@
     <!--[if IE 7]>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/fontello-ie7.css">
     <![endif]-->
+
+
 
 </head>
 
@@ -60,34 +70,54 @@
 
                     <nav id="top-navigation" class="col-lg-7 col-md-7 col-sm-7">
                         <ul class="pull-left">
-                            <li><a href="orders_list.html">List Order</a></li>
-                            <li><a href="order_info.html">Checkout</a></li>
-                            <li><a href="text_page.html">About Us</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="orders_list.html">Список заказов</a></li>
+                            <li><a href="order_info.html">Доставка и оплата</a></li>
+                            <li><a href="text_page.html">О нас</a></li>
+                            <li><a href="contact.html">Наши контакты</a></li>
                         </ul>
                     </nav>
 
                     <nav class="col-lg-5 col-md-5 col-sm-5">
+
+
                         <ul class="pull-right">
-                            <li class="purple"><a href="#"><i class="icons icon-user-3"></i> Login</a>
+
+                            <sec:authorize access="isAuthenticated()">
+                                <li class="purple">
+                                   <p>Hello, ${userDetails.username}!</p>
+                                    <a href="/logout">Выйти</a>
+                                </li>
+                            </sec:authorize>
+
+                            <sec:authorize access="isAnonymous()">
+                            <li class="purple"><a href="#"><i class="icons icon-user-3"></i>Войти</a>
                                 <ul id="login-dropdown" class="box-dropdown">
                                     <li>
                                         <div class="box-wrapper">
-                                            <h4>LOGIN</h4>
-                                            <div class="iconic-input">
-                                                <input type="text" placeholder="Username">
-                                                <i class="icons icon-user-3"></i>
-                                            </div>
-                                            <div class="iconic-input">
-                                                <input type="text" placeholder="Password">
-                                                <i class="icons icon-lock"></i>
-                                            </div>
-                                            <input type="checkbox" id="loginremember"> <label for="loginremember">Remember me</label>
-                                            <br>
-                                            <br>
-                                            <div class="pull-left">
-                                                <input type="submit" class="orange" value="Login">
-                                            </div>
+
+                                            <c:url value="/j_spring_security_check" var="loginUrl"/>
+                                            <form action="${loginUrl}" method="post">
+                                                <div class="iconic-input">
+                                                    <input type="text" name="j_username" placeholder="логин">
+                                                    <i class="icons icon-user-3"></i>
+                                                </div>
+                                                <div class="iconic-input">
+                                                    <input type="password" name="j_password" placeholder="пароль">
+                                                    <i class="icons icon-lock"></i>
+                                                </div>
+                                                <input type="checkbox" name="remember-me-param" id="loginremember">
+                                                <label
+                                                        for="loginremember">Запомнить меня</label>
+                                                <br>
+                                                <br>
+                                                <div class="pull-left">
+                                                    <input type="submit" class="orange" value="Войти">
+                                                </div>
+
+                                            </form>
+
+
+
                                             <div class="pull-right">
                                                 <a href="#">Забыли пароль?</a>
                                                 <br>
@@ -96,15 +126,17 @@
                                             </div>
                                             <br class="clearfix">
                                         </div>
-                                        <div class="footer">
-                                            <h4 class="pull-left">Новый пользователь?</h4>
-                                            <a class="button pull-right" href="create_an_account.jsp">Create an account</a>
-                                        </div>
+
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="${pageContext.request.contextPath}/register"><i class="icons icon-lock"></i> Создать аккаунт</a></li>
+
+                            <li><a href="${pageContext.request.contextPath}/registr"><i class="icons icon-lock"></i>
+                                Создать аккаунт</a></li>
+                            </sec:authorize>
                         </ul>
+
+
                     </nav>
 
                 </div>
@@ -113,15 +145,15 @@
             <!-- /Top Header -->
 
 
-
             <!-- Main Header -->
             <div id="main-header">
 
                 <div class="row">
 
                     <div id="logo" class="col-lg-4 col-md-4 col-sm-4">
-                        <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/pages/img/logo.png"
-                                                                           alt="Logo"></a>
+                        <a href="${pageContext.request.contextPath}/"><img
+                                src="${pageContext.request.contextPath}/pages/img/logo.png"
+                                alt="Logo"></a>
                     </div>
 
                     <nav id="middle-navigation" class="col-lg-8 col-md-8 col-sm-8">
@@ -146,7 +178,8 @@
                                                         <p>Product code PSBJ3</p>
                                                     </td>
                                                     <td>
-                                                        <span class="quantity"><span class="light">1 x</span> $79.00</span>
+                                                        <span class="quantity"><span
+                                                                class="light">1 x</span> $79.00</span>
                                                         <a href="#" class="parent-color">Remove</a>
                                                     </td>
                                                 </tr>
@@ -157,7 +190,8 @@
                                                         <p>Product code PSBJ3</p>
                                                     </td>
                                                     <td>
-                                                        <span class="quantity"><span class="light">1 x</span> $79.00</span>
+                                                        <span class="quantity"><span
+                                                                class="light">1 x</span> $79.00</span>
                                                         <a href="#" class="parent-color">Remove</a>
                                                     </td>
                                                 </tr>
@@ -168,7 +202,8 @@
                                                         <p>Product code PSBJ3</p>
                                                     </td>
                                                     <td>
-                                                        <span class="quantity"><span class="light">1 x</span> $79.00</span>
+                                                        <span class="quantity"><span
+                                                                class="light">1 x</span> $79.00</span>
                                                         <a href="#" class="parent-color">Remove</a>
                                                     </td>
                                                 </tr>
@@ -339,8 +374,10 @@
                                     <li><span class="nav-caption">Digital Cameras</span></li>
                                     <li><a href="#"><i class="icons icon-right-dir"></i> Batteries</a></li>
                                     <li><a href="#"><i class="icons icon-right-dir"></i> Cables &amp; Adapters</a></li>
-                                    <li><a href="#"><i class="icons icon-right-dir"></i> Camcorder Tapes &amp; Discs</a></li>
-                                    <li><a href="#"><i class="icons icon-right-dir"></i> Cases, Bags &amp; Covers</a></li>
+                                    <li><a href="#"><i class="icons icon-right-dir"></i> Camcorder Tapes &amp; Discs</a>
+                                    </li>
+                                    <li><a href="#"><i class="icons icon-right-dir"></i> Cases, Bags &amp; Covers</a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -391,7 +428,9 @@
                         <table id="search-bar-table">
                             <tr>
                                 <td class="search-column-1">
-                                    <p><span class="grey">Popular Searches:</span> <a href="#">accessories</a>, <a href="#">audio</a>, <a href="#">camera</a>, <a href="#">phone</a>, <a href="#">storage</a>, <a href="#">more</a></p>
+                                    <p><span class="grey">Popular Searches:</span> <a href="#">accessories</a>, <a
+                                            href="#">audio</a>, <a href="#">camera</a>, <a href="#">phone</a>, <a
+                                            href="#">storage</a>, <a href="#">more</a></p>
                                     <input type="text" placeholder="Enter your keyword">
                                 </td>
                                 <td class="search-column-2">

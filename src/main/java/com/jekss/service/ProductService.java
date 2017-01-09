@@ -19,4 +19,5 @@ public interface ProductService {
     List<String> getCategoriesName4(String categoriesName3);
     List<String> getCategoriesName5(String categoriesName4);
     List <String> getCategName1All();
+    List<String> getAllBrand();
 }

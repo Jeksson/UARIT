@@ -1,9 +1,8 @@
 package com.jekss.entityes;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 /**
  * Created by jekss on 16.10.16.
@@ -15,6 +14,7 @@ public class User {
     private int id;
     private String name;
     private String email;
+    private String login;
     private String password;
     private int numberTell;
     private String city;
@@ -40,6 +40,8 @@ public class User {
     }
 
     @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name= "increment", strategy= "increment")
     @Column(name = "id", nullable = false, length = 6)
     public int getId() {
         return id;
@@ -65,6 +67,15 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column(name = "login", nullable = false)
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     @Column(name = "password", nullable = false, length = 255)
@@ -130,5 +141,19 @@ public class User {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (adress != null ? adress.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", numberTell=" + numberTell +
+                ", city='" + city + '\'' +
+                ", adress='" + adress + '\'' +
+                '}';
     }
 }

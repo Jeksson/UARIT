@@ -1,11 +1,9 @@
 package com.jekss.config;
 
-import com.jekss.service.impl.UserDetailsServiceImpl;
+import com.jekss.service.security.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -50,9 +48,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+
     @Bean
-    public UserDetailsService getUserDetailsService(){
-        return new UserDetailsServiceImpl();
+    public UserDetailsService userDetailsService(){
+        return new UserDetailServiceImpl();
     }
 
 //    @Bean

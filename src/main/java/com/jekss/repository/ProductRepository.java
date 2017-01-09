@@ -35,4 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("select distinct p.categoriesName6 from Product p where p.categoriesName5 = :categoriesName5")
     List<String> findByCategoriesName6QueryCategorName5(@Param("categoriesName5") String categoriesName5);
+
+    @Query("select distinct p.manufactures from Product p")
+    List<String> findByBrandAll();
 }

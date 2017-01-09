@@ -1,12 +1,17 @@
 package com.jekss.util.registration;
 
+
+import org.springframework.stereotype.Service;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by jekss on 28.10.15.
  */
+@Service
 public class HashPasswordUser {
+
 
     private  String sha1(String text) throws NoSuchAlgorithmException {
         MessageDigest mDigest = MessageDigest.getInstance("SHA1");

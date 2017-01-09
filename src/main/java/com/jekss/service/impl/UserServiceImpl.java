@@ -3,10 +3,13 @@ package com.jekss.service.impl;
 import com.jekss.entityes.User;
 import com.jekss.repository.UserRepository;
 import com.jekss.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,6 +39,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getByLoginUser(String login_user) {
+        return userRepository.findByLogin(login_user);
+    }
+
+    @Override
     public User getByEmailUser(String email_user) {
         return userRepository.findByEmail(email_user);
     }
@@ -49,4 +57,5 @@ public class UserServiceImpl implements UserService{
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
 }

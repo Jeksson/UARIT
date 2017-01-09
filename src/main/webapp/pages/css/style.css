@@ -29,7 +29,7 @@ body{
 }
 
 img{
-	max-width:40%;
+	max-width:100%;
 }
 
 .align-center{
@@ -1914,7 +1914,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 	-o-opacity:0;
 	transition:opacity 0.3s;
 	-webkit-transition:opacity 0.3s;
-	-moz-transition.:opacity 0.3s;
+	-moz-transition:opacity 0.3s;
 	-ms-transition:opacity 0.3s;
 	-o-transition:opacity 0.3s;
 }
@@ -1934,7 +1934,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 	-o-opacity:0;
 	transition:opacity 0.3s;
 	-webkit-transition:opacity 0.3s;
-	-moz-transition. :opacity 0.3s;
+	-moz-transition:opacity 0.3s;
 	-ms-transition:opacity 0.3s;
 	-o-transition:opacity 0.3s;
 }
@@ -2045,7 +2045,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 }
 
 .iosSlider .slider #item2 .image {
-	background: url(../img/slide3.jpg) right bottom no-repeat;
+	background: url(../img/slide3.jpg) right bottom no-repeat
 }
 
 .iosSlider .slider #item3 .image {
@@ -2166,7 +2166,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 	margin-bottom:30px;
 }
 
-.subcategory project-info{
+.subcategory .project-info{
 	padding:10px 0;	
 }
 
@@ -2368,6 +2368,12 @@ span.product-tag{
 }
 
 span.price{
+	color:#e74c3c;
+	font-size:16px;
+	font-weight:600;
+}
+
+span.price-a{
 	color:#e74c3c;
 	font-size:16px;
 	font-weight:600;
@@ -2689,7 +2695,7 @@ span.action-name{
 	font-family: "fontello";
 	font-style: normal;
 	font-weight: normal;
-	speak: none;
+	speach: none;
 	display: inline-block;
 	text-decoration: inherit;
 	width: 1em;
@@ -4154,7 +4160,7 @@ table.coupon-table td.fit-cell{
 	font-family: "fontello";
 	font-style: normal;
 	font-weight: normal;
-	speak: none;
+	speach: none;
 	color:#3498db;
 	position:absolute;
 	left:0;
@@ -4285,7 +4291,7 @@ table.coupon-table td.fit-cell{
 	-o-transition:all 1s;
 }
 
-.payment-list li:fisrt-child{
+.payment-list li.fisrt-child{
 	margin:0;
 }
 
@@ -4500,7 +4506,7 @@ input[type="checkbox"]+label:before{
 	font-family: "fontello";
 	font-style: normal;
 	font-weight: normal;
-	speak: none;
+	speach: none;
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1em;

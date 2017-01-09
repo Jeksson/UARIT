@@ -1,14 +1,18 @@
 package com.jekss.util.registration;
 
+import org.springframework.stereotype.Service;
+
 import java.util.regex.Pattern;
 
 /**
  * Created by jekss on 23.10.15.
  */
+@Service
 public class UserRegistrValidator {
+
     private static Pattern pattern;
 
-    private static final String LOGIN_AND_NAME_PATTERN = "^[a-zA-Z0-9_-]{3,30}$";
+    private static final String LOGIN_AND_NAME_PATTERN = "^[a-zA-ZА-Яа-я0-9_-]{5,15}$";
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 

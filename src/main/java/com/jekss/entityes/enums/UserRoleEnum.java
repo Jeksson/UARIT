@@ -5,8 +5,7 @@ package com.jekss.entityes.enums;
  */
 public enum UserRoleEnum {
     ADMIN,
-    USER,
-    ANONYMOUS;
+    USER;
 
     UserRoleEnum() {
     }
