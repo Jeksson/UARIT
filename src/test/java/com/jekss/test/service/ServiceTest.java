@@ -1,8 +1,10 @@
 package com.jekss.test.service;
 
 
+import com.jekss.entityes.Bucket;
 import com.jekss.entityes.Product;
 import com.jekss.entityes.User;
+import com.jekss.service.BucketService;
 import com.jekss.service.ProductService;
 import com.jekss.service.UserService;
 import com.jekss.test.config.TestDataBaseConfig;
@@ -22,7 +24,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @DirtiesContext
@@ -51,6 +55,9 @@ public class ServiceTest {
     @Resource
     private UserService userService;
 
+    @Resource
+    private BucketService bucketService;
+
 
 
     @Before
@@ -61,11 +68,22 @@ public class ServiceTest {
 
     @Test
     public void userAll(){
-        List <User>list = userService.getAll();
-        for (User user :
-                list) {
-            System.out.println(user.toString());
-        }
+        //Bucket b = bucketService.getBucketBySession("1111112");
+
+        Map <Integer, Integer> prodList = new HashMap<>();
+        prodList.put(242333, 122113374);
+        prodList.put(211, 10000);
+        prodList.put(4561, 2);
+
+        Bucket bucket = bucketService.editMapProductInBucket("1111112", prodList);
+
+        System.out.println("=======2 "+bucket.toString());
+
+        bucketService.editBucket(bucket);
+        Bucket bucketList = bucketService.getBucketBySession("1111112");
+
+        System.out.println("+======== 3 " +bucketList.toString());
+
     }
 
 //    @Test

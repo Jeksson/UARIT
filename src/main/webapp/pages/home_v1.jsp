@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="_header.jsp"/>
@@ -130,277 +129,22 @@
 
 
     <!-- рекомендуемые товары -->
-    <div class="products-row row">
-
-        <!-- Carousel Heading -->
-        <div class="col-lg-12 col-md-12 col-sm-12">
-
-            <div class="carousel-heading">
-                <h4>Рекомендуемые товары</h4>
-                <div class="carousel-arrows">
-                    <i class="icons icon-left-dir"></i>
-                    <i class="icons icon-right-dir"></i>
-                </div>
-            </div>
-
-        </div>
-        <!-- /Carousel Heading -->
-
-        <!-- Carousel -->
-        <div class="carousel owl-carousel-wrap col-lg-12 col-md-12 col-sm-12">
-            <div class="owl-carousel" data-max-items="3">
-                <c:forEach var="rp" items="${recomendedProd}">
-                    <!-- Slide -->
-                    <div>
-                        <!-- Carousel Item -->
-                        <div class="product">
-
-                            <div class="product-image">
-                                <img src="${rp.picture}" alt="Product1">
-
-                            </div>
-
-                            <div class="product-info">
-                                <h5><a href="products_page_v1.html">
-                                    <c:if test="${rp.name.length() < 25}">
-                                        <h5><a href="products_page_v1.html">${rp.name}</a></h5>
-                                    </c:if>
-                                    <c:if test="${rp.name.length() > 25}">
-                                        <h5><a href="products_page_v1.html">${rp.name.substring(0,25)}</a></h5>
-                                    </c:if>
-                                </a></h5>
-                                <span class="price">${rp.price}</span><span class="price-a"> грн.</span>
-                            </div>
-                            <div class="product-actions">
-												<span class="add-to-cart">
-													<span class="action-wrapper">
-														<i class="icons icon-basket-2"></i>
-														<span class="action-name">Добавить в корзину</span>
-													</span>
-												</span>
-												<span class="add-to-favorites">
-													<span class="action-wrapper">
-														<i class="icons icon-heart-empty"></i>
-														<span class="action-name">Добавить в список желаний</span>
-													</span>
-												</span>
-												<span class="add-to-compare">
-													<span class="action-wrapper">
-														<i class="icons icon-docs"></i>
-														<span class="action-name">Добавить в сравнение</span>
-													</span>
-												</span>
-                            </div>
-                        </div>
-                        <!-- /Carousel Item -->
-                    </div>
-                    <!-- /Slide -->
-
-                </c:forEach>
-
-
-            </div>
-        </div>
-        <!-- /Carousel -->
-
-    </div>
+        <jsp:include page="recomendedProd.jsp"/>
     <!-- /рекомендуемые товары -->
 
 
     <!-- Новые товары -->
-    <div class="products-row row">
-
-        <!-- Carousel Heading -->
-        <div class="col-lg-12 col-md-12 col-sm-12">
-
-            <div class="carousel-heading">
-                <h4>Новые товары</h4>
-                <div class="carousel-arrows">
-                    <i class="icons icon-left-dir"></i>
-                    <i class="icons icon-right-dir"></i>
-                </div>
-            </div>
-
-        </div>
-        <!-- /Carousel Heading -->
-
-
-        <!-- Carousel -->
-        <div class="carousel owl-carousel-wrap col-lg-12 col-md-12 col-sm-12">
-
-            <div class="owl-carousel" data-max-items="3">
-
-                <c:forEach var="np" items="${newProd}">
-
-                    <!-- Slide -->
-                    <div>
-                        <!-- Carousel Item -->
-                        <div class="product">
-
-                            <div class="product-image">
-                                <img src="${np.picture}" alt="Product1">
-                            </div>
-
-                            <div class="product-info">
-
-                                <c:if test="${np.name.length() < 25}">
-                                    <h5><a href="products_page_v1.html">${np.name}</a></h5>
-                                </c:if>
-                                <c:if test="${np.name.length() > 25}">
-                                    <h5><a href="products_page_v1.html">${np.name.substring(0,25)}</a></h5>
-                                </c:if>
-                                <span class="price">${np.price}</span><span class="price-a"> грн.</span>
-
-                            </div>
-
-                            <div class="product-actions">
-												<span class="add-to-cart">
-													<span class="action-wrapper">
-														<i class="icons icon-basket-2"></i>
-														<span class="action-name">Добавить в корзину</span>
-													</span>
-												</span>
-												<span class="add-to-favorites">
-													<span class="action-wrapper">
-														<i class="icons icon-heart-empty"></i>
-														<span class="action-name">Добавить в список желаний</span>
-													</span>
-												</span>
-												<span class="add-to-compare">
-													<span class="action-wrapper">
-														<i class="icons icon-docs"></i>
-														<span class="action-name">Добавить в сравнение</span>
-													</span>
-												</span>
-                            </div>
-
-                        </div>
-                        <!-- /Carousel Item -->
-                    </div>
-                    <!-- /Slide -->
-                </c:forEach>
-
-
-            </div>
-        </div>
-        <!-- /Carousel -->
-
-    </div>
+        <jsp:include page="newProd.jsp"/>
     <!-- /Новые товары -->
 
 
     <!-- Random товары -->
-    <div class="products-row row">
-
-        <!-- Carousel Heading -->
-        <div class="col-lg-12 col-md-12 col-sm-12">
-
-            <div class="carousel-heading">
-                <h4>Случайные товары</h4>
-                <div class="carousel-arrows">
-                    <i class="icons icon-left-dir"></i>
-                    <i class="icons icon-right-dir"></i>
-                </div>
-            </div>
-
-        </div>
-        <!-- /Carousel Heading -->
-
-        <!-- Carousel -->
-        <div class="carousel owl-carousel-wrap col-lg-12 col-md-12 col-sm-12">
-
-            <div class="owl-carousel" data-max-items="3">
-                <c:forEach var="randp" items="${randomProd}">
-                    <!-- Slide -->
-                    <div>
-                        <!-- Carousel Item -->
-                        <div class="product">
-                            <div class="product-image">
-
-                                <img src="${randp.picture}" alt="Product1">
-
-                            </div>
-                            <div class="product-info">
-                                <c:if test="${randp.name.length() < 25}">
-                                    <h5><a href="products_page_v1.html">${randp.name}</a></h5>
-                                </c:if>
-                                <c:if test="${randp.name.length() > 25}">
-                                    <h5><a href="products_page_v1.html">${randp.name.substring(0,25)}</a></h5>
-                                </c:if>
-                                <span class="price">${randp.price}</span><span class="price-a"> грн.</span>
-                            </div>
-                            <div class="product-actions">
-												<span class="add-to-cart">
-													<span class="action-wrapper">
-														<i class="icons icon-basket-2"></i>
-														<span class="action-name">Добавить в корзину</span>
-													</span>
-												</span>
-												<span class="add-to-favorites">
-													<span class="action-wrapper">
-														<i class="icons icon-heart-empty"></i>
-														<span class="action-name">Добавить в список желаний</span>
-													</span>
-												</span>
-												<span class="add-to-compare">
-													<span class="action-wrapper">
-														<i class="icons icon-docs"></i>
-														<span class="action-name">Добавить в сравнение</span>
-													</span>
-												</span>
-                            </div>
-                        </div>
-                        <!-- /Carousel Item -->
-                    </div>
-                    <!-- /Slide -->
-                </c:forEach>
-            </div>
-
-
-        </div>
-        <!-- /Carousel -->
-
-    </div>
+        <jsp:include page="randomProd.jsp"/>
     <!-- /Random товары -->
 
 
     <!-- Product Brands -->
-    <div class="products-row row">
-
-        <!-- Carousel Heading -->
-        <div class="col-lg-12 col-md-12 col-sm-12">
-
-            <div class="carousel-heading">
-                <h4>Бренды</h4>
-                <div class="carousel-arrows">
-                    <i class="icons icon-left-dir"></i>
-                    <i class="icons icon-right-dir"></i>
-                </div>
-            </div>
-
-        </div>
-        <!-- /Carousel Heading -->
-
-        <!-- Carousel -->
-        <div class="carousel owl-carousel-wrap col-lg-12 col-md-12 col-sm-12">
-
-            <div class="owl-carousel" data-max-items="5">
-                <c:forEach var="rb" items="${randomBrand}">
-                    <!-- Slide -->
-                    <div>
-                        <div class="product">
-                            <a href="#">${rb} </a>
-                        </div>
-                    </div>
-                    <!-- /Slide -->
-                </c:forEach>
-
-            </div>
-
-        </div>
-        <!-- /Carousel -->
-
-    </div>
+        <jsp:include page="brandProd.jsp"/>
     <!-- /Product Brands -->
 
 
@@ -414,40 +158,7 @@
     <!--  категории -->
     <div class="row sidebar-box purple">
 
-        <div class="col-lg-12 col-md-12 col-sm-12">
-
-            <div class="sidebar-box-heading">
-                <i class="icons icon-folder-open-empty"></i>
-                <h4>Категории</h4>
-            </div>
-
-
-            <div class="sidebar-box-content">
-                <ul>
-                    <c:forEach var="cat1" items="${listCateg1}">
-
-                        <li><a href="#">${cat1}<i class="icons icon-right-dir"></i></a>
-                            <ul class="sidebar-dropdown">
-                                <li>
-                                    <ul>
-                                        <c:forEach var="cat2" items="${mapCateg2}">
-                                            <c:if test="${cat1 == cat2.key}">
-                                                <c:forEach var="cat2Item" items="${cat2.value}">
-                                                    <li><a href="#"> ${cat2Item}</a></li>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:forEach>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </c:forEach>
-                </ul>
-            </div>
-
-
-        </div>
+        <jsp:include page="sider-boxcategories.jsp"/>
 
     </div>
     <!-- /категории -->
@@ -516,20 +227,20 @@
             <div class="sidebar-box-content">
                 <table class="bestsellers-table">
 
-                    <c:forEach var="rp" items="${randomProd}">
+                    <c:forEach var="randomProd" items="${randomProd}">
                         <tr>
                             <td class="product-thumbnail">
-                                <a href="#"><img src="${rp.picture}" alt="Product1">
+                                <a href="/productpage/${randomProd.id}"><img src="${randomProd.picture}" alt="Product1">
                                 </a>
                             </td>
                             <td class="product-info">
-                                <c:if test="${rp.name.length() < 25}">
-                                    <p><a href="#">${rp.name}</a></p>
+                                <c:if test="${randomProd.name.length() < 25}">
+                                    <p><a href="/productpage/${randomProd.id}">${randomProd.name}</a></p>
                                 </c:if>
-                                <c:if test="${rp.name.length() > 25}">
-                                    <p><a href="#">${rp.name.substring(0,25)}</a></p>
+                                <c:if test="${randomProd.name.length() > 25}">
+                                    <p><a href="/productpage/${randomProd.id}">${randomProd.name.substring(0,25)}</a></p>
                                 </c:if>
-                                <span class="price">${rp.price}</span><span class="price-a"> грн.</span>
+                                <span class="price">${randomProd.price}</span><span class="price-a"> грн.</span>
                             </td>
                         </tr>
                     </c:forEach>
@@ -601,13 +312,13 @@
 
     <%--<div class="product-image">--%>
     <%--<img src="img/products/sample1.jpg" alt="Product1">--%>
-    <%--<a href="products_page_v1.html" class="product-hover">--%>
+    <%--<a href="products_page_v1.jsp" class="product-hover">--%>
     <%--<i class="icons icon-eye-1"></i> Quick View--%>
     <%--</a>--%>
     <%--</div>--%>
 
     <%--<div class="product-info">--%>
-    <%--<h5><a href="products_page_v1.html">Lorem ipsum dolor sit amet</a></h5>--%>
+    <%--<h5><a href="products_page_v1.jsp">Lorem ipsum dolor sit amet</a></h5>--%>
     <%--<span class="price">$281.00</span>--%>
     <%--<div class="rating readonly-rating" data-score="4"></div>--%>
     <%--</div>--%>
@@ -646,13 +357,13 @@
 
     <%--<div class="product-image">--%>
     <%--<img src="img/products/sample2.jpg" alt="Product1">--%>
-    <%--<a href="products_page_v1.html" class="product-hover">--%>
+    <%--<a href="products_page_v1.jsp" class="product-hover">--%>
     <%--<i class="icons icon-eye-1"></i> Quick View--%>
     <%--</a>--%>
     <%--</div>--%>
 
     <%--<div class="product-info">--%>
-    <%--<h5><a href="products_page_v1.html">Lorem ipsum dolor sit amet</a></h5>--%>
+    <%--<h5><a href="products_page_v1.jsp">Lorem ipsum dolor sit amet</a></h5>--%>
     <%--<span class="price">$281.00</span>--%>
     <%--<div class="rating readonly-rating" data-score="4"></div>--%>
     <%--</div>--%>
@@ -906,147 +617,7 @@
 
 
 <!-- Footer -->
-<footer id="footer" class="row">
-
-    <!-- Upper Footer -->
-    <div class="col-lg-12 col-md-12 col-sm-12">
-
-        <div id="upper-footer">
-
-            <div class="row">
-
-                <!-- Newsletter -->
-                <div class="col-lg-7 col-md-7 col-sm-7">
-                    <form id="newsletter" action="http://inthe7heaven.com/homeshop-html/php/newsletter.php">
-                        <h4>Newsletter Sign Up</h4>
-                        <input type="text" name="newsletter-email" placeholder="Enter your email address">
-                        <input type="submit" name="newsletter-submit" value="Submit">
-                    </form>
-                </div>
-                <!-- /Newsletter -->
-
-
-                <!-- Social Media -->
-                <div class="col-lg-5 col-md-5 col-sm-5 social-media">
-                    <h4>Stay Connected</h4>
-                    <ul>
-                        <li class="social-googleplus tooltip-hover" data-toggle="tooltip" data-placement="top"
-                            title="Google+"><a href="#"></a></li>
-                        <li class="social-facebook tooltip-hover" data-toggle="tooltip" data-placement="top"
-                            title="Facebook"><a href="#"></a></li>
-                        <li class="social-pinterest tooltip-hover" data-toggle="tooltip" data-placement="top"
-                            title="Pinterest"><a href="#"></a></li>
-                        <li class="social-twitter tooltip-hover" data-toggle="tooltip" data-placement="top"
-                            title="Twitter"><a href="#"></a></li>
-                        <li class="social-youtube tooltip-hover" data-toggle="tooltip" data-placement="top"
-                            title="Youtube"><a href="#"></a></li>
-                    </ul>
-                </div>
-                <!-- /Social Media -->
-
-            </div>
-
-        </div>
-
-    </div>
-    <!-- /Upper Footer -->
-
-
-    <!-- Main Footer -->
-    <div class="col-lg-12 col-md-12 col-sm-12">
-
-        <div id="main-footer">
-
-            <div class="row">
-
-                <!-- The Service -->
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <h4>The Service</h4>
-                    <ul>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Мой акаунт</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> История заказов</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Связь с продавцом</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Категории</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> результаты поиска</a></li>
-                    </ul>
-                </div>
-                <!-- /The Service -->
-
-
-                <!-- Like us on Facebook -->
-                <div class="col-lg-3 col-md-3 col-sm-6 facebook-iframe">
-                    <h4>Like us on Facebook</h4>
-                    <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2FFacebookDevelopers&amp;width=270&amp;height=250&amp;colorscheme=light&amp;header=false&amp;show_faces=true&amp;stream=false&amp;show_border=false"
-                            style="border:none; overflow:hidden; width:100%; height:290px;"></iframe>
-                </div>
-                <!-- /Like us on Facebook -->
-
-
-                <!-- Information -->
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <h4>Information</h4>
-                    <ul>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> About Us</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> New Collection</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Bestsellers</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Manufacturers</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Privacy Policy</a></li>
-                        <li><a href="#"><i class="icons icon-right-dir"></i> Terms &amp; Conditions</a></li>
-                    </ul>
-                </div>
-                <!-- /Information -->
-
-
-                <!-- Contact Us -->
-                <div class="col-lg-3 col-md-3 col-sm-6 contact-footer-info">
-                    <h4>Contact Us</h4>
-                    <ul>
-                        <li><i class="icons icon-location"></i> 8901 Marmora Road,<br>Glasgow, D04 89GR.</li>
-                        <li><i class="icons icon-phone"></i> +1 800 603 6035</li>
-                        <li><i class="icons icon-mail-alt"></i><a href="mailto:mail@company.com">
-                            mail@companyname.com</a></li>
-                        <li><i class="icons icon-skype"></i> homeshop</li>
-                    </ul>
-                </div>
-                <!-- /Contact Us -->
-
-            </div>
-
-        </div>
-
-    </div>
-    <!-- /Main Footer -->
-
-
-    <!-- Lower Footer -->
-    <div class="col-lg-12 col-md-12 col-sm-12">
-
-        <div id="lower-footer">
-
-            <div class="row">
-
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <p class="copyright">Copyright 2014 <a href="#">HomeShop</a>. All Rights Reserved.</p>
-                </div>
-
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <ul class="payment-list">
-                        <li class="payment1"></li>
-                        <li class="payment2"></li>
-                        <li class="payment3"></li>
-                        <li class="payment4"></li>
-                        <li class="payment5"></li>
-                    </ul>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-    <!-- /Lower Footer -->
-
-</footer>
+<jsp:include page="_footer.jsp"/>
 <!-- Footer -->
 
 

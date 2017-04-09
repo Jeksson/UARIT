@@ -39,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getByIdProduct(int id_product) {
+        return productRepository.findById(id_product);
+    }
+
+    @Override
     public Product editProduct(Product product) {
         return productRepository.saveAndFlush(product);
     }

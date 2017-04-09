@@ -132,6 +132,8 @@ public class FileUploadController {
 
         } else if (parsingCsvInBase.getProcentUploadFileInBase() == 100) {
             writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
+            writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
+            writer.write("data: " + parsingCsvInBase.getProcentUploadFileInBase() + "\n\n");
             writer.flush();
             writer.close();
         } else {

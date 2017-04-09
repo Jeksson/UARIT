@@ -24,7 +24,6 @@ public class Product{
     private String description;
     private String picture;
 
-
     public Product() {
     }
 
@@ -63,6 +62,7 @@ public class Product{
     public void setId(int id) {
         this.id = id;
     }
+
 
 
     @Column(name = "name", length = 300)
@@ -177,6 +177,7 @@ public class Product{
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
 
     @Override
     public String toString() {

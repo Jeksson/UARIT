@@ -36,6 +36,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin()
 				// указываем страницу с формой логина
 				.loginPage("/_header")
+				.loginPage("/create_an_account")
 				// указываем action с формы логина
 				.loginProcessingUrl("/j_spring_security_check")
 				// указываем URL при неудачном логине
@@ -57,9 +58,13 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 				.invalidateHttpSession(true);
 
 		http.authorizeRequests()
-				//*.antMatchers("/protected/**").access("hasRole('ROLE_ADMIN')")*/
 				.antMatchers("/upload/**").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/*").access("hasRole('ROLE_USER')")
+				.antMatchers("/listfileindirectory/**").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/uploadCsv/**").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/*").permitAll()
+				//.antMatchers("/productpage").access("hasRole('ROLE_USER')")
+				.antMatchers("create_an_account.jsp").permitAll()
+				.antMatchers("/bucket/**").permitAll()
 				.antMatchers("_header.jsp").permitAll()
 				.and().formLogin().defaultSuccessUrl("/", false);
 

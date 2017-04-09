@@ -45,7 +45,7 @@
 </ul>
 
 
-
+<script src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js"></script>
 <script>
 
     $(window).load(function () {
@@ -64,7 +64,7 @@
                         if (value === "folse") {
                             $('#ul').append("<span> <h2>Файлов нет</h2></span>");
                         } else {
-                            $('#ul').append("<li>" + "<label><input type=\"checkbox\"  id=\"" + value + " \"></label>" + value + "</li>");
+                            $('#ul').append("<li style='list-style-type: none'>" + "<div class='checkbox'><label><input type='checkbox'  id=\"" + value + "\">" + value + "</label></div></li>");
                         }
                     });
                 });
@@ -112,8 +112,9 @@
                 if(event.data < 100) {
                     $('#progressbar').val(event.data);
                     document.getElementById('span').innerHTML = event.data;
-                }else if (event.data == 100) {
+                }else if (event.data >= 100) {
                     $('#progressbar').val(event.data);
+                    document.getElementById('span').innerHTML = event.data;
 
                     eventSource.close();
                 } else { eventSource.close();}

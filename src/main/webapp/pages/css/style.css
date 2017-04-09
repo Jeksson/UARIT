@@ -2543,6 +2543,7 @@ span.add-to-compare:hover{
 }
 
 span.action-name{
+	color: #f4f4f4;
 	position:absolute;
 	left:85px;
 	text-transform:uppercase;
@@ -4478,9 +4479,9 @@ input[type=radio]:checked + .radio-label:before {
     line-height: 14px;
 }
 
-input[type="checkbox"]{
-	display:none;
-}
+/*input[type="checkbox"]{*/
+	/*display:none;*/
+/*}*/
 
 input[type="checkbox"]+label{
 	display: inline-block;
@@ -4490,6 +4491,11 @@ input[type="checkbox"]+label{
 	margin-top:10px;
 	margin-right: 15px;
 	font-size: 14px;	
+}
+
+.main-header{
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 input[type="checkbox"]+label:before{

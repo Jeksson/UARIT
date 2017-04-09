@@ -14,19 +14,29 @@ $(document).ready(function () {
 
     //изменение ценника товаров с USD на гривны
     //курс берется с ПБ и приходит в json из которого выберается только курс USD
-    $.getJSON('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5', function (data) {
-        var items = data.map(function (item) {
-            if (item.ccy === 'USD') {
-                $('.price').each(function () {
-                    var newPrice = $(this).text() * item.sale;
-                    $(this).text(Math.ceil(newPrice));
-                });
-            }
+
+    $.getJSON( "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5", { fomat: "json" } )
+        .done(function( data ) {
+            var items = data.map(function (item) {
+                if (item.ccy === 'USD') {
+                    $('.price').each(function () {
+                        var newPrice = $(this).text() * item.sale;
+                        $(this).text(Math.ceil(newPrice));
+                    });
+                    $('.price-a').each(function () {
+                        $(this).text(" грн.");
+                    });
+                }
+            });
+        })
+        .fail(function() {
+            $('.price-a').each(function () {
+                $(this).text(" USD");
+            });
         });
-    });
 
 
-    "use strict";
+    //"use strict";
 
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
@@ -943,4 +953,7 @@ $(document).ready(function () {
     }
 
 
+
 });
+
+

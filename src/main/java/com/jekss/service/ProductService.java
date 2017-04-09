@@ -12,6 +12,7 @@ public interface ProductService {
     Product addProduct(Product product);
     void deleteProduct(int id_product);
     Product getByNameProduct(String name_product);
+    Product getByIdProduct(int id_product);
     Product editProduct(Product product);
     List<Product> getAll();
     List<String> getCategoriesName2(String categoriesName1);

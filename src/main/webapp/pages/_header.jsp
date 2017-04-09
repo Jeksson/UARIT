@@ -36,7 +36,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/animation.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/chosen.css">
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/pages/css/settings.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/pages/css/settings.css"
+          media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/owl.carousel.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/owl.theme.css">
 
@@ -49,6 +50,8 @@
     <![endif]-->
 
 
+    <script src="${pageContext.request.contextPath}/pages/js/jquery-2.1.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/bucket-script.js"></script>
 
 </head>
 
@@ -71,8 +74,8 @@
                     <nav id="top-navigation" class="col-lg-7 col-md-7 col-sm-7">
                         <ul class="pull-left">
                             <li><a href="orders_list.html">Список заказов</a></li>
-                            <li><a href="order_info.html">Доставка и оплата</a></li>
-                            <li><a href="text_page.html">О нас</a></li>
+                            <li><a href="order_info.jsp">Доставка и оплата</a></li>
+                            <li><a href="about_us.html">О нас</a></li>
                             <li><a href="contact.html">Наши контакты</a></li>
                         </ul>
                     </nav>
@@ -81,58 +84,53 @@
 
 
                         <ul class="pull-right">
-
                             <sec:authorize access="isAuthenticated()">
-                                <li class="purple">
-                                   <p>Hello, ${userDetails.username}!</p>
-                                    <a href="/logout">Выйти</a>
-                                </li>
+                                <li>Hello, ${userDetails.username}!</li>
+                                <li><a href="/logout">Выйти</a></li>
                             </sec:authorize>
 
                             <sec:authorize access="isAnonymous()">
-                            <li class="purple"><a href="#"><i class="icons icon-user-3"></i>Войти</a>
-                                <ul id="login-dropdown" class="box-dropdown">
-                                    <li>
-                                        <div class="box-wrapper">
+                                <li class="purple"><a href="#"><i class="icons icon-user-3"></i>Войти</a>
+                                    <ul id="login-dropdown" class="box-dropdown">
+                                        <li>
+                                            <div class="box-wrapper">
 
-                                            <c:url value="/j_spring_security_check" var="loginUrl"/>
-                                            <form action="${loginUrl}" method="post">
-                                                <div class="iconic-input">
-                                                    <input type="text" name="j_username" placeholder="логин">
-                                                    <i class="icons icon-user-3"></i>
+                                                <c:url value="/j_spring_security_check" var="loginUrl"/>
+                                                <form action="${loginUrl}" method="post">
+                                                    <div class="iconic-input">
+                                                        <input type="text" name="j_username" placeholder="логин">
+                                                        <i class="icons icon-user-3"></i>
+                                                    </div>
+                                                    <div class="iconic-input">
+                                                        <input type="password" name="j_password" placeholder="пароль">
+                                                        <i class="icons icon-lock"></i>
+                                                    </div>
+                                                    <input type="checkbox" style="display: none" name="remember-me-param" id="loginremember">
+                                                    <label for="loginremember">Запомнить меня</label>
+                                                    <br>
+                                                    <br>
+                                                    <div class="pull-left">
+                                                        <input type="submit" class="orange" value="Войти">
+                                                    </div>
+
+                                                </form>
+
+
+                                                <div class="pull-right">
+                                                    <a href="#">Забыли пароль?</a>
+                                                    <br>
+                                                    <a href="#">Забыли email?</a>
+                                                    <br>
                                                 </div>
-                                                <div class="iconic-input">
-                                                    <input type="password" name="j_password" placeholder="пароль">
-                                                    <i class="icons icon-lock"></i>
-                                                </div>
-                                                <input type="checkbox" name="remember-me-param" id="loginremember">
-                                                <label
-                                                        for="loginremember">Запомнить меня</label>
-                                                <br>
-                                                <br>
-                                                <div class="pull-left">
-                                                    <input type="submit" class="orange" value="Войти">
-                                                </div>
-
-                                            </form>
-
-
-
-                                            <div class="pull-right">
-                                                <a href="#">Забыли пароль?</a>
-                                                <br>
-                                                <a href="#">Забыли email?</a>
-                                                <br>
+                                                <br class="clearfix">
                                             </div>
-                                            <br class="clearfix">
-                                        </div>
 
-                                    </li>
-                                </ul>
-                            </li>
+                                        </li>
+                                    </ul>
+                                </li>
 
-                            <li><a href="${pageContext.request.contextPath}/registr"><i class="icons icon-lock"></i>
-                                Создать аккаунт</a></li>
+                                <li><a href="${pageContext.request.contextPath}/registr"><i class="icons icon-lock"></i>
+                                    Создать аккаунт</a></li>
                             </sec:authorize>
                         </ul>
 
@@ -158,134 +156,76 @@
 
                     <nav id="middle-navigation" class="col-lg-8 col-md-8 col-sm-8">
                         <ul class="pull-right">
+
+                            <%--сравнение--%>
                             <li class="blue">
                                 <a href="compare_products.html"><i class="icons icon-docs"></i>0 Items</a>
                             </li>
+                            <%--сравнение--%>
+
+                            <%--товары которые понравились--%>
                             <li class="red">
                                 <a href="wishlist.html"><i class="icons icon-heart-empty"></i>2 Items</a>
                             </li>
-                            <li class="orange"><a href="order_info.html"><i class="icons icon-basket-2"></i>17 Items</a>
-                                <ul id="cart-dropdown" class="box-dropdown parent-arrow">
-                                    <li>
-                                        <div class="box-wrapper parent-border">
-                                            <p>Recently added item(s)</p>
+                            <%--товары которые понравились--%>
 
-                                            <table class="cart-table">
-                                                <tr>
-                                                    <td><img src="img/products/sample1.jpg" alt="product"></td>
-                                                    <td>
-                                                        <h6>Lorem ipsum dolor</h6>
-                                                        <p>Product code PSBJ3</p>
-                                                    </td>
-                                                    <td>
-                                                        <span class="quantity"><span
-                                                                class="light">1 x</span> $79.00</span>
-                                                        <a href="#" class="parent-color">Remove</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="img/products/sample1.jpg" alt="product"></td>
-                                                    <td>
-                                                        <h6>Lorem ipsum dolor</h6>
-                                                        <p>Product code PSBJ3</p>
-                                                    </td>
-                                                    <td>
-                                                        <span class="quantity"><span
-                                                                class="light">1 x</span> $79.00</span>
-                                                        <a href="#" class="parent-color">Remove</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="img/products/sample1.jpg" alt="product"></td>
-                                                    <td>
-                                                        <h6>Lorem ipsum dolor</h6>
-                                                        <p>Product code PSBJ3</p>
-                                                    </td>
-                                                    <td>
-                                                        <span class="quantity"><span
-                                                                class="light">1 x</span> $79.00</span>
-                                                        <a href="#" class="parent-color">Remove</a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                            <br class="clearfix">
-                                        </div>
-
-                                        <div class="footer">
-                                            <table class="checkout-table pull-right">
-                                                <tr>
-                                                    <td class="align-right">Tax:</td>
-                                                    <td>$0.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-right">Discount:</td>
-                                                    <td>$37.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-right"><strong>Total:</strong></td>
-                                                    <td><strong class="parent-color">$999.00</strong></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-
-                                        <div class="box-wrapper no-border">
-                                            <a class="button pull-right parent-background" href="#">Checkout</a>
-                                            <a class="button pull-right" href="order_info.html">View Cart</a>
-                                        </div>
-                                    </li>
-                                </ul>
+                            <%--корзина--%>
+                            <li class="orange"><a href="order_info.jsp"><i class="icons icon-basket-2"></i>17 Items</a>
+                                <jsp:include page="_bucket.jsp"/>
                             </li>
-                            <li><a class="flag" href="#"><span class="english-flag"></span>English</a>
-                                <ul class="box-dropdown parent-arrow">
-                                    <li>
-                                        <div class="box-wrapper no-padding parent-border">
-                                            <table class="language-table">
-                                                <tr>
-                                                    <td class="flag"><span class="english-flag"></span></td>
-                                                    <td class="country"><a href="#">English</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="flag"><span class="german-flag"></span></td>
-                                                    <td class="country"><a href="#">German</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="flag"><span class="french-flag"></span></td>
-                                                    <td class="country"><a href="#">French</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="flag"><span class="italian-flag"></span></td>
-                                                    <td class="country"><a href="#">Italian</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="flag"><span class="spanish-flag"></span></td>
-                                                    <td class="country"><a href="#">Spanish</a></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </li>
-                                </ul>
+                            <%--корзина--%>
 
-                            </li>
-                            <li><a href="#"><i class="icons icon-dollar"></i>US Dollar</a>
-                                <ul class="box-dropdown parent-arrow">
-                                    <li>
-                                        <div class="box-wrapper no-padding parent-border">
-                                            <table class="currency-table">
-                                                <tr>
-                                                    <td><a href="#">$ US Dollar</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a href="#">€ Euro</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a href="#">£ Pound</a></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+
+                            <%--<li><a class="flag" href="#"><span class="english-flag"></span>English</a>--%>
+                                <%--<ul class="box-dropdown parent-arrow">--%>
+                                    <%--<li>--%>
+                                        <%--<div class="box-wrapper no-padding parent-border">--%>
+                                            <%--<table class="language-table">--%>
+                                                <%--<tr>--%>
+                                                    <%--<td class="flag"><span class="english-flag"></span></td>--%>
+                                                    <%--<td class="country"><a href="#">English</a></td>--%>
+                                                <%--</tr>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td class="flag"><span class="german-flag"></span></td>--%>
+                                                    <%--<td class="country"><a href="#">German</a></td>--%>
+                                                <%--</tr>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td class="flag"><span class="french-flag"></span></td>--%>
+                                                    <%--<td class="country"><a href="#">French</a></td>--%>
+                                                <%--</tr>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td class="flag"><span class="italian-flag"></span></td>--%>
+                                                    <%--<td class="country"><a href="#">Italian</a></td>--%>
+                                                <%--</tr>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td class="flag"><span class="spanish-flag"></span></td>--%>
+                                                    <%--<td class="country"><a href="#">Spanish</a></td>--%>
+                                                <%--</tr>--%>
+                                            <%--</table>--%>
+                                        <%--</div>--%>
+                                    <%--</li>--%>
+                                <%--</ul>--%>
+
+                            <%--</li>--%>
+                            <%--<li><a href="#"><i class="icons icon-dollar"></i>US Dollar</a>--%>
+                                <%--<ul class="box-dropdown parent-arrow">--%>
+                                    <%--<li>--%>
+                                        <%--<div class="box-wrapper no-padding parent-border">--%>
+                                            <%--<table class="currency-table">--%>
+                                                <%--<tr>--%>
+                                                    <%--<td><a href="#">$ US Dollar</a></td>--%>
+                                                <%--</tr>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td><a href="#">€ Euro</a></td>--%>
+                                                <%--</tr>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td><a href="#">£ Pound</a></td>--%>
+                                                <%--</tr>--%>
+                                            <%--</table>--%>
+                                        <%--</div>--%>
+                                    <%--</li>--%>
+                                <%--</ul>--%>
+                            <%--</li>--%>
                         </ul>
                     </nav>
 
@@ -321,7 +261,7 @@
                                     <li><a href="home_v3.html">Header 3</a></li>
                                     <li><a href="category_v1.jsp">Header 4</a></li>
                                     <li><a href="category_v2.html">Header 5</a></li>
-                                    <li><a href="products_page_v1.html">Header 6</a></li>
+                                    <li><a href="products_page_v1.jsp">Header 6</a></li>
                                 </ul>
                             </li>
                             <li><a href="#">Footers <i class="icons icon-right-dir"></i></a>
@@ -331,7 +271,7 @@
                                     <li><a href="home_v3.html#footer">Footer 3</a></li>
                                     <li><a href="category_v1.jsp#footer">Footer 4</a></li>
                                     <li><a href="category_v2-2.html#footer">Footer 5</a></li>
-                                    <li><a href="products_page_v1.html#footer">Footer 6</a></li>
+                                    <li><a href="products_page_v1.jsp#footer">Footer 6</a></li>
                                 </ul>
                             </li>
                             <li><a href="#">Sliders <i class="icons icon-right-dir"></i></a>
